@@ -3,37 +3,67 @@ import { SideNavItems, SideNavSection } from '@modules/navigation/models';
 export const sideNavSections: SideNavSection[] = [
     {
         text: 'CORE',
-        items: ['dashboard'],
+        items: ['organization', 'unities', 'resources', 'views', 'actions', 'activities'],
     },
     {
-        text: 'INTERFACE',
-        items: ['layouts', 'pages'],
+        text: 'CONTEXTS',
+        items: ['environment', 'time'],
     },
     {
-        text: 'ADDONS',
-        items: ['charts', 'tables'],
+        text: 'PERMISSIONS',
+        items: ['administrative', 'operational'],
+    },
+    {
+        text: 'CLIENTS',
+        items: ['projects', 'clients', 'pages'],
     },
 ];
 
 export const sideNavItems: SideNavItems = {
-    dashboard: {
+    organization: {
         icon: 'tachometer-alt',
-        text: 'Dashboard',
+        text: 'Organisation',
         link: '/dashboard',
     },
-    layouts: {
-        icon: 'columns',
-        text: 'Layouts',
+    unities: {
+        text: 'Unités',
         submenu: [
             {
-                text: 'Static Navigation',
-                link: '/dashboard/static',
+                text: 'Admin',
+                link: '/auth/login'
             },
+
             {
-                text: 'Light Sidenav',
-                link: '/dashboard/light',
+                text: 'Op',
+                link: '/auth/register',
             },
-        ],
+        ]
+
+    },
+    resources: {
+        icon: 'columns',
+        text: 'Ressources',
+        link: '/dashboard/static'
+    },
+    views: {
+        icon: 'columns',
+        text: 'Vues',
+        link: '/dashboard/light'
+    },
+    actions: {
+        icon: 'tachometer-alt',
+        text: 'Actions',
+        link: '/dashboard',
+    },
+    activities: {
+        icon: 'columns',
+        text: 'Activités',
+        link: '/auth/forgot-password'
+    },
+    environment: {
+        icon: 'columns',
+        text: 'Environnement',
+        link: '/dashboard/light'
     },
     pages: {
         icon: 'book-open',
@@ -75,14 +105,30 @@ export const sideNavItems: SideNavItems = {
             },
         ],
     },
-    charts: {
+
+    projects: {
         icon: 'chart-area',
-        text: 'Charts',
+        text: 'Projets',
         link: '/charts',
     },
-    tables: {
+    time: {
+        icon: 'chart-area',
+        text: 'Temporaire',
+        link: '/charts',
+    },
+    administrative: {
         icon: 'table',
-        text: 'Tables',
+        text: 'Administratives',
         link: '/tables',
+    },
+    operational: {
+        icon: 'table',
+        text: 'Operationnelles',
+        link: '/tables',
+    },
+    clients: {
+        icon: 'chart-area',
+        text: 'Clients',
+        link: '/charts',
     },
 };

@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Organization } from '@modules/dashboard/models';
+import { DashboardService } from '@modules/dashboard/services';
 
 @Component({
     selector: 'sb-dashboard',
@@ -7,6 +9,11 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
     styleUrls: ['dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-    constructor() {}
-    ngOnInit() {}
+    organizations : any;
+    constructor(private apiService: DashboardService) {}
+    ngOnInit() {
+        this.apiService.getOrganizations().subscribe((data)=>{
+            this.organizations = data;
+        });
+    }
 }

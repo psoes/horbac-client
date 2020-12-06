@@ -21,6 +21,8 @@ import * as dashboardGuards from './guards';
 
 /* Services */
 import * as dashboardServices from './services';
+import { AuthModule } from '@modules/auth/auth.module';
+import { AuthService } from '@modules/auth/services';
 
 @NgModule({
     imports: [
@@ -32,8 +34,9 @@ import * as dashboardServices from './services';
         NavigationModule,
         ChartsModule,
         TablesModule,
+        AuthModule
     ],
-    providers: [...dashboardServices.services, ...dashboardGuards.guards],
+    providers: [...dashboardServices.services, ...dashboardGuards.guards, AuthService],
     declarations: [...dashboardContainers.containers, ...dashboardComponents.components],
     exports: [...dashboardContainers.containers, ...dashboardComponents.components],
 })
