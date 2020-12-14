@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    API_HOST: 'http://localhost:8080/horbac-api/',
+    API_HOST: 'http://localhost:8081/horbac-api',
     keycloakConfig: {
         clientId: 'horbac-client',
         realm: 'demo',

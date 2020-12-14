@@ -3,3 +3,6 @@
 thead > tr > th {
     cursor: pointer;
 }
+.hideScrollbar::-webkit-scrollbar{
+    display: none; 
+}

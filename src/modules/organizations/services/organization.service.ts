@@ -2,13 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Organization } from '../models/organization';
+import { OrganizationType } from '../models/organization-type';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrganizationService {
 
-  ORGANIZATIONS_API = environment.API_HOST+ 'organizations';
+  ORGANIZATIONS_API = environment.API_HOST+ '/organizations';
+  ORGANIZATIONS_TYPES_API = environment.API_HOST+ '/org-types';
 
   constructor(private http: HttpClient) { }
 
@@ -26,5 +28,22 @@ export class OrganizationService {
 
   deleteOrganization(org: Organization){
     return this.http.delete(this.ORGANIZATIONS_API+'/'+ org.id);
+  }
+
+  loadTypes(){
+    return this.http.get<OrganizationType[]>(this.ORGANIZATIONS_TYPES_API);
+  }
+
+  createType(type: OrganizationType){
+
+    return this.http.post<OrganizationType>(this.ORGANIZATIONS_TYPES_API, type);
+  }
+  
+  updateType(type: OrganizationType){
+    return this.http.put<OrganizationType>(this.ORGANIZATIONS_TYPES_API, type);
+  }
+
+  deleteType(type: OrganizationType){
+    return this.http.delete(this.ORGANIZATIONS_TYPES_API+'/'+ type.id);
   }
 }

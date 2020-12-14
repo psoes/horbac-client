@@ -1,1 +1,5 @@
 @import 'styles/variables.scss';
+.filter-white{
+    filter: invert(48%) sepia(0%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
+}
+

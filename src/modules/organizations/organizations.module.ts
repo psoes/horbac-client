@@ -14,6 +14,8 @@ import { AppCommonModule } from '@common/app-common.module';
 import { RouterModule } from '@angular/router';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import {MatButtonModule} from '@angular/material/button';
     HttpClientModule,
     DashboardModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTabsModule,
+    MatSelectModule
     
   ],
   declarations: [OrganizationComponent],

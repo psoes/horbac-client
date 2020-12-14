@@ -19,7 +19,10 @@ import {
     faSave,
     faUndo,
     faEdit,
-    faTrash
+    faTrash,
+    faCog,
+    faSitemap,
+    faUsers
 } from '@fortawesome/free-solid-svg-icons';
 
 export const fontAwesomeSolidIcons = {
@@ -42,4 +45,7 @@ export const fontAwesomeSolidIcons = {
     faUndo,
     faEdit,
     faTrash,
+    faCog,
+    faSitemap,
+    faUsers
 };
