@@ -1,5 +1,5 @@
 <form>
-    <div class="form-group form-inline">Full text search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="countryService.searchTerm" /><span class="ml-3" *ngIf="countryService.loading$ | async">Loading...</span></div>
+    <div class="form-group form-inline">Full text search ufh: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="countryService.searchTerm" /><span class="ml-3" *ngIf="countryService.loading$ | async">Loading..................</span></div>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let country of countries$ | async">
+            <tr *ngFor="let country of orgs$ | async">
                 <th scope="row">{{ country.id }}</th>
                 <td><img class="mr-2" [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" style="width: 20px" /><ngb-highlight [result]="country.name" [term]="countryService.searchTerm"></ngb-highlight></td>
                 <td><ngb-highlight [result]="country.area | number" [term]="countryService.searchTerm"></ngb-highlight></td>
@@ -24,6 +24,7 @@
             <option [ngValue]="2">2 items per page</option>
             <option [ngValue]="4">4 items per page</option>
             <option [ngValue]="6">6 items per page</option>
+            <option [ngValue]="9">9 items per page</option>
         </select>
     </div>
 </form>

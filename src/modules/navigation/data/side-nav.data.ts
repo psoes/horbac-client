@@ -23,7 +23,7 @@ export const sideNavItems: SideNavItems = {
     organization: {
         icon: 'tachometer-alt',
         text: 'Organisation',
-        link: '/dashboard',
+        link: '/organizations',
     },
     unities: {
         text: 'Unités',

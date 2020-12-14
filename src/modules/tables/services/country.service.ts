@@ -1,8 +1,11 @@
 import { DecimalPipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
+import { Organization } from '@modules/dashboard/models';
 import { COUNTRIES } from '@modules/tables/data/countries';
 import { SortDirection } from '@modules/tables/directives';
 import { Country } from '@modules/tables/models';
+import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 
@@ -57,7 +60,7 @@ export class CountryService {
         sortDirection: '',
     };
 
-    constructor(private pipe: DecimalPipe) {
+    constructor(private pipe: DecimalPipe, private http: HttpClient) {
         this._search$
             .pipe(
                 tap(() => this._loading$.next(true)),
@@ -127,4 +130,10 @@ export class CountryService {
         countries = countries.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
         return of({ countries, total });
     }
+
+    getOrganizations(): Observable<Organization[]> {
+        return this.http.get<Organization[]>(environment.API_HOST+"/organizations");
+    }
+
+   
 }

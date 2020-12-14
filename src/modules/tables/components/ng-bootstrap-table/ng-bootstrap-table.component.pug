@@ -1,12 +1,12 @@
 form
     .form-group.form-inline
-        | Full text search: 
+        | Full text search ufh: 
         input.form-control.ml-2(
             type='text',
             name='searchTerm',
             [(ngModel)]='countryService.searchTerm'
         )
-        span.ml-3(*ngIf='countryService.loading$ | async') Loading...
+        span.ml-3(*ngIf='countryService.loading$ | async') Loading..................
     table.table.table-striped
         thead
             tr
@@ -42,7 +42,7 @@ form
                         [direction]='sortedDirection'
                     )
         tbody
-            tr(*ngFor='let country of countries$ | async')
+            tr(*ngFor='let country of orgs$ | async')
                 th(scope='row') {{ country.id }}
                 td
                     img.mr-2(
@@ -78,3 +78,4 @@ form
             option([ngValue]='2') 2 items per page
             option([ngValue]='4') 4 items per page
             option([ngValue]='6') 6 items per page
+            option([ngValue]='9') 9 items per page

@@ -7,6 +7,7 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
+import { Organization } from '@modules/dashboard/models';
 import { SBSortableHeaderDirective, SortEvent } from '@modules/tables/directives';
 import { Country } from '@modules/tables/models';
 import { CountryService } from '@modules/tables/services';
@@ -22,6 +23,7 @@ export class NgBootstrapTableComponent implements OnInit {
     @Input() pageSize = 4;
 
     countries$!: Observable<Country[]>;
+    orgs$!: Observable<Organization[]>;
     total$!: Observable<number>;
     sortedColumn!: string;
     sortedDirection!: string;
@@ -36,6 +38,7 @@ export class NgBootstrapTableComponent implements OnInit {
     ngOnInit() {
         this.countryService.pageSize = this.pageSize;
         this.countries$ = this.countryService.countries$;
+        this.orgs$ = this.countryService.getOrganizations();
         this.total$ = this.countryService.total$;
     }
 

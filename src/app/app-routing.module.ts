@@ -5,12 +5,17 @@ const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: '/dashboard',
+        redirectTo: '/organizations'
     },
     {
         path: 'charts',
         loadChildren: () =>
             import('modules/charts/charts-routing.module').then(m => m.ChartsRoutingModule),
+    },
+    {
+        path: 'organizations',
+        loadChildren: () =>
+            import('modules/organizations/organizations-routing.module').then(m => m.OrganizationsRoutingModule),
     },
     {
         path: 'dashboard',

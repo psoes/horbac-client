@@ -16,6 +16,10 @@ import {
     faTable,
     faTachometerAlt,
     faUser,
+    faSave,
+    faUndo,
+    faEdit,
+    faTrash
 } from '@fortawesome/free-solid-svg-icons';
 
 export const fontAwesomeSolidIcons = {
@@ -34,4 +38,8 @@ export const fontAwesomeSolidIcons = {
     faTable,
     faTachometerAlt,
     faUser,
+    faSave,
+    faUndo,
+    faEdit,
+    faTrash,
 };

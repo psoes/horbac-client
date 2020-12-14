@@ -1,0 +1,34 @@
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { SBRouteData } from '@modules/navigation/models';
+import { OrganizationComponent } from './components/organization/organization.component';
+import { OrganizationsModule } from './organizations.module';
+
+const routes: Routes = [
+  {
+    path: '',
+    data: {
+      title: 'Dashboard Light - SB Admin Angular',
+      breadcrumbs: [
+          {
+              text: 'Organizations',
+              link: '/organizations',
+          },
+          {
+              text: 'Register',
+              active: true,
+          },
+      ],
+  } as SBRouteData,
+    component: OrganizationComponent,
+},
+];
+
+@NgModule({
+  imports: [OrganizationsModule, 
+    RouterModule.forChild(routes)
+  ],
+  exports: [RouterModule]
+})
+export class OrganizationsRoutingModule { }
