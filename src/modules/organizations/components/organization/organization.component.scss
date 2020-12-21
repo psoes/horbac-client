@@ -1,8 +1,19 @@
-@import 'styles/variables.scss';
-
-thead > tr > th {
+.vertical-center {
+    position: absolute;
+    top: 0%;
+    transform: translateY(100%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; 
+  }
+ 
+  label {
     cursor: pointer;
-}
-.hideScrollbar::-webkit-scrollbar{
-    display: none; 
-}
+    /* Style as you please, it will become the visible UI component. */
+ }
+ 
+ #upload-photo {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+ }

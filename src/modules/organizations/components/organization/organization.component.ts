@@ -1,8 +1,15 @@
 import { isNgTemplate } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Organization } from '@modules/organizations/models/organization';
 import { OrganizationType } from '@modules/organizations/models/organization-type';
 import { OrganizationService } from '@modules/organizations/services/organization.service';
+
+class ImageSnippet {
+  pending: boolean = false;
+  status: string = 'init';
+  constructor(public src: string, public file: File) {}
+}
 
 @Component({
   selector: 'sb-organization',
@@ -15,7 +22,17 @@ export class OrganizationComponent implements OnInit {
   organization: Organization = {};
   type: OrganizationType = {};
   types: OrganizationType[] = [];
-  constructor(private orgService: OrganizationService) { }
+
+  imageSrc!: string;
+  myForm = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    file: new FormControl('', [Validators.required]),
+    fileSource: new FormControl('', [Validators.required])
+  });
+
+
+  constructor(private orgService: OrganizationService, public fb: FormBuilder) { 
+  }
 
   ngOnInit(): void {
     this.orgService.loadOrganizations().subscribe( (results : Organization[]) =>{
@@ -66,4 +83,41 @@ export class OrganizationComponent implements OnInit {
     })
   }
 
+  selectedFile!: ImageSnippet;
+  private onSuccess() {
+    this.selectedFile.pending = false;
+    this.selectedFile.status = 'ok';
+  }
+
+  private onError() {
+    this.selectedFile.pending = false;
+    this.selectedFile.status = 'fail';
+    this.selectedFile.src = '';
+  }
+
+  get f(){
+    return this.myForm.controls;
+  }
+   
+  onFileChange(event: any) {
+    const reader = new FileReader();
+    
+    if(event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      reader.readAsDataURL(file);
+    
+      reader.onload = () => {
+   
+        this.imageSrc = reader.result as string;
+     
+        this.myForm.patchValue({
+          fileSource: reader.result
+        });
+   
+      };
+   
+    }
+  }
+
+ 
 }

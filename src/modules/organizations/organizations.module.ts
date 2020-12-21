@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { OrganizationsRoutingModule } from './organizations-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { OrganizationComponent } from './components/organization';
@@ -16,26 +14,30 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
+import { NgpImagePickerModule } from 'ngp-image-picker';
 
 
 @NgModule({
   
   imports: [
     CommonModule,
-      RouterModule,
-      ReactiveFormsModule,
-      FormsModule,
-      AppCommonModule,
-      NavigationModule,
-      ChartsModule,
-      TablesModule,
-      AuthModule,
+    RouterModule,
+    ReactiveFormsModule,
+    FormsModule,
+    AppCommonModule,
+    NavigationModule,
+    ChartsModule,
+    TablesModule,
+    AuthModule,
     HttpClientModule,
     DashboardModule,
     MatInputModule,
     MatButtonModule,
     MatTabsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    NgpImagePickerModule
     
   ],
   declarations: [OrganizationComponent],

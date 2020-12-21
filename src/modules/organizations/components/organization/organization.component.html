@@ -4,39 +4,57 @@
     <mat-tab>
         <ng-template mat-tab-label>
             <fa-icon [icon]='["fas", "users"]'></fa-icon>
-            <span>Organisations</span>
+            <span class="p-2">Organisations</span>
         </ng-template>
         <div class="col-md-12">
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-12">            
-                    <form #f="ngForm">
-                        <mat-form-field class="col-sm- col-lg-6 col-md-6">
-                            <mat-label>Name: </mat-label>
-                            <input matInput type="text" name="name" id="name" [(ngModel)]="organization.name" />
-                        </mat-form-field>
-                        <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
-                            <mat-label>Description: </mat-label>
-                            <input matInput  type="text" name="description" id="description" [(ngModel)]="organization.description" />
-                        </mat-form-field>
-                        <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
-                        <mat-label>Date de création: </mat-label>
-                            <input matInput   type="date" name="inc" id="inc" [(ngModel)]="organization.inceptionDate" />
-                        </mat-form-field>
+                    <form #f="ngForm" class="form-group">
+                        <div class=" col-4 vertical-center">
+                            <img [src]="imageSrc" *ngIf="imageSrc" style="height: 50px; width: 50px">
+                            <label style="border-radius: 50%;" *ngIf="!imageSrc" for="upload-photo">
+                                Logo 
+                            </label>
+                            <input                                
+                                style="display: none;"
+                                [(ngModel)]="organization.logo" 
+                                id="upload-photo"
+                                type="file"
+                                name="logo" 
+                                (change)="onFileChange($event)">
+                                <button mat-mini-fab  *ngIf="imageSrc">
+                                    <fa-icon [icon]='["fas", "save"]'></fa-icon>
+                                </button>                              
+                        </div>
+                        <div class="col-11 float-right">
+                            <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                <mat-label>Name: </mat-label>
+                                <input matInput type="text" name="name" id="name" [(ngModel)]="organization.name" />
+                            </mat-form-field>
+                            <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                <mat-label>Description: </mat-label>
+                                <input matInput  type="text" name="description" id="description" [(ngModel)]="organization.description" />
+                            </mat-form-field>
+                            <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
+                            <mat-label>Date de création: </mat-label>
+                                <input matInput   type="date" name="inc" id="inc" [(ngModel)]="organization.inceptionDate" />
+                            </mat-form-field>
+                            
+                            <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
+                                <mat-label>Cessation Date: </mat-label>
+                                <input matInput type="date" name="cess" id="cess" [(ngModel)]="organization.cessationDate" />
+                            </mat-form-field>
+                            <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
+                                <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="organization.type" placeholder="Select A Type">
+                                <mat-option *ngFor="let type of types" [value]="type">{{ type.name }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         
-                        <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
-                            <mat-label>Cessation Date: </mat-label>
-                            <input matInput type="date" name="cess" id="cess" [(ngModel)]="organization.cessationDate" />
-                        </mat-form-field>
-                        <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
-                            <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="organization.type" placeholder="Select A Type">
-                              <mat-option *ngFor="let type of types" [value]="type">{{ type.name }}</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                    
-                        <div class=" text-center">
-                            <button mat-flat-button class="col-sm-6"  style="margin-right:20px" *ngIf="!isUpdate" class="btn btn-primary " type="submit" (click)="createOrg()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
-                            <button mat-flat-button class="col-sm-6"  style="margin-right:20px" *ngIf="isUpdate" class="btn btn-primary" type="submit" (click)="updateOrg()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
-                            <button mat-flat-button class="btn btn-warning" type="reset" > <fa-icon [icon]='["fas", "undo"]'></fa-icon></button>
+                            <div class=" text-center">
+                                <button class="col-sm-6"  style="margin-right:20px" *ngIf="!isUpdate" class="btn btn-primary " type="submit" (click)="createOrg()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
+                                <button class="col-sm-6"  style="margin-right:20px" *ngIf="isUpdate" class="btn btn-primary" type="submit" (click)="updateOrg()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
+                                <button class="btn btn-warning" type="reset" > <fa-icon [icon]='["fas", "undo"]'></fa-icon></button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -60,7 +78,7 @@
                             <td>{{org.inceptionDate | date:'dd-MM-yyyy'}}</td>
                             <td>{{org.cessationDate | date:'dd-MM-yyyy'}}</td>
                             <td>{{org.type?.name}}</td>
-                            <td> 
+                            <td class="p-2"> 
                                 <button mat-mini-fab color="primary" (click)="organization = org; isUpdate = true;" class="btn btn-primary" type="button"> <fa-icon [icon]='["fas", "edit"]'></fa-icon></button>
                                 &nbsp;
                                 <button mat-mini-fab (click)="deleteOrg(org)" class="btn btn-danger" type="button">  <fa-icon [icon]='["fas", "trash"]'></fa-icon> </button> 
@@ -81,12 +99,11 @@
                 <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
                     <mat-label>Description: </mat-label>
                     <input matInput  type="text" name="description" id="description" [(ngModel)]="type.description" />
-                </mat-form-field>
-            
+                </mat-form-field>            
                 <div class=" text-center">
-                    <button mat-flat-button class="col-sm-6"  style="margin-right:20px" *ngIf="!isUpdate" class="btn btn-primary " type="submit" (click)="createType()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
-                    <button mat-flat-button class="col-sm-6"  style="margin-right:20px" *ngIf="isUpdate" class="btn btn-primary" type="submit" (click)="updateType()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
-                    <button mat-flat-button class="btn btn-warning" type="reset" > <fa-icon [icon]='["fas", "undo"]'></fa-icon></button>
+                    <button mat-icon class="col-sm-6"  style="margin-right:20px" *ngIf="!isUpdate" class="btn btn-primary " type="submit" (click)="createType()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
+                    <button mat-icon class="col-sm-6"  style="margin-right:20px" *ngIf="isUpdate" class="btn btn-primary" type="submit" (click)="updateType()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
+                    <button mat-icon class="btn btn-warning" type="reset" > <fa-icon [icon]='["fas", "undo"]'></fa-icon></button>
                 </div>
             </form>
         </div>
@@ -116,7 +133,7 @@
     <mat-tab> 
         <ng-template mat-tab-label>
             <fa-icon [icon]='["fas", "cog"]'></fa-icon>
-            <span>Paramètres</span>
+            <span class="p-2">Paramètres</span>
         </ng-template>
     </mat-tab>
   </mat-tab-group>

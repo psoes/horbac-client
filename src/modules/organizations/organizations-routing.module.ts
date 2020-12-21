@@ -9,7 +9,7 @@ const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Dashboard Light - SB Admin Angular',
+      title: 'HOrBAC - IdP',
       breadcrumbs: [
           {
               text: 'Organizations',
