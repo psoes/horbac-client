@@ -1,17 +1,58 @@
-<sb-layout-auth
-    ><div class="container">
+<sb-layout-auth><div class="container">
         <div class="row justify-content-center">
+            
             <div class="col-lg-5">
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                    <div class="card-header">
+                        <h3 class="text-center font-weight-light my-4">Login</h3>
+                    
+                    <table class="metrics">
+                        <tr>
+                          <td>Words
+                            <div class="measurements" name="word-count" id="word-count">0</div>
+                          </td>
+                    
+                          <td>
+                            Errors
+                            <div class="measurements" name="error-count" id="error-count">0</div>
+                    
+                          </td>
+                          <td>
+                            Mistyped Words
+                            <div class="measurements" name="mistyped-words" id="mistyped-words">0</div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Accuracy
+                            <div class="measurements" name="accuracy" id="accuracy">100%</div>
+                          </td>
+                          <td>Words Per Minute
+                            <div class="measurements" name="wpm" id="wpm">60</div>
+                          </td>
+                          <td>
+                            Time to Completion <div class="measurements" name="typing-time" id="typing-time">(not done)</div>
+                          </td>
+                          <td><button class="reset-button" id="newTest">Next Test</button>
+                            <div class="boxes" name="display" id="display" ></div></td>
+                        </tr>
+                    </table>
+                </div>
                     <div class="card-body">
+                        <div class="form-group d-flex align-items-center">
+                            <app-dynamic-form [questions]="questions"></app-dynamic-form>
+                        </div>
+                        
                         <form>
-                            <div class="form-group"><label class="small mb-1" for="inputEmailAddress">Email</label><input class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Enter email address" /></div>
+                           <!-- <div class="form-group"><label class="small mb-1" for="inputEmailAddress">Email</label><input class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Enter email address" /></div>
                             <div class="form-group"><label class="small mb-1" for="inputPassword">Password</label><input class="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" /></div>
+                        -->
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox"><input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" /><label class="custom-control-label" for="rememberPasswordCheck">Remember password</label></div>
                             </div>
-                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0"><a class="small" routerLink="/auth/forgot-password">Forgot Password?</a><a class="btn btn-primary" routerLink="/dashboard">Login</a></div>
+                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0"><a class="small" routerLink="/auth/forgot-password">Forgot Password?</a>
+                               <!-- <a class="btn btn-primary" routerLink="/dashboard">Login</a> -->
+                               <a class="btn btn-primary" id="btnc" (click)="load()">Login</a>
+                            </div>
                         </form>
                     </div>
                     <div class="card-footer text-center">
@@ -20,5 +61,4 @@
                 </div>
             </div>
         </div>
-    </div></sb-layout-auth
->
+    </div></sb-layout-auth>
