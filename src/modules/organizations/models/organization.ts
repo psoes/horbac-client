@@ -12,6 +12,8 @@ export class Organization {
     
     type?: OrganizationType;
 
+    logo?: string;
+
     constructor(id?: number, name?: string, description?: string, inceptionDate?: Date, cessationDate?: Date, type?: OrganizationType){
         this.id = id;
         this.name = name;
