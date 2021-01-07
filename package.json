@@ -1,6 +1,6 @@
 {
   "name": "horbac",
-  "version": "1.3.0",
+  "version": "0.0.1",
   "engines": {
     "node": "10.13.0",
     "npm": "6.4.1"
