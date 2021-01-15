@@ -10,21 +10,24 @@
             <div class="row justify-content-center">
                 <div class="col-md-12">            
                     <form #f="ngForm" class="form-group">
-                        <div class=" col-4 vertical-center">
-                            <img [src]="imageSrc" *ngIf="imageSrc" style="height: 50px; width: 50px">
-                            <label style="border-radius: 50%;" *ngIf="!imageSrc" for="upload-photo">
-                                Logo 
-                            </label>
-                            <input                                
-                                style="display: none;"
-                                [(ngModel)]="organization.logo" 
-                                id="upload-photo"
-                                type="file"
-                                name="logo" 
-                                (change)="onFileChange($event)">
-                                <button mat-mini-fab  *ngIf="imageSrc">
-                                    <fa-icon [icon]='["fas", "save"]'></fa-icon>
-                                </button>                              
+                        <div class=" col-sm-6 col-lg-4 col-md-4 vertical-center">
+                            <div class="image">
+                                <img  [src]="imageSrc" *ngIf="imageSrc" style="position:relative;
+                                left: calc(10%); height: 50px; width: 50px"> 
+                                <span  style="position:relative;
+                                top: calc(20%); left: calc(30%);"*ngIf="!imageSrc">Logo</span>                                                              
+                                <input
+                                    style="display: none;"
+                                    [(ngModel)]="organization.logo" 
+                                    id="upload-photo"
+                                    type="file"
+                                    name="logo" 
+                                    (change)="onFileChange($event)">         
+                            </div>
+                            <label style="position:relative;
+                                top: calc(10%); left: calc(70%);"for="upload-photo">
+                                <fa-icon title="Upload logo" [icon]='["fas", "upload"]'></fa-icon>
+                            </label>                              
                         </div>
                         <div class="col-11 float-right">
                             <mat-form-field class="col-sm-6 col-lg-6 col-md-6">

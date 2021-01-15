@@ -4,6 +4,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Organization } from '@modules/organizations/models/organization';
 import { OrganizationType } from '@modules/organizations/models/organization-type';
 import { OrganizationService } from '@modules/organizations/services/organization.service';
+import { DomSanitizer, SafeHtml,  SafeUrl,  SafeStyle, SafeResourceUrl } from '@angular/platform-browser';
+
 
 class ImageSnippet {
   pending: boolean = false;
@@ -23,7 +25,7 @@ export class OrganizationComponent implements OnInit {
   type: OrganizationType = {};
   types: OrganizationType[] = [];
 
-  imageSrc!: string;
+  imageSrc!: SafeResourceUrl;
   myForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     file: new FormControl('', [Validators.required]),
@@ -31,7 +33,7 @@ export class OrganizationComponent implements OnInit {
   });
 
 
-  constructor(private orgService: OrganizationService, public fb: FormBuilder) { 
+  constructor(private orgService: OrganizationService, public fb: FormBuilder, private sanitization: DomSanitizer) { 
   }
 
   ngOnInit(): void {
@@ -107,12 +109,17 @@ export class OrganizationComponent implements OnInit {
       reader.readAsDataURL(file);
     
       reader.onload = () => {
-   
-        this.imageSrc = reader.result as string;
+        
+        this.imageSrc  = this.sanitization.bypassSecurityTrustResourceUrl(reader.result as string);
+        //this.imageSrc = reader.result as SafeResourceUrl;
      
         this.myForm.patchValue({
           fileSource: reader.result
         });
+
+        console.info('File source... ', file.size)
+        console.info('File source... ', file.name)
+        console.info('File source... ', file.type)
    
       };
    
