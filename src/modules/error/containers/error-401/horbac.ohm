@@ -1,0 +1,21 @@
+HORBAC 
+{
+    Hierarchy = Org "-" Aunit "-" Ounit
+    Aunit = "au:" blockO
+    Org = "org:" block
+    Ounit = "ou:" blockO
+    employee = "emp:" block
+    view = "view:" block
+    resource = "rsc:" block
+    activity = "activ:" block
+    action = "action:" blockO
+    context = "context:" blockC
+    agrant = "agrant:" blockPA
+    ogrant = "ogrant:" blockPO
+    block = "{id:" digit+ ", " "name:" val+ ", " "description:" val+ "}"
+    blockO = "{id:" digit+ ", " "name:" val+ ", " "description:" val+ ", " "parent:" digit+ "}"
+    blockC = "{id:" digit+ ", " "name:" val+ ", " "description:" val+ ", " "duration:" digit+ ", " "period:" digit+ "location:" digit+ "}"
+    blockPA = "{id:" digit+ ", " "org:" val+ ", " "au:" val+ ", " "ou:" val+ "view:" val+ ", " "activity:" val+ ", " "context:" val+ "}"
+    blockPO = "{id:" digit+ ", " "org:" val+ ", " "ou:" val+ ", " "view:" val+ ", " "activity:" val+ ", " "context:" val+ "}"
+    val = "A".."Z"
+}

@@ -57,6 +57,7 @@
     "material-design-icons": "^3.0.1",
     "ngp-image-picker": "^1.2.6",
     "object-hash": "2.0.3",
+    "ohm-js": "^15.4.1",
     "resize-observer": "^1.0.0",
     "rxjs": "6.6.3",
     "tslib": "2.0.3",
