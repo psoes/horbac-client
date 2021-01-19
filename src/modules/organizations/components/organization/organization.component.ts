@@ -1,12 +1,13 @@
 import { isNgTemplate } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Organization } from '@modules/organizations/models/organization';
 import { OrganizationType } from '@modules/organizations/models/organization-type';
 import { OrganizationService } from '@modules/organizations/services/organization.service';
 import { DomSanitizer, SafeHtml,  SafeUrl,  SafeStyle, SafeResourceUrl } from '@angular/platform-browser';
-
-
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
+import { ParserService } from '@modules/organizations/services/parser.service';
 class ImageSnippet {
   pending: boolean = false;
   status: string = 'init';
@@ -19,12 +20,15 @@ class ImageSnippet {
   styleUrls: ['./organization.component.scss']
 })
 export class OrganizationComponent implements OnInit {
+  public Editor = ClassicEditor;
   isUpdate: boolean = false;
   organizations: Organization [] = [];
   organization: Organization = {};
   type: OrganizationType = {};
   types: OrganizationType[] = [];
-
+  public editorOptions!: JsonEditorOptions;
+  public data: any;
+  @ViewChild(JsonEditorComponent, { static: false }) editor!: JsonEditorComponent;
   imageSrc!: SafeResourceUrl;
   myForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -33,7 +37,12 @@ export class OrganizationComponent implements OnInit {
   });
 
 
-  constructor(private orgService: OrganizationService, public fb: FormBuilder, private sanitization: DomSanitizer) { 
+  constructor(private parserService: ParserService, private orgService: OrganizationService, public fb: FormBuilder, private sanitization: DomSanitizer) { 
+    this.editorOptions = new JsonEditorOptions()
+    this.editorOptions.modes = ['code', 'text', 'tree', 'view']; // set all allowed modes
+    //this.options.mode = 'code'; //set only one mode      
+    this.data = "{ org: {id: 12, name: BHD, description: PAPA}, au: {id: 11, name: BHD, description: PAPA, parent: 0}, ou: {id: 14, name: BHD, description: PAPA, parent: 11} }";
+    //this.data = "{ org: {id: 12, name: BHD, description: PAPA} }";
   }
 
   ngOnInit(): void {
@@ -120,10 +129,22 @@ export class OrganizationComponent implements OnInit {
         console.info('File source... ', file.size)
         console.info('File source... ', file.name)
         console.info('File source... ', file.type)
-   
       };
    
     }
+  }
+  formChanges(event: any){
+    console.log('data ', event);
+  }
+  changeLog(){
+    console.log('data ', this.data)
+    this.parserService.parse(this.data, (res, obj) =>{
+      this.data = obj;
+      this.organization = JSON.parse(JSON.stringify(this.data))
+      this.createOrg();
+
+    })
+    console.log(this.data);
   }
 
  

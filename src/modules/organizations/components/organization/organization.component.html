@@ -90,7 +90,7 @@
                     </tbody>
                 </table>
             </div>
-     </div>
+        </div>
     </mat-tab>
     <mat-tab label="Types d'organization">
         <div class="col-md-12">            
@@ -138,6 +138,21 @@
             <fa-icon [icon]='["fas", "cog"]'></fa-icon>
             <span class="p-2">Paramètres</span>
         </ng-template>
+    </mat-tab>
+    <mat-tab> 
+        <ng-template mat-tab-label>
+            <fa-icon [icon]='["fas", "edit"]'></fa-icon>
+            <span class="p-2">HOrBAC Editor</span>
+        </ng-template>
+        <div>
+            <form>
+                <!-- <ckeditor [editor]="Editor" data='<p>Hello, world!</p>'></ckeditor> !-->
+                <!-- <json-editor (change) = "formChanges($event)" [options]="editorOptions" [(data)]="data" #editor></json-editor> -->
+                <textarea name="editor" id="editor" class="col-15" cols="125" rows="10" [(ngModel)] = "data"></textarea>
+                <button  (click)="changeLog()" class="btn btn-primary" type="submit">Submit</button>
+                <button  class="btn btn-primary m-2" type="reset">Reset</button>
+            </form>
+        </div>
     </mat-tab>
   </mat-tab-group>
 </sb-layout-dashboard>

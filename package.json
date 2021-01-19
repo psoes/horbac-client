@@ -5,6 +5,11 @@
     "node": "10.13.0",
     "npm": "6.4.1"
   },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "scripts": {
     "start:prod": "node server.js",
     "build": "npm run build:pug && npm run ng -- build --prod --build-optimizer=true --statsJson=true && npm run build:version",
@@ -40,6 +45,8 @@
     "@angular/platform-browser": "11.0.1",
     "@angular/platform-browser-dynamic": "11.0.1",
     "@angular/router": "11.0.1",
+    "@ckeditor/ckeditor5-angular": "^2.0.1",
+    "@ckeditor/ckeditor5-build-classic": "^24.0.0",
     "@fortawesome/angular-fontawesome": "0.8.0",
     "@fortawesome/fontawesome-svg-core": "1.2.32",
     "@fortawesome/free-brands-svg-icons": "5.15.1",
@@ -48,10 +55,15 @@
     "@mdi/font": "^5.8.55",
     "@ng-bootstrap/ng-bootstrap": "8.0.0",
     "@prettier/plugin-pug": "1.10.1",
+    "ang-jsoneditor": "^1.10.4",
     "angular-material-fileupload": "^3.0.1",
     "chart.js": "2.9.4",
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
     "jquery": "^3.5.1",
+    "json-grammar": "^0.2.3",
+    "jsoneditor": "^9.1.7",
+    "jsonschema": "^1.4.0",
     "keycloak-angular": "^8.0.1",
     "keycloak-js": "^11.0.3",
     "material-design-icons": "^3.0.1",

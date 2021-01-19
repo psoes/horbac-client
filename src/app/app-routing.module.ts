@@ -18,6 +18,16 @@ const routes: Routes = [
             import('modules/organizations/organizations-routing.module').then(m => m.OrganizationsRoutingModule),
     },
     {
+        path: 'units',
+        loadChildren: () =>
+            import('modules/unities/unities-routing.module').then(m => m.UnitiesRoutingModule),
+    },
+    {
+        path: 'employees',
+        loadChildren: () =>
+            import('modules/employees/employees-routing.module').then(m => m.EmployeesRoutingModule),
+    },
+    {
         path: 'dashboard',
         loadChildren: () =>
             import('modules/dashboard/dashboard-routing.module').then(
@@ -50,6 +60,7 @@ const routes: Routes = [
         loadChildren: () =>
             import('modules/error/error-routing.module').then(m => m.ErrorRoutingModule),
     },
+    
 ];
 
 @NgModule({
