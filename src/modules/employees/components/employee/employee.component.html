@@ -49,58 +49,58 @@
                             <div class="row">
                                 <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
                                     <mat-label>Postal Code: </mat-label>
-                                    <input matInput  type="text" name="postalCode" id="postalCode" [(ngModel)]="employee.address.postalCode" />
+                                    <input matInput  type="text" name="postalCode" id="postalCode" [(ngModel)]="employee.address?.postalCode" />
                                 </mat-form-field>
                                 <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
                                     <mat-label>Street: </mat-label>
-                                    <input matInput  type="text" name="street" id="street" [(ngModel)]="employee.address.street" />
+                                    <input matInput  type="text" name="street" id="street" [(ngModel)]="employee.address?.street" />
                                 </mat-form-field>
                                 <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
                                     <mat-label>City: </mat-label>
-                                    <input matInput  type="text" name="city" id="city" [(ngModel)]="employee.address.city" />
+                                    <input matInput  type="text" name="city" id="city" [(ngModel)]="employee.address?.city" />
                                 </mat-form-field>
                                 <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
                                     <mat-label>Region: </mat-label>
-                                    <input matInput  type="text" name="region" id="region" [(ngModel)]="employee.address.region" />
+                                    <input matInput  type="text" name="region" id="region" [(ngModel)]="employee.address?.region" />
                                 </mat-form-field>
                                 <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
                                     <mat-label>State: </mat-label>
-                                    <input matInput  type="text" name="state" id="state" [(ngModel)]="employee.address.state" />
+                                    <input matInput  type="text" name="state" id="state" [(ngModel)]="employee.address?.state" />
                                 </mat-form-field>
                                 <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
                                     <mat-label>Continent: </mat-label>
-                                    <input matInput  type="text" name="continent" id="continent" [(ngModel)]="employee.address.continent" />
+                                    <input matInput  type="text" name="continent" id="continent" [(ngModel)]="employee.address?.continent" />
                                 </mat-form-field>  
                             </div>
                             <div class="row">
                                 <ng-container *ngFor="let phone of employee.phones; index as i">
                                     <mat-form-field class="col-sm-6 col-lg-2 col-md-2">
                                         <mat-label>Type: </mat-label>
-                                        <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i].type"/>
+                                        <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i]?.type"/>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
                                         <mat-label>Phone Number: </mat-label>
-                                        <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i].phone"/>
+                                        <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i]?.phone"/>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
                                         <mat-label>Operator: </mat-label>
-                                        <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i].operator"/>
+                                        <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i]?.operator"/>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
                                         <mat-label>Code: </mat-label>
-                                        <input matInput type="text" [ngModelOptions]="{standalone: true}" [name]="i" [(ngModel)]="employee.phones[i].code"/>
+                                        <input matInput type="text" [ngModelOptions]="{standalone: true}" [name]="i" [(ngModel)]="employee.phones[i]?.code"/>
                                     </mat-form-field> <span> <i (click)="removePhone(i)" style="color: red;"> * </i></span>
 
                                 </ng-container>
                                 <span style="color: blue;"> <i (click)="addPhone()"> + </i></span>
-                                <ng-container *ngFor="let phone of employee.emails; index as i">
+                                <ng-container *ngFor="let email of employee.emails; index as i">
                                     <mat-form-field class="col-sm-6 col-lg-2 col-md-2">
                                         <mat-label>Type: </mat-label>
-                                        <input matInput [ngModelOptions]="{standalone: true}" type="text" [name]="i" [(ngModel)]="employee.emails[i].type"/>
+                                        <input matInput [ngModelOptions]="{standalone: true}" type="text" [name]="i" [(ngModel)]="employee.emails[i]?.type"/>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
                                         <mat-label>Email: </mat-label>
-                                        <input matInput [ngModelOptions]="{standalone: true}" type="text" [name]="i" [(ngModel)]="employee.emails[i].email"/>
+                                        <input matInput [ngModelOptions]="{standalone: true}" type="text" [name]="i" [(ngModel)]="employee.emails[i]?.email"/>
                                     </mat-form-field><span><i (click)="removeEmail(i)" style="color: red;"> * </i></span>
                                 </ng-container>
                                 <span style="color: blue;"> <i (click)="addEmail()"> + </i></span>
@@ -109,19 +109,19 @@
                                 <hr>
                                 <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
                                     <mat-label>National ID: </mat-label>
-                                    <input matInput type="text" name="nationalID" id="nationalID" [(ngModel)]="employee.specialID.nationalID"/>
+                                    <input matInput type="text" name="nationalID" id="nationalID" [(ngModel)]="employee.specialID?.nationalID"/>
                                 </mat-form-field>
                                 <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
                                     <mat-label>Passport ID: </mat-label>
-                                    <input matInput type="text" id="passportID" name="passportID" [(ngModel)]="employee.specialID.passportID"/>
+                                    <input matInput type="text" id="passportID" name="passportID" [(ngModel)]="employee.specialID?.passportID"/>
                                 </mat-form-field>
                                 <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
                                     <mat-label>driving License ID: </mat-label>
-                                    <input matInput type="text" id="drivingLicense" name="drivingLicense" [(ngModel)]="employee.specialID.drivingLicense"/>
+                                    <input matInput type="text" id="drivingLicense" name="drivingLicense" [(ngModel)]="employee.specialID?.drivingLicense"/>
                                 </mat-form-field>
                                 <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
                                     <mat-label>Social SecurityCode: </mat-label>
-                                    <input matInput type="text" id="socialSecurityCode" name="socialSecurityCode" [(ngModel)]="employee.specialID.socialSecurityCode"/>
+                                    <input matInput type="text" id="socialSecurityCode" name="socialSecurityCode" [(ngModel)]="employee.specialID?.socialSecurityCode"/>
                                 </mat-form-field>
                             </div>
                             <div>
