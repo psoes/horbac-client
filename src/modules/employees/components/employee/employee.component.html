@@ -73,7 +73,7 @@
                                 </mat-form-field>  
                             </div>
                             <div class="row" >
-                                <ng-container *ngI="employee.phones">
+                                <ng-container *ngIf="employee.phones">
                                     <ng-container *ngFor="let phone of employee.phones | async; index as i">
                                         <mat-form-field class="col-sm-6 col-lg-2 col-md-2">
                                             <mat-label>Type: </mat-label>
