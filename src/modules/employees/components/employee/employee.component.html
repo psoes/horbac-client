@@ -74,7 +74,7 @@
                             </div>
                             <div class="row" >
                                 <ng-container *ngIf="employee.phones">
-                                    <ng-container *ngFor="let phone of employee.phones | async; index as i">
+                                    <ng-container *ngFor="let phone of employee.phones; index as i">
                                         <mat-form-field class="col-sm-6 col-lg-2 col-md-2">
                                             <mat-label>Type: </mat-label>
                                             <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i].type"/>
@@ -96,7 +96,7 @@
                                     <span style="color: blue;"> <i (click)="addPhone()"> + </i></span>
                                 </ng-container>
                                 <ng-container *ngIf="employee.emails">
-                                    <ng-container *ngFor="let email of employee.emails | async; index as i">
+                                    <ng-container *ngFor="let email of employee.emails; index as i">
                                         <mat-form-field class="col-sm-6 col-lg-2 col-md-2">
                                             <mat-label>Type: </mat-label>
                                             <input matInput [ngModelOptions]="{standalone: true}" type="text" [name]="i" [(ngModel)]="employee.emails[i].type"/>
