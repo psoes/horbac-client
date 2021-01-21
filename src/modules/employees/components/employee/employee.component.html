@@ -11,7 +11,7 @@
                     <div class="col-md-12" cdkDropList (cdkDropListDropped)="drop($event)">            
                         <form #f1="ngForm" class="form-group">
                             <div class="row">
-                                <mat-spinner *ngIf="inAction"></mat-spinner>
+                                <mat-spinner *ngIf="actionInProgress"></mat-spinner>
                                 <mat-accordion class="col-md-12 mx-auto mt-3" multi="true">
                                     <mat-expansion-panel cdkDrag [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
                                         <mat-expansion-panel-header>
