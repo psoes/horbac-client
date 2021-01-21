@@ -36,8 +36,9 @@ export class Adress {
     state?: string;
     region?: string;
     continent?: string;
+    type?: 'HOME' | 'WORK';
     constructor(id?: number| string, city?: string, 
-        postalCode?: string, street?: string, state?: string, region?: string, continent?: string){
+        postalCode?: string, street?: string, state?: string, region?: string, continent?: string, type?: 'WORK' | 'HOME'){
         this.id = id;
         this.city = city;
         this.postalCode = postalCode;
@@ -45,6 +46,7 @@ export class Adress {
         this.state = state;
         this.region = region;
         this.continent = continent;
+        this.type = type;
     }
 }
 export class Person {
@@ -58,10 +60,10 @@ export class Person {
     phones?: PhoneNumber[] = [];
     emails? : Email[];    
     title?: Title;
-    address?: Adress;
+    addresses?: Adress[] = [];
     avatar?: string;
     constructor(id?: number, firstName?: string, lastName?: string, middleName?: string, 
-        pseudo?: string, birthDate?: Date, sex?: Gender, phones?: PhoneNumber[], emails?: Email[] , title?: Title, address?: Adress, avatar?: string){
+        pseudo?: string, birthDate?: Date, sex?: Gender, phones?: PhoneNumber[], emails?: Email[] , title?: Title, addresses?: Adress [], avatar?: string){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -72,7 +74,7 @@ export class Person {
         this.phones = phones;
         this.emails = emails;
         this.title = title;
-        this.address = address;
+        this.addresses = addresses;
         this.avatar = avatar;
     }
 }
@@ -105,8 +107,8 @@ export class SpecialIdentity {
 export class EmployeeCrud extends Person{
     specialID?: SpecialIdentity;
     constructor(specialID?: SpecialIdentity, idPerson?: number, firstName?: string, lastName?: string, middleName?: string, 
-        pseudo?: string, birthDate?: Date, sex?: Gender, phones?: PhoneNumber[], emails?: Email[] , title?: Title, address?: Adress, avatar?: string){
-        super(idPerson, firstName, lastName, middleName, pseudo, birthDate, sex, phones, emails, title, address, avatar);
+        pseudo?: string, birthDate?: Date, sex?: Gender, phones: PhoneNumber[] = [], emails: Email[] = [] , title?: Title, addresses: Adress[] = [], avatar?: string){
+        super(idPerson, firstName, lastName, middleName, pseudo, birthDate, sex, phones, emails, title, addresses, avatar);
         this.specialID = specialID;
     }
 }

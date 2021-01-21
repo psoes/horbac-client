@@ -19,6 +19,10 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { TablesModule } from '@modules/tables/tables.module';
 import { ChartsModule } from '@modules/charts/charts.module';
 import { RouterModule } from '@angular/router';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatIconModule} from '@angular/material/icon';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
@@ -49,7 +53,11 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     MatTabsModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatExpansionModule,
+    MatIconModule,
+    DragDropModule,
+    MatCardModule
   ],
   declarations: [EmployeeComponent],
   exports: [EmployeeComponent],

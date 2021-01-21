@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Adress, Email, EmployeeCrud, PhoneNumber, SpecialIdentity, Title } from '@modules/employees/models/Employee';
 import { EmployeeService } from '@modules/employees/services/employee.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'sb-employee',
@@ -13,11 +14,12 @@ export class EmployeeComponent implements OnInit {
   isUpdate: boolean = false;
   nbPhones: number = 0;
   nbEmails:  number = 0;
+  step = 0;
   public employees!: EmployeeCrud [];
   employee: EmployeeCrud = {};
   constructor(private employeeService: EmployeeService,  private sanitization: DomSanitizer) {
     this.employee = new EmployeeCrud(new SpecialIdentity());
-    this.employee.address = new Adress();
+    this.employee.addresses = [new Adress()];
     this.employee.phones = [new PhoneNumber()];
     this.employee.emails = [new Email()];
   }
@@ -74,5 +76,31 @@ export class EmployeeComponent implements OnInit {
   }
   removeEmail(index: number){
     this.employee.emails?.splice(index, 1);
+  }
+
+  addAddress(){
+    this.employee.addresses?.push(new Adress());
+  }
+  removeAddress(index: number){
+    this.employee.addresses?.splice(index, 1);
+  }
+
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
+
+  someFn(){
+
+  }
+  drop(event: CdkDragDrop<string[]>) {
+   // moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
   }
 }
