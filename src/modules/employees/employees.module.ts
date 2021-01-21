@@ -23,27 +23,21 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatCardModule} from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    CommonModule,
     RouterModule,
     FormsModule,
-    AppCommonModule,
-    NavigationModule,
     ChartsModule,
     TablesModule,
     AuthModule,
     HttpClientModule,
     DashboardModule,
-    MatInputModule,
-    MatButtonModule,
-    MatTabsModule,
     MatSelectModule,
-    MatButtonModule,
-    ReactiveFormsModule,
     NgpImagePickerModule,
     CKEditorModule,
     NgJsonEditorModule,
@@ -52,12 +46,14 @@ import {MatCardModule} from '@angular/material/card';
     MatInputModule,
     MatButtonModule,
     MatTabsModule,
-    MatSelectModule,
     ReactiveFormsModule,
     MatExpansionModule,
     MatIconModule,
     DragDropModule,
-    MatCardModule
+    MatCardModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule
+
   ],
   declarations: [EmployeeComponent],
   exports: [EmployeeComponent],

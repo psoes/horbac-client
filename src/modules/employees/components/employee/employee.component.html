@@ -11,6 +11,7 @@
                     <div class="col-md-12" cdkDropList (cdkDropListDropped)="drop($event)">            
                         <form #f1="ngForm" class="form-group">
                             <div class="row">
+                                <mat-spinner *ngIf="inAction"></mat-spinner>
                                 <mat-accordion class="col-md-12 mx-auto mt-3" multi="true">
                                     <mat-expansion-panel cdkDrag [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
                                         <mat-expansion-panel-header>
@@ -22,8 +23,8 @@
                                           </mat-panel-description>
                                         </mat-expansion-panel-header>
                                         <ng-template matExpansionPanelContent>
-                                            <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
-                                                <mat-label>Title (MR | MDME | DR | PR): </mat-label>
+                                            <mat-form-field class="col-sm-6 col-lg-6 col-md-6" [matTooltipPosition]="'above'" matTooltip="(MR | MDME | DR | PR)">
+                                                <mat-label>Title: <mat-icon>info_outline</mat-icon></mat-label>
                                                 <input matInput type="text" name="title" id="title" [(ngModel)]="employee.title" />
                                             </mat-form-field>
                                             <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
@@ -55,7 +56,7 @@
                                             <button mat-button color="primary" (click)="nextStep()">Next</button>
                                         </mat-action-row> 
                                     </mat-expansion-panel>
-                                    <mat-expansion-panel style="color-scheme: light dark;" class="mt-3" [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                                    <mat-expansion-panel cdkDrag class="mt-3" [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
                                         <mat-expansion-panel-header>
                                           <mat-panel-title>
                                             Address information
@@ -66,14 +67,14 @@
                                         </mat-expansion-panel-header>
                                         <ng-template matExpansionPanelContent>
                                             <div class="row" *ngIf="employee.addresses">
-                                                <ng-container *ngFor="let address of employee.addresses; index as i">
-                                                    <mat-expansion-panel class="mt-2">
-                                                        <mat-expansion-panel-header>
+                                                <ng-container *ngFor="let address of employee.addresses; index as i" >
+                                                    <mat-expansion-panel class="mt-2" hideToggle >
+                                                        <mat-expansion-panel-header style="border-color: #343a40;">
                                                             <mat-panel-title>
                                                               Address {{i+1}}
                                                             </mat-panel-title>
-                                                            <mat-panel-description>
-                                                              --
+                                                            <mat-panel-description> 
+                                                                <button mat-button color="warn" (click)="removeAddress(i)"><mat-icon style="cursor: pointer;" > remove_circle_outline </mat-icon>remove</button>                                                           
                                                             </mat-panel-description>
                                                           </mat-expansion-panel-header>
                                                           <ng-container>
@@ -105,10 +106,7 @@
                                                                     <mat-label>Continent: </mat-label>
                                                                     <input matInput [ngModelOptions]="{standalone: true}" type="text" [name]="i" [id]="i" [(ngModel)]="employee.addresses[i].continent" />
                                                                 </mat-form-field>
-                                                            </ng-container>                                                           
-                                                            <mat-action-row>
-                                                                <button mat-button class="gray-button" (click)="removeAddress(i)"><mat-icon style="cursor: pointer;" > remove_circle_outline </mat-icon>remove</button>
-                                                            </mat-action-row> 
+                                                            </ng-container>
                                                     </mat-expansion-panel>
                                                 </ng-container>
                                             </div>
@@ -119,7 +117,7 @@
                                             <button mat-button color="primary" (click)="nextStep()"><mat-icon>fast_forward</mat-icon>next</button>
                                         </mat-action-row>
                                     </mat-expansion-panel>
-                                    <mat-expansion-panel class="mt-3" [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+                                    <mat-expansion-panel cdkDrag class="mt-3" [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
                                         <mat-expansion-panel-header>
                                           <mat-panel-title>
                                             Contacts information
@@ -131,23 +129,36 @@
                                         <ng-template matExpansionPanelContent>
                                             <ng-container *ngIf="employee.phones">
                                                 <ng-container *ngFor="let phone of employee.phones; index as i">
-                                                    <mat-form-field class="col-sm-6 col-lg-2 col-md-2">
-                                                        <mat-label>Type: </mat-label>
-                                                        <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i].type"/>
-                                                    </mat-form-field>
-                                                    <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
-                                                        <mat-label>Phone Number: </mat-label>
-                                                        <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i].phone"/>
-                                                    </mat-form-field>
-                                                    <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
-                                                        <mat-label>Operator: </mat-label>
-                                                        <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i].operator"/>
-                                                    </mat-form-field>
-                                                    <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
-                                                        <mat-label>Code: </mat-label>
-                                                        <input matInput type="text" [ngModelOptions]="{standalone: true}" [name]="i" [(ngModel)]="employee.phones[i].code"/>
-                                                    </mat-form-field> <span> <mat-icon (click)="removePhone(i)" style="color: red;"> remove </mat-icon></span>    
-                                                </ng-container>
+                                                    <mat-expansion-panel class="mt-2" hideToggle >
+                                                        <mat-expansion-panel-header style="border-color: #343a40;">
+                                                            <mat-panel-title>
+                                                              Phone {{i+1}}
+                                                            </mat-panel-title>
+                                                            <mat-panel-description> 
+                                                                <button mat-button color="warn" (click)="removePhone(i)"><mat-icon style="cursor: pointer;" > remove_circle_outline </mat-icon>remove</button>                                                           
+                                                            </mat-panel-description>
+                                                          </mat-expansion-panel-header>
+                                                          <ng-container>
+                                                                <mat-form-field class="col-sm-6 col-lg-2 col-md-2">
+                                                                    <mat-label>Type: </mat-label>
+                                                                    <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i].type"/>
+                                                                </mat-form-field>
+                                                                <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
+                                                                    <mat-label>Phone Number: </mat-label>
+                                                                    <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i].phone"/>
+                                                                </mat-form-field>
+                                                                <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
+                                                                    <mat-label>Operator: </mat-label>
+                                                                    <input [ngModelOptions]="{standalone: true}" matInput type="text" [name]="i" [(ngModel)]="employee.phones[i].operator"/>
+                                                                </mat-form-field>
+                                                                <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
+                                                                    <mat-label>Code: </mat-label>
+                                                                    <input matInput type="text" [ngModelOptions]="{standalone: true}" [name]="i" [(ngModel)]="employee.phones[i].code"/>
+                                                                </mat-form-field>    
+                                                
+                                                            </ng-container>
+                                                        </mat-expansion-panel>
+                                                    </ng-container>
                                                 <span style="color: blue;"> <mat-icon (click)="addPhone()"> add </mat-icon></span>
                                             </ng-container>
                                             <ng-container *ngIf="employee.emails">
@@ -165,11 +176,12 @@
                                             </ng-container>
                                         </ng-template>
                                         <mat-action-row>
-                                            <button mat-button color="warn" (click)="prevStep()">Previous</button>
-                                            <button mat-button color="primary" (click)="nextStep()">Next</button>
+                                            <button mat-button class="gray-button" (click)="addPhone()"> <mat-icon> add_circle_outline </mat-icon>add</button>
+                                            <button mat-button color="warn" (click)="prevStep()"><mat-icon>fast_rewind</mat-icon> previous</button>
+                                            <button mat-button color="primary" (click)="nextStep()"><mat-icon>fast_forward</mat-icon>next</button>
                                         </mat-action-row>
                                     </mat-expansion-panel>
-                                    <mat-expansion-panel class="mt-3" [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+                                    <mat-expansion-panel cdkDrag class="mt-3" [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
                                         <mat-expansion-panel-header>
                                           <mat-panel-title>
                                             Identifiers information
@@ -193,9 +205,9 @@
                                                     <mat-label>driving License ID: </mat-label>
                                                     <input matInput type="text" id="drivingLicense" name="drivingLicense" [(ngModel)]="employee.specialID.drivingLicense"/>
                                                 </mat-form-field>
-                                                <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
-                                                    <mat-label>Social SecurityCode: </mat-label>
-                                                    <input matInput type="text" id="socialSecurityCode" name="socialSecurityCode" [(ngModel)]="employee.specialID.socialSecurityCode"/>
+                                                <mat-form-field  class="col-sm-6 col-lg-3 col-md-3" matTooltip="Immatriculation id" [matTooltipPosition]="'above'">
+                                                    <mat-label>Social SecurityCode: <mat-icon>info_outline</mat-icon></mat-label>
+                                                    <input matInput type="text" id="socialSecurityCode" name="socialSecurityCode" [(ngModel)]="employee.specialID.socialSecurityCode"/>        
                                                 </mat-form-field>
                                             </div>
                                         </ng-template>
@@ -205,10 +217,10 @@
                                         </mat-action-row>
                                     </mat-expansion-panel>
                                     <mat-action-row class="mt-2 mx-auto">
-                                        <button mat-button   style="margin-right:20px" *ngIf="!isUpdate"  type="submit" (click)="createEmployee()"> <mat-icon>save_alt</mat-icon> </button>
-                                        <button mat-button  style="margin-right:20px" *ngIf="isUpdate"  type="submit" (click)="updateEmployee()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
-                                        <button mat-button  type="reset" > <fa-icon [icon]='["fas", "undo"]'></fa-icon></button>                                        
-                                        <button mat-button color="primary" (click)="tabGroup.selectedIndex=1">Next</button>
+                                        <button mat-button  color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit" (click)="createEmployee()"> <mat-icon>save_alt</mat-icon>save</button>
+                                        <button mat-button  color="primary" *ngIf="isUpdate"  type="submit" (click)="updateEmployee()"> <mat-icon>save_alt</mat-icon> save</button>
+                                        <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>                                        
+                                        <button mat-button color="primary" (click)="tabGroup.selectedIndex=1"> <mat-icon>fast_forward</mat-icon>next</button>
                                     </mat-action-row>
                                 </mat-accordion>                                
                             </div>

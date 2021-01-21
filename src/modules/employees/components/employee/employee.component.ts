@@ -17,6 +17,7 @@ export class EmployeeComponent implements OnInit {
   step = 0;
   public employees!: EmployeeCrud [];
   employee: EmployeeCrud = {};
+  actionInProgress = false;
   constructor(private employeeService: EmployeeService,  private sanitization: DomSanitizer) {
     this.employee = new EmployeeCrud(new SpecialIdentity());
     this.employee.addresses = [new Adress()];
@@ -29,11 +30,13 @@ export class EmployeeComponent implements OnInit {
     })
   }
   createEmployee(){
+    this.actionInProgress = true;
     console.info('DATA SUBMITTED', this.employee);
     this.employeeService.createEmployee(this.employee).subscribe( (result: EmployeeCrud) => {
       console.info('RESULT', result);
       this.employees.push(result);
     } )
+    this.actionInProgress = false;
   }
 
   updateEmployee(){
@@ -98,9 +101,15 @@ export class EmployeeComponent implements OnInit {
   }
 
   someFn(){
-
   }
+
+  infoPanels = [
+    'personal',
+    'addresses',
+    'contacts',
+    'identifiers'
+  ];
   drop(event: CdkDragDrop<string[]>) {
-   // moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.infoPanels, event.previousIndex, event.currentIndex);
   }
 }
