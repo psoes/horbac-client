@@ -14,7 +14,7 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgpImagePickerModule } from 'ngp-image-picker';
 import { DashboardModule } from '@modules/dashboard/dashboard.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthModule } from '@modules/auth/auth.module';
 import { TablesModule } from '@modules/tables/tables.module';
 import { ChartsModule } from '@modules/charts/charts.module';
@@ -25,6 +25,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatCardModule} from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatListModule} from '@angular/material/list';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -52,8 +55,10 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     DragDropModule,
     MatCardModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
-
+    MatProgressSpinnerModule,
+    MatListModule,
+    MatSnackBarModule,
+    MatCheckboxModule
   ],
   declarations: [EmployeeComponent],
   exports: [EmployeeComponent],
