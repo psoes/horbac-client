@@ -15,7 +15,7 @@ export class EmployeeComponent implements OnInit {
   nbPhones: number = 0;
   nbEmails:  number = 0;
   step = 0;
-  public employees!: EmployeeCrud [];
+  public employees: EmployeeCrud [] = [];
   employee: EmployeeCrud = {};
   actionInProgress = false;
   constructor(private employeeService: EmployeeService,  private sanitization: DomSanitizer) {
@@ -26,7 +26,7 @@ export class EmployeeComponent implements OnInit {
   }
   ngOnInit(): void {
     this.employeeService.loadEmployees().subscribe( (results : EmployeeCrud[]) =>{
-      this.employees = results;
+      this.employees = results ? results : [];
     })
   }
   createEmployee(){
@@ -34,6 +34,7 @@ export class EmployeeComponent implements OnInit {
     console.info('DATA SUBMITTED', this.employee);
     this.employeeService.createEmployee(this.employee).subscribe( (result: EmployeeCrud) => {
       console.info('RESULT', result);
+      this.employee = result;
       this.employees.push(result);
     } )
     this.actionInProgress = false;
