@@ -42,3 +42,32 @@
    border-right-color: transparent;
    border-left: none;
  }
+
+:host ::ng-deep json-editor,
+:host ::ng-deep json-editor .jsoneditor,
+:host ::ng-deep json-editor > div,
+:host ::ng-deep json-editor jsoneditor-outer {
+  height: 500px;
+}
+
+.ace_editor.ace-jsoneditor {
+  min-height: 500px;
+}
+.example-h2 {
+  margin: 10px;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 10px;
+}
+.mat-expansion-panel-header-description {
+  display: flex;
+  justify-content: flex-end;
+}

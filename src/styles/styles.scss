@@ -24,5 +24,15 @@
 @import '~material-design-icons/iconfont/material-icons.css';
 @import '~@mdi/font/css/materialdesignicons.css';
 
+
+@import "~jsoneditor/dist/jsoneditor.min.css";
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.blue-snackbar {
+    background: #2196F3;
+  }
+.warn-snackbar {
+    background: lightcoral
+}

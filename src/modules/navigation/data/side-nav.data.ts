@@ -3,7 +3,7 @@ import { SideNavItems, SideNavSection } from '@modules/navigation/models';
 export const sideNavSections: SideNavSection[] = [
     {
         text: 'CORE',
-        items: ['organization', 'unities', 'resources', 'views', 'actions', 'activities'],
+        items: ['organization', 'unities', 'employees', 'resources', 'views', 'actions', 'activities'],
     },
     {
         text: 'CONTEXTS',
@@ -26,9 +26,15 @@ export const sideNavItems: SideNavItems = {
         link: '/organizations',
     },
     unities: {
-        text: 'Unités',
+        text: 'Units',
         icon: 'sitemap',
-        link: '/unities',
+        link: '/units',
+
+    },
+    employees: {
+        text: 'Employees',
+        icon: 'user',
+        link: '/employees',
 
     },
     resources: {

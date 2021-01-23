@@ -1,0 +1,89 @@
+<sb-layout-dashboard [static]="true">
+    <sb-dashboard-head title="Units" [hideBreadcrumbs]="false"></sb-dashboard-head>
+    <mat-tab-group mat-align-tabs="start">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <fa-icon [icon]='["fas", "users"]'></fa-icon>
+                <span class="p-2">Op Unit</span>
+            </ng-template>
+            <div class="col-md-12">
+                <div class="row ">
+                    <div class="col-md-12">            
+                        <form #f1="ngForm" class="form-group">
+                            <div style="float:left; text-align: left;" class="col-sm-6 col-lg-4 col-md-4 vertical-center">
+                                <div class="image">
+                                    <img  [src]="imageSrc" *ngIf="imageSrc" style="position:relative;
+                                    left: calc(10%); height: 50px; width: 50px"> 
+                                    <span  style="position:relative;
+                                    top: calc(20%); left: calc(30%);"*ngIf="!imageSrc">Logo</span>                                                              
+                                    <input
+                                        style="display: none;"
+                                        [(ngModel)]="adminUnit.logo" 
+                                        id="upload-photo"
+                                        type="file"
+                                        name="logo" 
+                                        (change)="onFileChange($event)">         
+                                </div>
+                                <label style="position:relative;
+                                    top: calc(10%); left: calc(70%);"for="upload-photo">
+                                    <fa-icon title="Upload logo" [icon]='["fas", "upload"]'></fa-icon>
+                                </label>                              
+                            </div>
+                            <div class="col-11 float-right">
+                                <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                    <mat-label>Name: </mat-label>
+                                    <input matInput type="text" name="name" id="name" [(ngModel)]="adminUnit.name" />
+                                </mat-form-field>
+                                <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                    <mat-label>Description: </mat-label>
+                                    <input matInput  type="text" name="description" id="description" [(ngModel)]="adminUnit.description" />
+                                </mat-form-field>
+                                <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                    <mat-label>URL: </mat-label>
+                                    <input matInput  type="text" name="url" id="url" [(ngModel)]="adminUnit.url" />
+                                </mat-form-field>
+                                <!--<mat-form-field class="col-sm-4 col-lg-4 col-md-4">
+                                    <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="organization.type" placeholder="Select A Type">
+                                    <mat-option *ngFor="let type of types" [value]="type">{{ type.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                -->
+                                <div class=" text-center">
+                                    <button class="col-sm-6"  style="margin-right:20px" *ngIf="!isUpdate" class="btn btn-primary " type="submit" (click)="createAdminUnit()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
+                                    <button class="col-sm-6"  style="margin-right:20px" *ngIf="isUpdate" class="btn btn-primary" type="submit" (click)="updateAdminUnit()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
+                                    <button class="btn btn-warning" type="reset" > <fa-icon [icon]='["fas", "undo"]'></fa-icon></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <th> #</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>URL</th>
+                            <th>Location</th>
+                            <th >Action</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let unit of units">
+                                <td>{{unit.id}}</td>
+                                <td>{{unit.name}}</td>
+                                <td>{{unit.description}}</td>
+                                <td>{{unit.url}}</td>
+                                <td>{{unit.location?.name}}</td>
+                                <td class="p-2"> 
+                                    <button mat-mini-fab color="primary" (click)="adminUnit = unit; isUpdate = true;" class="btn btn-primary" type="button"> <fa-icon [icon]='["fas", "edit"]'></fa-icon></button>
+                                    &nbsp;
+                                    <button mat-mini-fab (click)="deleteAdminUnit(unit)" class="btn btn-danger" type="button">  <fa-icon [icon]='["fas", "trash"]'></fa-icon> </button> 
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</sb-layout-dashboard>

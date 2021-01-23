@@ -15,14 +15,16 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
 import { NgpImagePickerModule } from 'ngp-image-picker';
-
-
-@NgModule({
-  
+import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { UnitiesModule } from '@modules/unities/unities.module';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatCardModule} from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import {MatExpansionModule} from '@angular/material/expansion';
+@NgModule({  
   imports: [
     CommonModule,
     RouterModule,
-    ReactiveFormsModule,
     FormsModule,
     AppCommonModule,
     NavigationModule,
@@ -37,8 +39,13 @@ import { NgpImagePickerModule } from 'ngp-image-picker';
     MatSelectModule,
     MatButtonModule,
     ReactiveFormsModule,
-    NgpImagePickerModule
-    
+    NgpImagePickerModule,
+    NgJsonEditorModule,
+    UnitiesModule,
+    MatSlideToggleModule,
+    MatCardModule,
+    MatIconModule,
+    MatExpansionModule
   ],
   declarations: [OrganizationComponent],
   exports: [OrganizationComponent],

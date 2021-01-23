@@ -1,10 +1,37 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { SBRouteData } from '@modules/navigation/models';
+import { UnitComponent } from './components/unit/unit.component';
+import { UnitiesModule } from './unities.module';
 
-const routes: Routes = [];
+const routes: Routes = [ 
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'admin-unit',
+  },
+  {
+    path: 'admin-unit',
+    canActivate: [],
+    component: UnitComponent,
+    data: {
+        title: 'Units',
+        breadcrumbs: [
+            {
+                text: 'Organizations',
+                link: '/organizations',
+            },
+            {
+                text: 'Units',
+                active: true,
+            },
+        ],
+    } as SBRouteData,
+  },
+];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [UnitiesModule, RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class UnitiesRoutingModule { }
