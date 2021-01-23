@@ -8,6 +8,7 @@ import { DomSanitizer, SafeHtml,  SafeUrl,  SafeStyle, SafeResourceUrl } from '@
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { ParserService } from '@modules/organizations/services/parser.service';
+import {ThemePalette} from '@angular/material/core';
 class ImageSnippet {
   pending: boolean = false;
   status: string = 'init';
@@ -22,12 +23,22 @@ class ImageSnippet {
 export class OrganizationComponent implements OnInit {
   public Editor = ClassicEditor;
   isUpdate: boolean = false;
+  editOrg = false;
+  showTypeForm = false;
+  typeTitle = '';
   organizations: Organization [] = [];
   organization: Organization = {};
   type: OrganizationType = {};
   types: OrganizationType[] = [];
+  title = '';
   public editorOptions!: JsonEditorOptions;
   public data: any;
+  color: ThemePalette = 'accent';
+  checked = false;
+  checkedp2 = false;
+  disabledp2 = false;
+  maxEmployee: number = Infinity;
+  disabled = false;
   @ViewChild(JsonEditorComponent, { static: false }) editor!: JsonEditorComponent;
   imageSrc!: SafeResourceUrl;
   myForm = new FormGroup({
@@ -56,6 +67,7 @@ export class OrganizationComponent implements OnInit {
 
   createOrg(){
     this.orgService.createOrganization(this.organization).subscribe( (result: Organization) => {
+      this.editOrg = false;
       this.organizations.push(result);
     } )
   }
@@ -63,12 +75,14 @@ export class OrganizationComponent implements OnInit {
   createType(){
     this.orgService.createType(this.type).subscribe( (result: OrganizationType) => {
       this.types.push(result);
-    } )
+      this.showTypeForm = false;
+    })
   }
 
   updateOrg(){
     this.orgService.updateOrganization(this.organization).subscribe((result: Organization) => {
-      let index = this.organizations.findIndex(item => item.id === this.organization.id)
+      let index = this.organizations.findIndex(item => item.id === this.organization.id);
+      this.editOrg = false;
       this.organizations[index] = result;
     });
     this.isUpdate = false;
@@ -76,7 +90,8 @@ export class OrganizationComponent implements OnInit {
   }
   updateType(){
     this.orgService.updateType(this.type).subscribe((result: OrganizationType) => {
-      let index = this.types.findIndex(item => item.id === this.type.id)
+      let index = this.types.findIndex(item => item.id === this.type.id);
+      this.showTypeForm = false;
       this.types[index] = result;
     });
     this.isUpdate = false;
@@ -146,6 +161,9 @@ export class OrganizationComponent implements OnInit {
     })
     console.log(this.data);
   }
-
+  saveParam2(){
+    this.checkedp2 = !this.checkedp2;
+    if(!this.checkedp2) this.maxEmployee = Infinity;
+  }
  
 }

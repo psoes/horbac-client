@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Adress, Email, EmployeeCrud, PhoneNumber, SpecialIdentity, Title } from '@modules/employees/models/Employee';
 import { EmployeeService } from '@modules/employees/services/employee.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'sb-employee',
@@ -15,6 +16,7 @@ export class EmployeeComponent implements OnInit {
   nbPhones: number = 0;
   nbEmails:  number = 0;
   step = 0;
+  @ViewChild('tabGroup', { static: true }) tabGroup!: ElementRef<MatTabGroup>;
   public employees: EmployeeCrud [] = [];
   employee: EmployeeCrud = {};
   actionInProgress = false;
@@ -23,6 +25,7 @@ export class EmployeeComponent implements OnInit {
     this.employee.addresses = [new Adress()];
     this.employee.phones = [new PhoneNumber()];
     this.employee.emails = [new Email()];
+    this.tabGroup.nativeElement.selectedIndex = 0;
   }
   ngOnInit(): void {
     this.employeeService.loadEmployees().subscribe( (results : EmployeeCrud[]) =>{
