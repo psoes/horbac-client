@@ -25,7 +25,7 @@ export class EmployeeComponent implements OnInit {
     this.employee.addresses = [new Adress()];
     this.employee.phones = [new PhoneNumber()];
     this.employee.emails = [new Email()];
-    this.tabGroup.nativeElement.selectedIndex = 0;
+    //this.tabGroup.nativeElement!.selectedIndex = 0;
   }
   ngOnInit(): void {
     this.employeeService.loadEmployees().subscribe( (results : EmployeeCrud[]) =>{
