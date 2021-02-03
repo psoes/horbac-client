@@ -54,8 +54,8 @@ export const sideNavItems: SideNavItems = {
     },
     activities: {
         icon: 'columns',
-        text: 'Activités',
-        link: '/auth/forgot-password'
+        text: 'Activities & Actions',
+        link: '/activities'
     },
     environment: {
         icon: 'columns',

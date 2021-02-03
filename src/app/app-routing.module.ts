@@ -13,6 +13,11 @@ const routes: Routes = [
             import('modules/charts/charts-routing.module').then(m => m.ChartsRoutingModule),
     },
     {
+        path: 'activities',
+        loadChildren: () =>
+            import('modules/activities/activities-routing.module').then(m => m.ActivitiesRoutingModule),
+    },
+    {
         path: 'organizations',
         loadChildren: () =>
             import('modules/organizations/organizations-routing.module').then(m => m.OrganizationsRoutingModule),
