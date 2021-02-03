@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Activities} from '@modules/activities/models/activities';
 import { ActivitiesService } from '@modules/activities/services/activities.service';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'sb-activities',
@@ -11,7 +10,6 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 })
 export class ActivitiesComponent implements OnInit {
 
-  public Editor = ClassicEditor;
   isUpdate: boolean = false;
   editAct = false;
   activities: Activities[] = [];
