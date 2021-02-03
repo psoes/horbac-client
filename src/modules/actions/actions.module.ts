@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActionsComponent } from './components/actions/actions.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { ActivitiesComponent } from './components/activities';
-import { DashboardModule } from '@modules/dashboard/dashboard.module';
 import { AuthModule } from '@modules/auth/auth.module';
 import { TablesModule } from '@modules/tables/tables.module';
 import { NavigationModule } from '@modules/navigation/navigation.module';
@@ -14,14 +13,13 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
 import { NgpImagePickerModule } from 'ngp-image-picker';
-import { NgJsonEditorModule } from 'ang-jsoneditor';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatCardModule} from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
-  declarations: [ActivitiesComponent],
+  declarations: [ActionsComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -31,7 +29,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
     TablesModule,
     AuthModule,
     HttpClientModule,
-    DashboardModule,
     MatInputModule,
     MatButtonModule,
     MatTabsModule,
@@ -39,12 +36,11 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatButtonModule,
     ReactiveFormsModule,
     NgpImagePickerModule,
-    NgJsonEditorModule,
     MatSlideToggleModule,
     MatCardModule,
     MatIconModule,
     MatExpansionModule
   ],
-  exports: [ActivitiesComponent],
+  exports: [ActionsComponent],
 })
-export class ActivitiesModule { }
+export class ActionsModule { }

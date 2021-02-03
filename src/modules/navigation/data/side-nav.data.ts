@@ -50,11 +50,11 @@ export const sideNavItems: SideNavItems = {
     actions: {
         icon: 'tachometer-alt',
         text: 'Actions',
-        link: '/dashboard',
+        link: '/actions',
     },
     activities: {
         icon: 'columns',
-        text: 'Activities & Actions',
+        text: 'Activities',
         link: '/activities'
     },
     environment: {

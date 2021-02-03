@@ -1,13 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { isNgTemplate } from '@angular/compiler';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Activities} from '@modules/activities/models/activities';
 import { ActivitiesService } from '@modules/activities/services/activities.service';
-import { DomSanitizer, SafeHtml,  SafeUrl,  SafeStyle, SafeResourceUrl } from '@angular/platform-browser';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
-import { ParserService } from '@modules/organizations/services/parser.service';
-import {ThemePalette} from '@angular/material/core';
 
 @Component({
   selector: 'sb-activities',

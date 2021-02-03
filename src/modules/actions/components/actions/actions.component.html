@@ -1,0 +1,54 @@
+<sb-layout-dashboard [static]="true">
+    <sb-dashboard-head title="Actions" [hideBreadcrumbs]="false"></sb-dashboard-head>
+    <mat-tab-group mat-align-tabs="start">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <fa-icon [icon]='["fas", "tachometer-alt"]'></fa-icon>
+                <span class="p-2">Actions</span>
+            </ng-template>
+            <mat-expansion-panel *ngIf="editAct" class="mt-3">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{title}}
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ng-template matExpansionPanelContent>          
+                    <form #f="ngForm" class="form-group">                       
+                        <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                            <mat-label>Name: </mat-label>
+                            <input matInput type="text" name="name" id="name" [(ngModel)]="action.name" />
+                        </mat-form-field>                      
+                        <mat-action-row>
+                            <button mat-button  color="primary"  *ngIf="!isUpdate"  type="submit" (click)="createAct()"> <mat-icon>save_alt</mat-icon>save</button>
+                            <button mat-button  color="primary" *ngIf="isUpdate"  type="submit" (click)="updateAct()"> <mat-icon>save_alt</mat-icon> save</button>
+                            <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button> 
+                        </mat-action-row>
+                    </form>
+                </ng-template>
+            </mat-expansion-panel>
+            <button mat-button color="primary" (click)="editAct = true; title='New Actiion'" class="float-right p-2"><mat-icon>add_circle_outline</mat-icon>add new action</button>
+            <div class="table-responsive" *ngIf="actions">
+                <caption>
+                   List Action of activities
+                </caption>
+                <table class="table table-striped">
+                    <thead>
+                        <th> Id</th>
+                        <th>Name</th>
+                        <th >Action</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let act of actions">
+                            <td>{{act.id}}</td>
+                            <td>{{act.name}}</td>
+                            <td class="p-2"> 
+                                <button mat-button color="primary" (click)="action= act; editAct = true; isUpdate = true; title='Edit action'"> <mat-icon>edit</mat-icon> edit</button>                               
+                                <button mat-button color="warn" (click)="deleteAct(act)" > <mat-icon>delete</mat-icon> delete </button> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+      </mat-tab-group>
+    </sb-layout-dashboard>
