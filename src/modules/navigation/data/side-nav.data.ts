@@ -22,7 +22,7 @@ export const sideNavSections: SideNavSection[] = [
 export const sideNavItems: SideNavItems = {
     organization: {
         icon: 'users',
-        text: 'Organisation',
+        text: 'Organization',
         link: '/organizations',
     },
     unities: {
@@ -54,7 +54,7 @@ export const sideNavItems: SideNavItems = {
     },
     activities: {
         icon: 'columns',
-        text: 'Activités',
+        text: 'Activities & actions',
         link: '/auth/forgot-password'
     },
     environment: {

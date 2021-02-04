@@ -1,7 +1,7 @@
 import { isNgTemplate } from '@angular/compiler';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Organization } from '@modules/organizations/models/organization';
+import { Organization, SocialReason } from '@modules/organizations/models/organization';
 import { OrganizationType } from '@modules/organizations/models/organization-type';
 import { OrganizationService } from '@modules/organizations/services/organization.service';
 import { DomSanitizer, SafeHtml,  SafeUrl,  SafeStyle, SafeResourceUrl } from '@angular/platform-browser';
@@ -25,10 +25,14 @@ export class OrganizationComponent implements OnInit {
   isUpdate: boolean = false;
   editOrg = false;
   showTypeForm = false;
+  socialReasonForm = false;
   typeTitle = '';
+  reasonTitle = '';
   organizations: Organization [] = [];
-  organization: Organization = {};
+  organization: Organization = { address: {}};
   type: OrganizationType = {};
+  socialReason: SocialReason = {};
+  reasons: SocialReason [] = [];
   types: OrganizationType[] = [];
   title = '';
   public editorOptions!: JsonEditorOptions;
@@ -59,12 +63,19 @@ export class OrganizationComponent implements OnInit {
   ngOnInit(): void {
     this.orgService.loadOrganizations().subscribe( (results : Organization[]) =>{
       this.organizations = results;
-    } )
-    this.orgService.loadTypes().subscribe( (results : OrganizationType[]) =>{
+    })
+    this.orgService.loadTypes().subscribe( (results) =>{
+      console.log('DATA ', results)
       this.types = results;
-    } )
-  }
+    })
 
+    this.orgService.loadSocialReasons().subscribe( (results) =>{
+      results.forEach(item =>{
+        this.reasons.push(<SocialReason>item);
+      })      
+      
+    })
+  }
   createOrg(){
     this.orgService.createOrganization(this.organization).subscribe( (result: Organization) => {
       this.editOrg = false;
@@ -73,8 +84,8 @@ export class OrganizationComponent implements OnInit {
   }
 
   createType(){
-    this.orgService.createType(this.type).subscribe( (result: OrganizationType) => {
-      this.types.push(result);
+    this.orgService.createType(this.type).subscribe( (result) => {
+      this.types.push(<OrganizationType>result);
       this.showTypeForm = false;
     })
   }
@@ -86,13 +97,13 @@ export class OrganizationComponent implements OnInit {
       this.organizations[index] = result;
     });
     this.isUpdate = false;
-    this.organization = {}
+    this.organization = { address: {}}
   }
   updateType(){
-    this.orgService.updateType(this.type).subscribe((result: OrganizationType) => {
+    this.orgService.updateType(this.type).subscribe((result) => {
       let index = this.types.findIndex(item => item.id === this.type.id);
       this.showTypeForm = false;
-      this.types[index] = result;
+      this.types[index] = <OrganizationType>result;
     });
     this.isUpdate = false;
     this.type = {}
@@ -105,7 +116,7 @@ export class OrganizationComponent implements OnInit {
   }
   deleteType(type: OrganizationType){
     this.orgService.deleteType(type).subscribe( result => {
-      this.types = this.organizations.filter( item => {return item.id !== type.id});
+      this.types = this.types.filter( item => {return item.id !== type.id});
     })
   }
 
@@ -125,15 +136,14 @@ export class OrganizationComponent implements OnInit {
     return this.myForm.controls;
   }
    
-  onFileChange(event: any) {
+  onFileChange(id: number, event: any) {
     const reader = new FileReader();
     
     if(event.target.files && event.target.files.length) {
       const [file] = event.target.files;
       reader.readAsDataURL(file);
     
-      reader.onload = () => {
-        
+      reader.onload = () => {        
         this.imageSrc  = this.sanitization.bypassSecurityTrustResourceUrl(reader.result as string);
         //this.imageSrc = reader.result as SafeResourceUrl;
      
@@ -144,6 +154,10 @@ export class OrganizationComponent implements OnInit {
         console.info('File source... ', file.size)
         console.info('File source... ', file.name)
         console.info('File source... ', file.type)
+        
+        this.orgService.uploadImage(id, event.target.files[0]).subscribe( result => {
+          //this.organizations = this.organizations.filter( item => {return item.id !== org.id});
+        }) 
       };
    
     }
@@ -164,6 +178,29 @@ export class OrganizationComponent implements OnInit {
   saveParam2(){
     this.checkedp2 = !this.checkedp2;
     if(!this.checkedp2) this.maxEmployee = Infinity;
+  }
+
+  createSocialReason(){
+    this.orgService.createSocialReason(this.socialReason).subscribe( (result) => {
+      this.reasons.push(<SocialReason>result);
+      this.socialReasonForm = false;
+    })
+  }
+
+  updateSocialReason(){
+    this.orgService.updateSocialReason(this.socialReason).subscribe((result) => {
+      let index = this.reasons.findIndex(item => item.id === this.socialReason.id);
+      this.socialReasonForm = false;
+      this.reasons[index] = <SocialReason>result;
+    });
+    this.isUpdate = false;
+    this.socialReason = {}
+  }
+
+  deleteSocialReason(reason: SocialReason){
+    this.orgService.deleteSocialReason(reason).subscribe( result => {
+      this.reasons = this.reasons.filter( item => {return item.id !== reason.id});
+    })
   }
  
 }

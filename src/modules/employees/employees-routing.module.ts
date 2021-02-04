@@ -7,7 +7,7 @@ import { EmployeesModule } from './employees.module';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'personal',
+    redirectTo: 'personal', // /employees
   },
   {
     path: 'personal',
@@ -22,6 +22,7 @@ const routes: Routes = [
             },
             {
                 text: 'Employee / Personal Info',
+                link: '/employees',
                 active: true,
             },
         ],

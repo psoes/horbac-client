@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import { Organization } from '../models/organization';
+import { Organization, SocialReason } from '../models/organization';
 import { OrganizationType } from '../models/organization-type';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class OrganizationService {
 
   ORGANIZATIONS_API = environment.API_HOST+ '/organizations';
   ORGANIZATIONS_TYPES_API = environment.API_HOST+ '/org-types';
+  SOCIALREASONS_API = environment.API_HOST+ '/social-reasons';
 
   constructor(private http: HttpClient) { }
 
@@ -32,27 +34,56 @@ export class OrganizationService {
   }
 
   loadTypes(){
-    return this.http.get<OrganizationType[]>(this.ORGANIZATIONS_TYPES_API);
+    return this.http.get<OrganizationTypesWrapper>(this.ORGANIZATIONS_TYPES_API).pipe(
+      map(w => w._embedded.organizationTypes)
+    );
   }
 
   createType(type: OrganizationType){
-
     return this.http.post<OrganizationType>(this.ORGANIZATIONS_TYPES_API, type);
   }
   
   updateType(type: OrganizationType){
-    return this.http.put<OrganizationType>(this.ORGANIZATIONS_TYPES_API, type);
+    return this.http.put<OrganizationType>(this.ORGANIZATIONS_TYPES_API+'/'+ type.id, type);
   }
 
   deleteType(type: OrganizationType){
     return this.http.delete(this.ORGANIZATIONS_TYPES_API+'/'+ type.id);
   }
 
-  public uploadImage(image: File): Observable<Object> {
-    const formData = new FormData();
-
-    formData.append('image', image);
-
-    return this.http.post('/api/v1/image-upload', formData);
+  loadSocialReasons(){
+    return this.http.get<SocialReasonsWrapper>(this.SOCIALREASONS_API).pipe(
+      map(w => w._embedded.socialReasons)
+    )
   }
+
+  createSocialReason(sr: SocialReason){
+    return this.http.post<SocialReason>(this.SOCIALREASONS_API, sr);
+  }
+  
+  updateSocialReason(sr: SocialReason){
+    return this.http.put<SocialReason>(this.SOCIALREASONS_API+'/'+ sr.id, sr);
+  }
+
+  deleteSocialReason(sr: SocialReason){
+    return this.http.delete(this.SOCIALREASONS_API+'/'+ sr.id);
+  }
+
+  public uploadImage(id: number, image: File): Observable<Object> {
+    const formData = new FormData();
+    formData.append('file', image);
+    let httpOptions = {
+      headers: new HttpHeaders({'X-CSRFToken': ''}),
+    };
+    console.log(image);
+    return this.http.post('/organizations/'+id+'/upload', formData);
+  }
+}
+
+export class SocialReasonsWrapper{
+  _embedded!: { socialReasons: SocialReason[]};
+}
+
+export class OrganizationTypesWrapper{
+  _embedded!: { organizationTypes: OrganizationType[]};
 }

@@ -14,7 +14,7 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgpImagePickerModule } from 'ngp-image-picker';
 import { DashboardModule } from '@modules/dashboard/dashboard.module';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import { AuthModule } from '@modules/auth/auth.module';
 import { TablesModule } from '@modules/tables/tables.module';
 import { ChartsModule } from '@modules/charts/charts.module';
