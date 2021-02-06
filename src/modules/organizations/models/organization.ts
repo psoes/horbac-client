@@ -9,8 +9,8 @@ export class SocialReason {
 }
 export class Organization {
     id?: number;
-    name?: string;    
-    description?: string;    
+    name: string = '';    
+    description: string ='';    
     inceptionDate? : Date;	
 	cessationDate? : Date;    
     type?: OrganizationType;
@@ -19,7 +19,7 @@ export class Organization {
     url?: string;
     location?: HOLocation;
     socialReason?: SocialReason;
-    constructor(id?: number, name?: string, description?: string, 
+    constructor(id?: number, name: string ='', description: string ='', 
         inceptionDate?: Date, cessationDate?: Date, type?: OrganizationType, 
         address?: Adress, url?: string, location?: HOLocation, socialReason?: SocialReason, logo?: string){
         this.id = id;

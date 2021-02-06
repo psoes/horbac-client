@@ -12,6 +12,7 @@ import {ThemePalette} from '@angular/material/core';
 class ImageSnippet {
   pending: boolean = false;
   status: string = 'init';
+  description: any = '';
   constructor(public src: string, public file: File) {}
 }
 
@@ -27,14 +28,19 @@ export class OrganizationComponent implements OnInit {
   showTypeForm = false;
   socialReasonForm = false;
   typeTitle = '';
+
   reasonTitle = '';
   organizations: Organization [] = [];
-  organization: Organization = { address: {}};
+  organization: Organization = new Organization();
+
   type: OrganizationType = {};
   socialReason: SocialReason = {};
   reasons: SocialReason [] = [];
   types: OrganizationType[] = [];
   title = '';
+
+  logo!: File;
+
   public editorOptions!: JsonEditorOptions;
   public data: any;
   color: ThemePalette = 'accent';
@@ -43,6 +49,7 @@ export class OrganizationComponent implements OnInit {
   disabledp2 = false;
   maxEmployee: number = Infinity;
   disabled = false;
+
   @ViewChild(JsonEditorComponent, { static: false }) editor!: JsonEditorComponent;
   imageSrc!: SafeResourceUrl;
   myForm = new FormGroup({
@@ -63,9 +70,9 @@ export class OrganizationComponent implements OnInit {
   ngOnInit(): void {
     this.orgService.loadOrganizations().subscribe( (results : Organization[]) =>{
       this.organizations = results;
+      this.downloadLogo(this.organizations[0]?.logo!);
     })
     this.orgService.loadTypes().subscribe( (results) =>{
-      console.log('DATA ', results)
       this.types = results;
     })
 
@@ -97,7 +104,7 @@ export class OrganizationComponent implements OnInit {
       this.organizations[index] = result;
     });
     this.isUpdate = false;
-    this.organization = { address: {}}
+    this.organization = new Organization();
   }
   updateType(){
     this.orgService.updateType(this.type).subscribe((result) => {
@@ -136,7 +143,7 @@ export class OrganizationComponent implements OnInit {
     return this.myForm.controls;
   }
    
-  onFileChange(id: number, event: any) {
+  onFileChange(event: any) {
     const reader = new FileReader();
     
     if(event.target.files && event.target.files.length) {
@@ -154,10 +161,7 @@ export class OrganizationComponent implements OnInit {
         console.info('File source... ', file.size)
         console.info('File source... ', file.name)
         console.info('File source... ', file.type)
-        
-        this.orgService.uploadImage(id, event.target.files[0]).subscribe( result => {
-          //this.organizations = this.organizations.filter( item => {return item.id !== org.id});
-        }) 
+        this.logo = event.target.files[0];
       };
    
     }
@@ -202,5 +206,35 @@ export class OrganizationComponent implements OnInit {
       this.reasons = this.reasons.filter( item => {return item.id !== reason.id});
     })
   }
- 
+
+  saveLogo(id: number){    
+      this.orgService.uploadImage(id, this.logo).subscribe((result :Object) => {
+        if (result) {
+        let reader = new FileReader();
+        reader.readAsDataURL(<Blob>result);
+        reader.onload = () => {        
+          this.imageSrc  = this.sanitization.bypassSecurityTrustResourceUrl(reader.result as string);
+          console.log('result', this.imageSrc);
+        };
+      }
+    }) 
+  }
+
+  downloadLogo(src: string){
+    this.orgService.downloadImage(src).subscribe((result) => {
+      if (result) {
+      let reader = new FileReader();
+      reader.readAsDataURL(<Blob>result);
+      reader.onload = () => {        
+        this.imageSrc  = this.sanitization.bypassSecurityTrustResourceUrl(reader.result as string);
+        console.log('result', this.imageSrc);
+      };
+    }
+  }) 
+  }
+
+  resetLogo(){
+    this.imageSrc = '';
+    (<HTMLInputElement>document.getElementById('upload-logo')).value = "";
+  }
 }

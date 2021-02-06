@@ -40,3 +40,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 caption {
   white-space: nowrap;
 }
+
+.ck-editor__editable_inline {
+  min-height: 200px;
+}

@@ -17,28 +17,32 @@
                 </mat-panel-title>
                 </mat-expansion-panel-header>
                 <ng-template matExpansionPanelContent>                      
-                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                    <mat-form-field class="col-sm-3 col-lg-3 col-md-3">
                         <mat-label>Name: </mat-label>
                         <input matInput type="text" name="name" id="name" [(ngModel)]="organization.name" />
-                    </mat-form-field>
+                    </mat-form-field><!-- 
                     <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
                         <mat-label>Description: </mat-label>
                         <input matInput  type="text" name="description" id="description" [(ngModel)]="organization.description" />
-                    </mat-form-field>
-                    <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
+                    </mat-form-field> -->
+                    <mat-form-field class="col-sm-3 col-lg-3 col-md-3">
                     <mat-label>Date de création: </mat-label>
                         <input matInput   type="date" name="inc" id="inc" [(ngModel)]="organization.inceptionDate" />
                     </mat-form-field>
-                    <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
+                    <mat-form-field class="col-sm-3 col-lg-3 col-md-3">
                         <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="organization.socialReason" placeholder="Select A Social Reason">
                             <mat-option *ngFor="let reason of reasons" [value]="reason">{{ reason.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>  
-                    <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
+                    <mat-form-field class="col-sm-3 col-lg-3 col-md-3">
                         <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="organization.type" placeholder="Select A Type">
                             <mat-option *ngFor="let type of types" [value]="type">{{ type.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
+                    <div>
+                        <mat-label for="editor">Organization description</mat-label>
+                        <ckeditor id="editor" [editor]="Editor" name="description" id="description" [(ngModel)]="organization.description" [data]='organization.description'></ckeditor>
+                    </div>                    
                 </ng-template>
             </mat-expansion-panel>
             <mat-expansion-panel class="mt-3" hideToggle>
@@ -101,24 +105,28 @@
                 <tbody>
                     <tr *ngFor="let org of organizations">
                         <td>
-                            <img  style="width: 50px; height: 50px;" [src]="imageSrc" *ngIf="imageSrc">
-                            <mat-icon color="primary">done</mat-icon><mat-icon color="warn">clear</mat-icon>                             
+                            <img mat-card-avatar style="width: 50px; height: 50px;" [src]="imageSrc" *ngIf="imageSrc"/>
+                            <button *ngIf="imageSrc && editOrg" (click)="saveLogo(org.id)" mat-icon-button><mat-icon color="primary" >done</mat-icon> </button>
+                            <button  *ngIf="imageSrc && editOrg"  (click)="resetLogo()"  mat-icon-button>  <mat-icon color="warn">clear</mat-icon> </button>                      
                             <input
-                                [(ngModel)]="organization.logo" 
-                                id="upload-photo"
+                                [(ngModel)]="organization.logo"  
+                                style="display:none"                               
                                 class="ng-hide"
+                                id="upload-logo"
                                 type="file"
-                                (change)="onFileChange(org.id, $event)" />
-                            <button *ngIf="!imageSrc" mat-button color="primary"> <label for="upload-photo" ><fa-icon class="mr-1" [icon]='["fas", "upload"]'></fa-icon>upload logo</label></button>  
+                                (change)="onFileChange($event)" />
+                            <button *ngIf="!imageSrc" mat-button color="primary"> <label for="upload-logo" ><fa-icon class="mr-1" [icon]='["fas", "upload"]'></fa-icon>upload logo</label></button>  
                         </td>
                         <td>{{org.id}}</td>
                         <td>{{org.name}}</td>
-                        <td>{{org.description}}</td>
+                        <td> <div class="panel-body" [innerHtml]='org.description'> </div>   </td>
                         <td>{{org.inceptionDate | date:'dd-MM-yyyy'}}</td>
                         <td>{{org.socialReason?.name}}</td>
-                        <td class="p-2"> 
-                            <button mat-button color="primary" (click)="organization = org; editOrg = true; isUpdate = true; title='Edit Organization'"> <mat-icon>edit</mat-icon> edit</button>                               
-                            <button mat-button color="warn" (click)="deleteOrg(org)" > <mat-icon>delete</mat-icon> delete </button> 
+                        <td class="p-2">
+                            <mat-card-actions>                        
+                                <button mat-button color="primary" (click)="organization = org; organization.address = !org.address? {}: org.address; editOrg = true; isUpdate = true; title='Edit Organization'"> <mat-icon>edit</mat-icon> edit</button>                               
+                                <button mat-button color="warn" (click)="deleteOrg(org)" > <mat-icon>delete</mat-icon> delete </button> 
+                            </mat-card-actions> 
                         </td>
                     </tr>
                 </tbody>
