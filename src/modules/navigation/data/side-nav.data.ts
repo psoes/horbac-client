@@ -22,7 +22,7 @@ export const sideNavSections: SideNavSection[] = [
 export const sideNavItems: SideNavItems = {
     organization: {
         icon: 'users',
-        text: 'Organisation',
+        text: 'Organization',
         link: '/organizations',
     },
     unities: {
@@ -60,6 +60,11 @@ export const sideNavItems: SideNavItems = {
                         icon: 'tachometer-alt',
                         text: 'Actions',
                         link: '/actions'
+                    },
+                    {
+                        icon: 'tachometer-alt',
+                        text: 'Considers',
+                        link: '/considers'
                     },
                 ],
     },

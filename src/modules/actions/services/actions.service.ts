@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
-import { Actions } from '../models/actions';
+import { Action } from '../models/Action';
 
 @Injectable({
   providedIn: 'root'
@@ -14,17 +13,17 @@ export class ActionsService {
   constructor(private http: HttpClient) { }
 
   loadActions(){
-    return this.http.get<Actions[]>(this.ACTIONS_API);
+    return this.http.get<Action[]>(this.ACTIONS_API);
   }
 
-  createActions(act: Actions) {
-    return this.http.post<Actions>(this.ACTIONS_API, act);
+  createActions(act: Action) {
+    return this.http.post<Action>(this.ACTIONS_API, act);
   }
   
-  updateActions(act: Actions) {
-    return this.http.put<Actions>(this.ACTIONS_API, act);
+  updateActions(act: Action) {
+    return this.http.put<Action>(this.ACTIONS_API, act);
   }
-  deleteActions(act: Actions) {
+  deleteActions(act: Action) {
     return this.http.delete(this.ACTIONS_API+'/'+act.id);
   }
 
