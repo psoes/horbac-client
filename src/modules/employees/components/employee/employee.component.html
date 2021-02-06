@@ -484,11 +484,11 @@
             </ng-template>
         </mat-tab>
     </mat-tab-group>  
-    <mat-action-row class="mt-2 mx-auto" *ngIf="tabGroup.selectedIndex !== 9">
-        <button *ngIf="tabGroup.selectedIndex != 0" mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex - 1"> <mat-icon>keyboard_arrow_left</mat-icon>back</button>
+    <mat-action-row class="mt-2 mx-auto" *ngIf=" tabGroup?.selectedIndex? && tabGroup.selectedIndex !== 9">
+        <button *ngIf="tabGroup?.selectedIndex? && tabGroup.selectedIndex != 0" mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex - 1"> <mat-icon>keyboard_arrow_left</mat-icon>back</button>
         <button mat-button  color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit" (click)="createEmployee()"> <mat-icon>save_alt</mat-icon>save</button>
         <button mat-button  color="primary" *ngIf="isUpdate"  type="submit" (click)="updateEmployee()"> <mat-icon>save_alt</mat-icon> save</button>
         <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>                                        
-        <button *ngIf="tabGroup.selectedIndex < 11" mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
+        <button *ngIf="tabGroup?.selectedIndex? && tabGroup.selectedIndex < 11" mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
     </mat-action-row>
 </sb-layout-dashboard>
