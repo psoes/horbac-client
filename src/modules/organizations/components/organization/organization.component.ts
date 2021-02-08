@@ -70,7 +70,7 @@ export class OrganizationComponent implements OnInit {
   ngOnInit(): void {
     this.orgService.loadOrganizations().subscribe( (results : Organization[]) =>{
       this.organizations = results;
-      this.downloadLogo(this.organizations[0]?.logo!);
+      if(this.organizations[0]?.logo)this.downloadLogo(this.organizations[0]?.logo!);
     })
     this.orgService.loadTypes().subscribe( (results) =>{
       this.types = results;

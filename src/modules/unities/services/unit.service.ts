@@ -6,6 +6,7 @@ import { AdminUnit } from '../models/AdminUnit';
 import { map, catchError } from 'rxjs/operators';
 import { OperationalUnit } from '../models/OperationalUnit';
 import { Subordinate } from '../models/Subordinate';
+import { PlaceUnder } from '../models/PlaceUnder';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,9 @@ export class UnitService {
   ADMIN_UNITS_API = environment.API_HOST+ '/admin-units';
   OPERATIONAL_UNITS_API = environment.API_HOST+ '/operational-units';
   SUBORDINATE_UNITS_API = environment.API_HOST+ '/subordinates';
+  SUBORDINATE_MANY_UNITS_API = environment.API_HOST+ '/subordinates/many';
+  PLACEUNDER_MANY_UNITS_API = environment.API_HOST+ '/place-unders/many';
+  PLACEUNDER_UNITS_API = environment.API_HOST+ '/place-unders';
 
   constructor(private http: HttpClient) { }
 
@@ -23,7 +27,7 @@ export class UnitService {
       map(w => w._embedded.administrativeUnits)
     );
   }
-
+  
   createAdminUnit(unit: AdminUnit){
     return this.http.post<AdminUnit>(this.ADMIN_UNITS_API, unit);
   }
@@ -65,11 +69,19 @@ export class UnitService {
   loadSubordinates(){
     return this.http.get<Subordinate[]>(this.SUBORDINATE_UNITS_API);
   }
-  
+  loadPlaceUnders(){
+    return this.http.get<PlaceUnder[]>(this.PLACEUNDER_UNITS_API);
+  }
+    
   createSuborniate(sub: Subordinate){
     return this.http.post<Subordinate>(this.SUBORDINATE_UNITS_API, sub);
   }
-  
+  createManySubornates(sub: Subordinate[]){
+    return this.http.post<Subordinate[]>(this.SUBORDINATE_MANY_UNITS_API, sub);
+  }
+  createManyPlaceUnders(sub: PlaceUnder[]){
+    return this.http.post<PlaceUnder[]>(this.PLACEUNDER_MANY_UNITS_API, sub);
+  }
   updateSubordinate(sub: Subordinate){
     return this.http.put<Subordinate>(this.SUBORDINATE_UNITS_API+'/'+sub.id, sub);
   }
@@ -78,6 +90,9 @@ export class UnitService {
     return this.http.delete(this.SUBORDINATE_UNITS_API+'/'+ sub.id);
   }
   
+  deletePlaceUnder(sub: PlaceUnder){
+    return this.http.delete(this.PLACEUNDER_UNITS_API+'/'+ sub.id);
+  }
 }
 export class OperationalUnitsWrapper{
 _embedded!: { operationalUnits: OperationalUnit[]};

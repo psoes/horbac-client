@@ -5,6 +5,7 @@ import { Organization } from '@modules/organizations/models/organization';
 import { OrganizationService } from '@modules/organizations/services/organization.service';
 import { AdminUnit } from '@modules/unities/models/AdminUnit';
 import { OperationalUnit } from '@modules/unities/models/OperationalUnit';
+import { PlaceUnder } from '@modules/unities/models/PlaceUnder';
 import { Subordinate } from '@modules/unities/models/Subordinate';
 import { UnitService } from '@modules/unities/services/unit.service';
 
@@ -36,6 +37,17 @@ export class UnitComponent implements OnInit {
 
   subordinatedUnits : Subordinate[] = [];
 
+  freeUnits: AdminUnit[] = [];
+  
+  subUnits: AdminUnit[] = [];
+  placeUnits: OperationalUnit[] = [];
+  placeUnderUnits: PlaceUnder[] = [];
+  freePlaceUnders: OperationalUnit[] = [];
+
+  mapTitle = '';
+
+  isSubordinate = true;
+
   urlPattern = "[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
 
   ngOnInit(): void {
@@ -45,12 +57,17 @@ export class UnitComponent implements OnInit {
 
     this.unitService.loadAdminUnits().subscribe( (results) =>{
       this.aunits = results;
+      this.freeUnits = results;
     });
     this.unitService.loadOperationalUnits().subscribe( (results) =>{
       this.ounits = results;
+      this.freePlaceUnders = results;
     });
     this.unitService.loadSubordinates().subscribe( (results) =>{
       this.subordinateUnits = results;
+    });
+    this.unitService.loadPlaceUnders().subscribe( (results) =>{
+      this.placeUnderUnits = results;
     });
   }
 
@@ -108,8 +125,13 @@ export class UnitComponent implements OnInit {
     })
   }
   createSubordinate(){
-    this.unitService.createSuborniate(this.subordinateUnit).subscribe( (result) => {
-      this.subordinateUnits.push(<Subordinate> result);      
+    let tmp :Subordinate[] = [];
+    this.subUnits.forEach(unit => {
+        let subord = new Subordinate(this.subordinateUnit.organization, this.subordinateUnit.superior, unit);
+        tmp.push(subord);
+    });
+    this.unitService.createManySubornates(tmp).subscribe( (result) => {
+      if(result) result.map(item => this.subordinateUnits.push(item));    
       this.subordinateForm = false;
     })
   }
@@ -127,38 +149,55 @@ export class UnitComponent implements OnInit {
   deleteSubordinate(sub: Subordinate){
     this.unitService.deleteSubordinate(sub).subscribe( result => {
       this.subordinateUnits = this.subordinateUnits.filter( item => {return item.id !== sub.id});
+      this.freeUnits.push(sub);
     })
   }
-  setSubordinates(event: any){
-    console.log('event', event)
-    this.subordinatedUnits = this.aunits.filter( item => {return item.id !== this.subordinateUnit.superior?.id});
-
+  deletePlaceUnder(sub: PlaceUnder){
+    this.unitService.deletePlaceUnder(sub).subscribe( result => {
+      this.placeUnderUnits = this.placeUnderUnits.filter( item => {return item.id !== sub.id});
+      this.freePlaceUnders.push(sub);
+    })
+  }
+  createPlaceUnder(){
+    let tmp :PlaceUnder[] = [];
+    this.placeUnits.forEach(unit => {
+        let place = new PlaceUnder(this.subordinateUnit.organization!, this.subordinateUnit.superior!, unit);
+        tmp.push(place);
+    });
+    this.unitService.createManyPlaceUnders(tmp).subscribe( (result) => {
+      if(result) result.map(item => this.placeUnderUnits.push(item));    
+      this.subordinateForm = false;
+    })
   }
 
-  todo = [
-    'Get to work',
-    'Pick up groceries',
-    'Go home',
-    'Fall asleep'
-  ];
+  setSubordinates(event: any){
+    this.freeUnits = this.freeUnits.filter(item => {
+      return this.subordinateUnits.findIndex(item1 => item1.subordinate?.id === item.id) == -1 && item.id !== this.subordinateUnit.superior?.id;
+    });
+  }
 
-  done = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
-
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<AdminUnit[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
     }
+  }
+
+  setFreeUnits(){
+    this.subUnits = [];
+    this.freeUnits = this.freeUnits.filter(item => {
+      return this.subordinateUnits.findIndex(item1 => item1.subordinate?.id === item.id) == -1;
+    })
+  }
+  setFreePlaceUnders(){
+    this.placeUnits = [];
+    this.freePlaceUnders = this.freePlaceUnders.filter(item => {
+      return this.placeUnderUnits.findIndex(item1 => item1.subordinate?.id === item.id) == -1;
+    })
   }
 
 }

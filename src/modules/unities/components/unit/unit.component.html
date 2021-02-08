@@ -62,8 +62,7 @@
                             <td> <a [href]="unit.url">{{unit.url}}</a></td>
                             <td>{{unit.location?.name}}</td>
                             <td class="p-2"> 
-                                <button mat-button color="primary" (click)="adminUnit = unit; adminTitle='Edit Administrative Unit'; isUpdate = true; adminForm=true;"> <mat-icon>edit</mat-icon>edit</button>
-                                
+                                <button mat-button color="primary" (click)="adminUnit = unit; adminTitle='Edit Administrative Unit'; isUpdate = true; adminForm=true;"> <mat-icon>edit</mat-icon>edit</button>                                
                                 <button mat-button class="p-2" color="warn" (click)="deleteAdminUnit(unit)">  <mat-icon>delete</mat-icon>delete</button> 
                             </td>
                         </tr>
@@ -95,7 +94,9 @@
                         </mat-form-field>
                         <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
                             <mat-label>URL: </mat-label>
-                            <input matInput  type="text" name="url" id="url" [(ngModel)]="operationalUnit.url" />
+                            <input matInput  type="url" name="url" id="url" [(ngModel)]="operationalUnit.url" #url="ngModel" 
+                            [pattern]="urlPattern"/>
+                            <mat-error *ngIf="url.errors?.pattern && (url.dirty || url.touched)">Enter a valid url</mat-error>
                         </mat-form-field>            
                         <mat-action-row>
                             <button mat-button color="primary"  *ngIf="!isUpdate" type="submit" (click)="createOperationalUnit()"> <mat-icon>save_alt</mat-icon></button>
@@ -126,7 +127,7 @@
                             <td>{{unit.id}}</td>
                             <td>{{unit.name}}</td>
                             <td>{{unit.description}}</td>
-                            <td>{{unit.url}}</td>
+                            <td><a [href]="unit.url">{{unit.url}}</a></td>
                             <td>{{unit.location?.name}}</td>
                             <td class="p-2"> 
                                 <button mat-button color="primary" (click)="operationalUnit = unit; operationalTitle='Edit Operational Unit'; isUpdate = true; operationalForm=true;"> <mat-icon>edit</mat-icon>edit</button>                                
@@ -143,7 +144,7 @@
                 <span class="p-2">Units associations</span>
             </ng-template>
             <div class="mt-5" style=" width: 80%; margin: 0 auto;">
-               Here you define association between units. A administrative unit can be subordinated to another. Operational Unit can be placed under an administrative unit.
+               Here you define association between units. An administrative unit can be subordinated to another. Operational Unit can be placed under an administrative unit.
             </div> 
             <mat-card *ngIf="subordinateForm"> 
                 <mat-card-title>
@@ -151,35 +152,84 @@
                 </mat-card-title>
                 <mat-card-content>        
                     <form #f2="ngForm">
-                        <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
-                            <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="subordinateUnit.organization" placeholder="Select Organization">
+                        <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                            <mat-select #org="ngModel" required [ngModelOptions]="{standalone: true}" [(ngModel)]="subordinateUnit.organization" placeholder="Select Organization">
                                 <mat-option *ngFor="let org of organizations" [value]="org">{{ org.name }}</mat-option>
                             </mat-select>
+                            <mat-error *ngIf="org.invalid && (org.dirty || org.touched)">Organization is required</mat-error>
                         </mat-form-field>
 
-                        <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
-                            <mat-select id="sup" name="sup" (selectionChange)="setSubordinates($event)" [(ngModel)]="subordinateUnit.superior" placeholder="Select superior unit">
+                        <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                            <mat-select #sub="ngModel" required id="sup" name="sup" (selectionChange)="setSubordinates($event)" [(ngModel)]="subordinateUnit.superior" placeholder="Select superior unit">
                                 <mat-option *ngFor="let aunit of aunits" [value]="aunit">{{ aunit.name }}</mat-option>
                             </mat-select>
+                            <mat-error *ngIf="sub.invalid && (sub.dirty || sub.touched)">Superior is required</mat-error>
                         </mat-form-field> 
-
-                        <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
-                            <mat-select id="sub" name="sub" [(ngModel)]="subordinateUnit.subordinate" placeholder="Select Subordinated unit">
-                                <mat-option *ngFor="let sunit of subordinatedUnits" [value]="sunit">{{ sunit.name }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>                              
+                        <div *ngIf="isSubordinate">                            
+                            <div class="example-container col-sm-12 col-lg-5 col-md-5">
+                                <h2>Units</h2>                          
+                                <div
+                                cdkDropList
+                                #todoList="cdkDropList"
+                                [cdkDropListData]="freeUnits"
+                                [cdkDropListConnectedTo]="[doneList]"
+                                class="example-list"
+                                (cdkDropListDropped)="drop($event)">
+                                <div class="example-box" *ngFor="let unit of freeUnits" cdkDrag>{{unit.name}}</div>
+                                </div>
+                            </div>
+                            <div  class="example-container col-sm-12 col-lg-6 col-md-6">
+                                <h2>Subordinated Units</h2>                            
+                                <div
+                                    cdkDropList
+                                    #doneList="cdkDropList"
+                                    [cdkDropListData]="subUnits"
+                                    [cdkDropListConnectedTo]="[todoList]"
+                                    class="example-list"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="example-box" *ngFor="let unit of subUnits" cdkDrag>{{unit.name}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!isSubordinate">
+                            <div class="example-container col-sm-12 col-lg-5 col-md-5">
+                                <h2>Units</h2>                          
+                                <div
+                                cdkDropList
+                                #todoList2="cdkDropList"
+                                [cdkDropListData]="freePlaceUnders"
+                                [cdkDropListConnectedTo]="[doneList2]"
+                                class="example-list"
+                                (cdkDropListDropped)="drop($event)">
+                                <div class="example-box" *ngFor="let unit of freePlaceUnders" cdkDrag>{{unit.name}}</div>
+                                </div>
+                            </div>
+                            <div class="example-container col-sm-12 col-lg-6 col-md-6">
+                                <h2>Placed Under units</h2>                            
+                                <div
+                                    cdkDropList
+                                    #doneList2="cdkDropList"
+                                    [cdkDropListData]="placeUnits"
+                                    [cdkDropListConnectedTo]="[todoList2]"
+                                    class="example-list"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="example-box" *ngFor="let unit of placeUnits" cdkDrag>{{unit.name}}</div>
+                                </div>
+                            </div>
+                        </div>
                         <mat-action-row>
-                            <button mat-button color="primary"  *ngIf="!isUpdate" type="submit" (click)="createSubordinate()"> <mat-icon>save_alt</mat-icon></button>
-                            <button mat-button color="primary"  *ngIf="isUpdate" type="submit" (click)="updateSubordinate()"> <mat-icon>save_alt</mat-icon></button>
+                            <button mat-button [disabled]="!f2.valid" color="primary"  *ngIf="!isUpdate" type="submit" (click)="isSubordinate ? createSubordinate() : createPlaceUnder()"> <mat-icon>save_alt</mat-icon>save</button>
+                            <button mat-button color="primary"  *ngIf="isUpdate" type="submit" (click)="updateSubordinate()"> <mat-icon>save_alt</mat-icon>update</button>
                             <button mat-button color="accent" type="reset" > <mat-icon>undo</mat-icon>reset</button>
                         </mat-action-row>
                     </form> 
                 </mat-card-content> 
             </mat-card>
             <mat-action-row>
-                <button mat-button class="float-right" color="primary" (click)="subordinateForm = true; subordinateTitle = 'New Association'"><mat-icon>add_circle_outline</mat-icon>add units association</button>
+                <button mat-button class="float-right" color="primary" (click)="subordinateForm = true; isSubordinate = true; subordinateTitle = 'New Association'; setFreeUnits();"><mat-icon>add_circle_outline</mat-icon>add subordinates association</button>
+                <button mat-button class="float-right" color="primary" (click)="subordinateForm = true; isSubordinate = false; subordinateTitle = 'New Association'; setFreePlaceUnders();"><mat-icon>add_circle_outline</mat-icon>add placeunders association</button>
             </mat-action-row>
-            <div class="table-responsive" *ngIf="subordinateUnits && subordinateUnits.length !== 0">
+            <div class="table-responsive" *ngIf="(placeUnderUnits && placeUnderUnits.length !== 0) || (subordinateUnits && subordinateUnits.length !== 0)">
                 <caption>
                     List of associations between units
                 </caption>
@@ -189,6 +239,8 @@
                         <th>Organization</th>
                         <th>Superior</th>
                         <th>Subordinate</th>
+                        <th>PlaceUnder</th>
+                        <th></th>
                     </thead>
                     <tbody>
                         <tr *ngFor="let subord of subordinateUnits">
@@ -196,9 +248,21 @@
                             <td>{{subord.organization?.name}}</td>
                             <td>{{subord.superior?.name}}</td>
                             <td>{{subord.subordinate?.name}}</td>
+                            <td></td>
                             <td class="p-2"> 
-                                <button mat-button color="primary" (click)="subordinateUnit = subord; subordinateTitle='Edit Association'; isUpdate = true; subordinateForm=true;"> <mat-icon>edit</mat-icon>edit</button>                                
+                                <button mat-button disabled color="primary" (click)="subordinateUnit = subord; subordinateTitle='Edit Association'; isUpdate = true; subordinateForm=true;"> <mat-icon>edit</mat-icon>edit</button>                                
                                 <button mat-button class="p-2" color="warn" (click)="deleteSubordinate(subord)">  <mat-icon>delete</mat-icon>delete</button> 
+                            </td>
+                        </tr>
+                        <tr *ngFor="let subord of placeUnderUnits">
+                            <td>{{subord.id}}</td>
+                            <td>{{subord.organization?.name}}</td>
+                            <td>{{subord.superior?.name}}</td>
+                            <td></td>
+                            <td>{{subord.subordinate?.name}}</td>
+                            <td class="p-2"> 
+                                <button mat-button disabled color="primary" (click)="subordinateUnit = subord; subordinateTitle='Edit Association'; isUpdate = true; subordinateForm=true;"> <mat-icon>edit</mat-icon>edit</button>                                
+                                <button mat-button class="p-2" color="warn" (click)="deletePlaceUnder(subord)">  <mat-icon>delete</mat-icon>delete</button> 
                             </td>
                         </tr>
                     </tbody>
@@ -207,38 +271,9 @@
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                <mat-icon>units</mat-icon>
-                <span class="p-2">Units mapping</span>
+                <mat-icon>users</mat-icon>
+                <span class="p-2">Tree view</span>
             </ng-template>
-
-            <div class="example-container">
-                <h2>To do</h2>
-              
-                <div
-                  cdkDropList
-                  #todoList="cdkDropList"
-                  [cdkDropListData]="todo"
-                  [cdkDropListConnectedTo]="[doneList]"
-                  class="example-list"
-                  (cdkDropListDropped)="drop($event)">
-                  <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
-                </div>
-              </div>
-              
-              <div class="example-container">
-                <h2>Done</h2>
-              
-                <div
-                  cdkDropList
-                  #doneList="cdkDropList"
-                  [cdkDropListData]="done"
-                  [cdkDropListConnectedTo]="[todoList]"
-                  class="example-list"
-                  (cdkDropListDropped)="drop($event)">
-                  <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
-                </div>
-              </div>
-              
         </mat-tab>
     </mat-tab-group>
 </sb-layout-dashboard>
