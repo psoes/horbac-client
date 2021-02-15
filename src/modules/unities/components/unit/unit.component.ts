@@ -1,10 +1,14 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit } from '@angular/core';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Organization } from '@modules/organizations/models/organization';
 import { OrganizationService } from '@modules/organizations/services/organization.service';
 import { AdminUnit } from '@modules/unities/models/AdminUnit';
 import { OperationalUnit } from '@modules/unities/models/OperationalUnit';
+import { OrgFlatNode, OrgTree } from '@modules/unities/models/OrgTree';
 import { PlaceUnder } from '@modules/unities/models/PlaceUnder';
 import { Subordinate } from '@modules/unities/models/Subordinate';
 import { UnitService } from '@modules/unities/services/unit.service';
@@ -12,10 +16,58 @@ import { UnitService } from '@modules/unities/services/unit.service';
 @Component({
   selector: 'sb-unit',
   templateUrl: './unit.component.html',
-  styleUrls: ['./unit.component.scss']
+  styleUrls: ['./unit.component.scss'],
+  providers: [UnitService]
 })
 export class UnitComponent implements OnInit {
-  constructor(public orgService: OrganizationService, public unitService: UnitService,  private sanitization: DomSanitizer) { }
+  
+  
+  flatNodeMap = new Map<OrgFlatNode, OrgTree>();
+
+  /** Map from nested node to flattened node. This helps us to keep the same object for selection */
+  nestedNodeMap = new Map<OrgTree, OrgFlatNode>();
+
+  treeControl!: FlatTreeControl<OrgFlatNode>;
+
+  treeFlattener!: MatTreeFlattener<OrgTree, OrgFlatNode>;
+    
+  dataSource!: MatTreeFlatDataSource<OrgTree, OrgFlatNode>;  
+
+  constructor(public orgService: OrganizationService, public unitService: UnitService,  private sanitization: DomSanitizer) {
+    this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel,
+      this.isExpandable, this.getChildren);
+    this.treeControl = new FlatTreeControl<OrgFlatNode>(this.getLevel, this.isExpandable);
+    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  }
+
+  getLevel = (node: OrgFlatNode) => node.level!;
+
+  isExpandable = (node: OrgFlatNode) => node.expandable!;
+
+  getChildren = (node: OrgTree): OrgTree[] => node.children!;
+
+  hasChild = (_: number, _nodeData: OrgFlatNode) => _nodeData.expandable;
+
+  hasNoContent = (_: number, _nodeData: OrgFlatNode) => _nodeData.data === null;
+
+  /**
+   * Transformer to convert nested node to flat node. Record the nodes in maps for later use.
+   */
+  transformer = (node: OrgTree, level: number) => {
+    const existingNode = this.nestedNodeMap.get(node);
+    const flatNode = existingNode && existingNode.data === node.data
+        ? existingNode
+        : new OrgFlatNode();
+    flatNode.data = node.data;
+    flatNode.level = level;
+    flatNode.expandable = !!node.children?.length;
+    this.flatNodeMap.set(flatNode, node);
+    this.nestedNodeMap.set(node, flatNode);
+    return flatNode;
+  }  
+
+  
+
   imageSrc! : SafeResourceUrl;
   isUpdate: boolean = false;
   organizations: Organization[] = [];
@@ -198,6 +250,15 @@ export class UnitComponent implements OnInit {
     this.freePlaceUnders = this.freePlaceUnders.filter(item => {
       return this.placeUnderUnits.findIndex(item1 => item1.subordinate?.id === item.id) == -1;
     })
+  }
+  orgTree?: OrgTree;
+
+  loadOrgTree(event: any){
+    console.log('request... : ', event.value.id);
+    this.unitService.getOrgTree(event.value.id).subscribe( (result) =>{
+      console.log('DATAAAAA... : ', result);
+      this.dataSource.data = [result];
+    });
   }
 
 }

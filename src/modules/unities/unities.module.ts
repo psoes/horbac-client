@@ -24,6 +24,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatDialogModule} from '@angular/material/dialog';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatTreeModule} from '@angular/material/tree';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({  
   imports: [
@@ -50,7 +52,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatIconModule,
     MatExpansionModule,
     MatDialogModule,
-    DragDropModule
+    DragDropModule,
+    MatTreeModule,
+    MatCheckboxModule
   ],
   declarations: [UnitComponent],
   exports: [UnitComponent]

@@ -16,9 +16,13 @@ const routes: Routes = [
               link: '/organizations',
           },
           {
+              text: 'Units',
+              link: '/units',
+        },
+        {
               text: 'Register',
               active: true,
-          },
+        },
       ],
   } as SBRouteData,
     component: OrganizationComponent,

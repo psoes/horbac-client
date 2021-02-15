@@ -7,6 +7,7 @@ import { map, catchError } from 'rxjs/operators';
 import { OperationalUnit } from '../models/OperationalUnit';
 import { Subordinate } from '../models/Subordinate';
 import { PlaceUnder } from '../models/PlaceUnder';
+import { OrgTree } from '../models/OrgTree';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class UnitService {
   SUBORDINATE_MANY_UNITS_API = environment.API_HOST+ '/subordinates/many';
   PLACEUNDER_MANY_UNITS_API = environment.API_HOST+ '/place-unders/many';
   PLACEUNDER_UNITS_API = environment.API_HOST+ '/place-unders';
+  ORGTREE_API = environment.API_HOST+ '/tree/organization';
 
   constructor(private http: HttpClient) { }
 
@@ -92,6 +94,9 @@ export class UnitService {
   
   deletePlaceUnder(sub: PlaceUnder){
     return this.http.delete(this.PLACEUNDER_UNITS_API+'/'+ sub.id);
+  }
+  getOrgTree(orgId: number){
+    return this.http.get<OrgTree>(this.ORGTREE_API+'/'+ orgId);
   }
 }
 export class OperationalUnitsWrapper{
