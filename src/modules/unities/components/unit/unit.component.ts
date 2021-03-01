@@ -23,8 +23,7 @@ export class UnitComponent implements OnInit {
   
   
   flatNodeMap = new Map<OrgFlatNode, OrgTree>();
-
-  /** Map from nested node to flattened node. This helps us to keep the same object for selection */
+  
   nestedNodeMap = new Map<OrgTree, OrgFlatNode>();
 
   treeControl!: FlatTreeControl<OrgFlatNode>;
@@ -251,14 +250,20 @@ export class UnitComponent implements OnInit {
       return this.placeUnderUnits.findIndex(item1 => item1.subordinate?.id === item.id) == -1;
     })
   }
-  orgTree?: OrgTree;
 
+  currentOrg!: Organization;
   loadOrgTree(event: any){
     console.log('request... : ', event.value.id);
+    this.currentOrg = event.value;
     this.unitService.getOrgTree(event.value.id).subscribe( (result) =>{
       console.log('DATAAAAA... : ', result);
       this.dataSource.data = [result];
     });
   }
+
+  refresh = () => this.currentOrg? this.unitService.getOrgTree(this.currentOrg.id!).subscribe( (result) =>{
+    console.log('DATAAAAA... : ', result);
+    this.dataSource.data = [result];
+  }) : null;
 
 }

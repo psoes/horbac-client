@@ -28,6 +28,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatListModule} from '@angular/material/list';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatChipsModule} from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 @NgModule({
@@ -58,7 +60,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatProgressSpinnerModule,
     MatListModule,
     MatSnackBarModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatChipsModule,
+    MatAutocompleteModule
   ],
   declarations: [EmployeeComponent],
   exports: [EmployeeComponent],

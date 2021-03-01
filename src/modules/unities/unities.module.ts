@@ -26,6 +26,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatTreeModule} from '@angular/material/tree';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({  
   imports: [
@@ -54,7 +55,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     DragDropModule,
     MatTreeModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatChipsModule
   ],
   declarations: [UnitComponent],
   exports: [UnitComponent]
