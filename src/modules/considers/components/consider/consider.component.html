@@ -1,5 +1,5 @@
 <sb-layout-dashboard [static]="true">
-    <sb-dashboard-head title="Activities" [hideBreadcrumbs]="false"></sb-dashboard-head>
+    <sb-dashboard-head title="Considers" [hideBreadcrumbs]="false"></sb-dashboard-head>
     <mat-tab-group mat-align-tabs="start">
         <mat-tab>
             <ng-template mat-tab-label>
@@ -19,10 +19,10 @@
                     <form #f="ngForm" class="form-group"> 
                         <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
                             <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="consider.activity" placeholder="Select an activity">
-                                <mat-option *ngFor="let activity of activities" [value]="activity">{{ activity.name }}</mat-option>
+                                <mat-option *ngFor="let activity of activities" [(value)]="activity">{{ activity.name }}</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field class="col-sm-4 col-lg-4 col-md-4">
+                        <mat-form-field class="col-sm-4 col-lg-4 col-md-4" >
                             <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="consider.action" placeholder="Select an action">
                                 <mat-option *ngFor="let action of actions" [value]="action">{{ action.name }}</mat-option>
                             </mat-select>
@@ -40,6 +40,7 @@
                     </form>
                 </ng-template>
             </mat-expansion-panel>
+            
             <button mat-button color="primary" (click)="editCons = true; title='New Association'" class="float-right p-2"><mat-icon>add_circle_outline</mat-icon>add new association</button>
             <div class="table-responsive" *ngIf="considers">
                 <caption>

@@ -33,7 +33,7 @@
                     </form>
                 </ng-template>
             </mat-expansion-panel>
-            <button mat-button color="primary" (click)="editAct = true; title='New Actiion'" class="float-right p-2"><mat-icon>add_circle_outline</mat-icon>add new action</button>
+            <button mat-button color="primary" (click)="editAct = true; title='New Action'" class="float-right p-2"><mat-icon>add_circle_outline</mat-icon>add new action</button>
             <div class="table-responsive" *ngIf="actions">
                 <caption>
                    List Action of activities
@@ -42,12 +42,14 @@
                     <thead>
                         <th> Id</th>
                         <th>Name</th>
+                        <th>Description</th>
                         <th >Action</th>
                     </thead>
                     <tbody>
                         <tr *ngFor="let act of actions">
                             <td>{{act.id}}</td>
                             <td>{{act.name}}</td>
+                            <td>{{act.description}}</td>
                             <td class="p-2"> 
                                 <button mat-button color="primary" (click)="action= act; editAct = true; isUpdate = true; title='Edit action'"> <mat-icon>edit</mat-icon> edit</button>                               
                                 <button mat-button color="warn" (click)="deleteAct(act)" > <mat-icon>delete</mat-icon> delete </button> 

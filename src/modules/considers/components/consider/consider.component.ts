@@ -36,6 +36,8 @@ export class ConsiderComponent implements OnInit {
   ngOnInit(): void {
     this.consService.loadConsiders().subscribe((results : Consider[]) =>{
       this.considers = results;
+      console.log(this.considers);
+      
     })
     this.activityService.loadActivities().subscribe((results : Activity[]) =>{
       this.activities = results;
