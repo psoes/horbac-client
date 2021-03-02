@@ -71,13 +71,17 @@ export class OrganizationService {
 
   public uploadImage(id: number, image: File): Observable<Object> {
     const formData = new FormData();
-    formData.append('file', image);
-    let httpOptions = {
-      headers: new HttpHeaders({'X-CSRFToken': ''}),
-    };
-    console.log(image);
-    return this.http.post('/organizations/'+id+'/upload', formData);
+    formData.append('file', image, image.name);
+    return this.http.post(environment.API_HOST+'/organizations/'+id+'/upload', formData, {  
+      responseType: 'blob'  
+  });
   }
+
+  public downloadImage(image: string): Observable < Blob > {  
+    return this.http.get(environment.API_HOST + '/files/' + image, {  
+        responseType: 'blob'  
+    });  
+}  
 }
 
 export class SocialReasonsWrapper{

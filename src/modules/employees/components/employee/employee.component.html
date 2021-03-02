@@ -371,10 +371,118 @@
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <ng-template matExpansionPanelContent>
-                        <mat-checkbox class="m-2" color="primary">Smoke cigarettes </mat-checkbox>
-                        <mat-checkbox class="m-2" color="primary"> allegic to certain foods?</mat-checkbox>
-                        <mat-checkbox class="m-2" color="primary"> allegic to certain drinks?</mat-checkbox>
-                        <mat-checkbox  class="m-2" color="primary"> allegic to certain drugs?</mat-checkbox>
+                        <mat-checkbox class="m-2" color="primary" [(ngModel)]="cigar">Smoke cigarettes </mat-checkbox>
+                        <mat-form-field *ngIf="cigar" class="example-chip-list">
+                            <mat-label>Favorite Fruits</mat-label>
+                            <mat-chip-list  #chipList aria-label="Fruit selection">
+                            <mat-chip
+                                *ngFor="let fruit of fruits"
+                                [selectable]="selectable"
+                                [removable]="removable"
+                                (removed)="remove(fruit)">
+                                {{fruit}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input
+                                matInput
+                                placeholder="New fruit..."
+                                #fruitInput
+                                [formControl]="fruitCtrl"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                (matChipInputTokenEnd)="add($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                            <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+                                {{fruit}}
+                            </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-checkbox class="m-2" color="primary" [(ngModel)]="food"> allegic to certain foods?</mat-checkbox>
+                        <mat-form-field *ngIf="food" class="example-chip-list">
+                            <mat-label>Favorite Fruits</mat-label>
+                            <mat-chip-list  #chipList aria-label="Fruit selection">
+                            <mat-chip
+                                *ngFor="let fruit of fruits"
+                                [selectable]="selectable"
+                                [removable]="removable"
+                                (removed)="remove(fruit)">
+                                {{fruit}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input
+                                matInput
+                                placeholder="New fruit..."
+                                #fruitInput
+                                [formControl]="fruitCtrl"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                (matChipInputTokenEnd)="add($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                            <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+                                {{fruit}}
+                            </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-checkbox class="m-2" color="primary" [(ngModel)]="drink"> allegic to certain drinks?</mat-checkbox>
+                        <mat-form-field *ngIf="drink" class="example-chip-list">
+                            <mat-label>Favorite Fruits</mat-label>
+                            <mat-chip-list  #chipList aria-label="Fruit selection">
+                            <mat-chip
+                                *ngFor="let fruit of fruits"
+                                [selectable]="selectable"
+                                [removable]="removable"
+                                (removed)="remove(fruit)">
+                                {{fruit}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input
+                                matInput
+                                placeholder="New fruit..."
+                                #fruitInput
+                                [formControl]="fruitCtrl"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                (matChipInputTokenEnd)="add($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                            <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+                                {{fruit}}
+                            </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-checkbox  class="m-2" color="primary" [(ngModel)]="drug"> allegic to certain drugs?</mat-checkbox>
+                        <mat-form-field *ngIf="drug" class="example-chip-list">
+                            <mat-label>Favorite Fruits</mat-label>
+                            <mat-chip-list  #chipList aria-label="Fruit selection">
+                            <mat-chip
+                                *ngFor="let fruit of fruits"
+                                [selectable]="selectable"
+                                [removable]="removable"
+                                (removed)="remove(fruit)">
+                                {{fruit}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input
+                                matInput
+                                placeholder="New fruit..."
+                                #fruitInput
+                                [formControl]="fruitCtrl"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                (matChipInputTokenEnd)="add($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                            <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+                                {{fruit}}
+                            </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
                     </ng-template>
                 </mat-expansion-panel>
                 <mat-expansion-panel class="mt-3" cdkDrag hideToggle>
@@ -484,11 +592,11 @@
             </ng-template>
         </mat-tab>
     </mat-tab-group>  
-    <mat-action-row class="mt-2 mx-auto" *ngIf="tabGroup.selectedIndex !== 9">
-        <button *ngIf="tabGroup.selectedIndex != 0" mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex - 1"> <mat-icon>keyboard_arrow_left</mat-icon>back</button>
+    <mat-action-row class="mt-2 mx-auto" *ngIf="tabGroup.selectedIndex">
+        <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex - 1"> <mat-icon>keyboard_arrow_left</mat-icon>back</button>
         <button mat-button  color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit" (click)="createEmployee()"> <mat-icon>save_alt</mat-icon>save</button>
         <button mat-button  color="primary" *ngIf="isUpdate"  type="submit" (click)="updateEmployee()"> <mat-icon>save_alt</mat-icon> save</button>
         <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>                                        
-        <button *ngIf="tabGroup.selectedIndex < 11" mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
+        <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
     </mat-action-row>
 </sb-layout-dashboard>

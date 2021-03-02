@@ -11,7 +11,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { DashboardModule } from '@modules/dashboard/dashboard.module';
-import { OrganizationsModule } from '@modules/organizations/organizations.module';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgpImagePickerModule } from 'ngp-image-picker';
@@ -20,7 +19,14 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { TablesModule } from '@modules/tables/tables.module';
 import { ChartsModule } from '@modules/charts/charts.module';
 import { RouterModule } from '@angular/router';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {MatDialogModule} from '@angular/material/dialog';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatTreeModule} from '@angular/material/tree';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({  
   imports: [
@@ -42,7 +48,15 @@ import { RouterModule } from '@angular/router';
     DashboardModule,
     MatTabsModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCardModule,
+    MatIconModule,
+    MatExpansionModule,
+    MatDialogModule,
+    DragDropModule,
+    MatTreeModule,
+    MatCheckboxModule,
+    MatChipsModule
   ],
   declarations: [UnitComponent],
   exports: [UnitComponent]

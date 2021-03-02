@@ -3,87 +3,301 @@
     <mat-tab-group mat-align-tabs="start">
         <mat-tab>
             <ng-template mat-tab-label>
-                <fa-icon [icon]='["fas", "users"]'></fa-icon>
-                <span class="p-2">Op Unit</span>
+                <mat-icon>users</mat-icon>
+                <span class="p-2">Administrative Unit</span>
             </ng-template>
-            <div class="col-md-12">
-                <div class="row ">
-                    <div class="col-md-12">            
-                        <form #f1="ngForm" class="form-group">
-                            <div style="float:left; text-align: left;" class="col-sm-6 col-lg-4 col-md-4 vertical-center">
-                                <div class="image">
-                                    <img  [src]="imageSrc" *ngIf="imageSrc" style="position:relative;
-                                    left: calc(10%); height: 50px; width: 50px"> 
-                                    <span  style="position:relative;
-                                    top: calc(20%); left: calc(30%);"*ngIf="!imageSrc">Logo</span>                                                              
-                                    <input
-                                        style="display: none;"
-                                        [(ngModel)]="adminUnit.logo" 
-                                        id="upload-photo"
-                                        type="file"
-                                        name="logo" 
-                                        (change)="onFileChange($event)">         
+            <div class="mt-5" style=" width: 80%; margin: 0 auto;">
+                Administrative Unit represents administrative department, like financial department
+            </div> 
+            <mat-card *ngIf="adminForm"> 
+                <mat-card-title>
+                    {{adminTitle}}
+                </mat-card-title>
+                <mat-card-content>        
+                    <form #f1="ngForm">
+                        <mat-form-field [ngClass]="{'mat-form-field-invalid':f1.submitted && !adminUnit.name}" class="col-sm-6 col-lg-6 col-md-6">
+                            <mat-label>Name: </mat-label>
+                            <input matInput type="text" name="name" id="name" [(ngModel)]="adminUnit.name" required #name="ngModel"/>
+                            <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">Name is required</mat-error>                            
+                        </mat-form-field>
+                        <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                            <mat-label>Description: </mat-label>
+                            <input matInput  type="text" name="description" id="description" [(ngModel)]="adminUnit.description" />
+                        </mat-form-field>
+                        <mat-form-field class="col-sm-12 col-lg-12 col-md-12">
+                            <mat-label>URL: </mat-label>
+                            <input matInput  type="url" name="url" id="url" [(ngModel)]="adminUnit.url" #url="ngModel" 
+                                [pattern]="urlPattern"/>
+                            <mat-error *ngIf="url.errors?.pattern && (url.dirty || url.touched)">Enter a valid url</mat-error> 
+                        </mat-form-field>            
+                        <mat-action-row>
+                            <button mat-button color="primary" [disabled]="!f1.valid" *ngIf="!isUpdate" type="submit" (click)="createAdminUnit()"> <mat-icon>save_alt</mat-icon></button>
+                            <button mat-button color="primary" [disabled]="!f1.valid" *ngIf="isUpdate" type="submit" (click)="updateAdminUnit()"> <mat-icon>save_alt</mat-icon></button>
+                            <button mat-button color="accent" type="reset" > <mat-icon>undo</mat-icon>reset</button>
+                        </mat-action-row>
+                    </form> 
+                </mat-card-content> 
+            </mat-card>
+            <mat-action-row>
+                <button mat-button class="float-right" color="primary" (click)="adminForm = true; adminTitle = 'New Administrative Unit'"><mat-icon>add_circle_outline</mat-icon>add administrative unit</button>
+            </mat-action-row>
+            <div class="table-responsive" *ngIf="aunits && aunits.length !== 0">
+                <caption>
+                    List of administrative units
+                </caption>
+                <table class="table table-striped">
+                    <thead>
+                        <th> #</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>URL</th>
+                        <th>Location</th>
+                        <th >Action</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let unit of aunits">
+                            <td>{{unit.id}}</td>
+                            <td>{{unit.name}}</td>
+                            <td>{{unit.description}}</td>
+                            <td> <a [href]="unit.url">{{unit.url}}</a></td>
+                            <td>{{unit.location?.name}}</td>
+                            <td class="p-2"> 
+                                <button mat-button color="primary" (click)="adminUnit = unit; adminTitle='Edit Administrative Unit'; isUpdate = true; adminForm=true;"> <mat-icon>edit</mat-icon>edit</button>                                
+                                <button mat-button class="p-2" color="warn" (click)="deleteAdminUnit(unit)">  <mat-icon>delete</mat-icon>delete</button> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> 
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>users</mat-icon>
+                <span class="p-2">Operational Unit</span>
+            </ng-template>
+            <div class="mt-5" style=" width: 80%; margin: 0 auto;">
+                Operational Unit represents non-adminitrative units which are place-under administrative unit
+            </div> 
+            <mat-card *ngIf="operationalForm"> 
+                <mat-card-title>
+                    {{operationalTitle}}
+                </mat-card-title>
+                <mat-card-content>        
+                    <form #f2="ngForm">
+                        <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                            <mat-label>Name: </mat-label>
+                            <input matInput type="text" name="name" id="name" [(ngModel)]="operationalUnit.name" required />
+                        </mat-form-field>
+                        <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                            <mat-label>Description: </mat-label>
+                            <input matInput  type="text" name="description" id="description" [(ngModel)]="operationalUnit.description" />
+                        </mat-form-field>
+                        <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                            <mat-label>URL: </mat-label>
+                            <input matInput  type="url" name="url" id="url" [(ngModel)]="operationalUnit.url" #url="ngModel" 
+                            [pattern]="urlPattern"/>
+                            <mat-error *ngIf="url.errors?.pattern && (url.dirty || url.touched)">Enter a valid url</mat-error>
+                        </mat-form-field>            
+                        <mat-action-row>
+                            <button mat-button color="primary"  *ngIf="!isUpdate" type="submit" (click)="createOperationalUnit()"> <mat-icon>save_alt</mat-icon></button>
+                            <button mat-button color="primary"  *ngIf="isUpdate" type="submit" (click)="updateOperationalUnit()"> <mat-icon>save_alt</mat-icon></button>
+                            <button mat-button color="accent" type="reset" > <mat-icon>undo</mat-icon>reset</button>
+                        </mat-action-row>
+                    </form> 
+                </mat-card-content> 
+            </mat-card>
+            <mat-action-row>
+                <button mat-button class="float-right" color="primary" (click)="operationalForm = true; operationalTitle = 'New Operational Unit'"><mat-icon>add_circle_outline</mat-icon>add operational unit</button>
+            </mat-action-row>
+            <div class="table-responsive" *ngIf="ounits && ounits.length !== 0">
+                <caption>
+                    List of operational units
+                </caption>
+                <table class="table table-striped">
+                    <thead>
+                        <th> #</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>URL</th>
+                        <th>Location</th>
+                        <th >Action</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let unit of ounits">
+                            <td>{{unit.id}}</td>
+                            <td>{{unit.name}}</td>
+                            <td>{{unit.description}}</td>
+                            <td><a [href]="unit.url">{{unit.url}}</a></td>
+                            <td>{{unit.location?.name}}</td>
+                            <td class="p-2"> 
+                                <button mat-button color="primary" (click)="operationalUnit = unit; operationalTitle='Edit Operational Unit'; isUpdate = true; operationalForm=true;"> <mat-icon>edit</mat-icon>edit</button>                                
+                                <button mat-button class="p-2" color="warn" (click)="deleteOperationalUnit(unit)">  <mat-icon>delete</mat-icon>delete</button> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> 
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>users</mat-icon>
+                <span class="p-2">Units associations</span>
+            </ng-template>
+            <div class="mt-5" style=" width: 80%; margin: 0 auto;">
+               Here you define association between units. An administrative unit can be subordinated to another. Operational Unit can be placed under an administrative unit.
+            </div> 
+            <mat-card *ngIf="subordinateForm"> 
+                <mat-card-title>
+                    {{subordinateTitle}}
+                </mat-card-title>
+                <mat-card-content>        
+                    <form #f2="ngForm">
+                        <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                            <mat-select #org="ngModel" required [ngModelOptions]="{standalone: true}" [(ngModel)]="subordinateUnit.organization" placeholder="Select Organization">
+                                <mat-option *ngFor="let org of organizations" [value]="org">{{ org.name }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="org.invalid && (org.dirty || org.touched)">Organization is required</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                            <mat-select #sub="ngModel" required id="sup" name="sup" (selectionChange)="setSubordinates($event)" [(ngModel)]="subordinateUnit.superior" placeholder="Select superior unit">
+                                <mat-option *ngFor="let aunit of aunits" [value]="aunit">{{ aunit.name }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="sub.invalid && (sub.dirty || sub.touched)">Superior is required</mat-error>
+                        </mat-form-field> 
+                        <div *ngIf="isSubordinate">                            
+                            <div class="example-container col-sm-12 col-lg-5 col-md-5">
+                                <h2>Units</h2>                          
+                                <div
+                                cdkDropList
+                                #todoList="cdkDropList"
+                                [cdkDropListData]="freeUnits"
+                                [cdkDropListConnectedTo]="[doneList]"
+                                class="example-list"
+                                (cdkDropListDropped)="drop($event)">
+                                <div class="example-box" *ngFor="let unit of freeUnits" cdkDrag>{{unit.name}}</div>
                                 </div>
-                                <label style="position:relative;
-                                    top: calc(10%); left: calc(70%);"for="upload-photo">
-                                    <fa-icon title="Upload logo" [icon]='["fas", "upload"]'></fa-icon>
-                                </label>                              
                             </div>
-                            <div class="col-11 float-right">
-                                <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
-                                    <mat-label>Name: </mat-label>
-                                    <input matInput type="text" name="name" id="name" [(ngModel)]="adminUnit.name" />
-                                </mat-form-field>
-                                <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
-                                    <mat-label>Description: </mat-label>
-                                    <input matInput  type="text" name="description" id="description" [(ngModel)]="adminUnit.description" />
-                                </mat-form-field>
-                                <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
-                                    <mat-label>URL: </mat-label>
-                                    <input matInput  type="text" name="url" id="url" [(ngModel)]="adminUnit.url" />
-                                </mat-form-field>
-                                <!--<mat-form-field class="col-sm-4 col-lg-4 col-md-4">
-                                    <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="organization.type" placeholder="Select A Type">
-                                    <mat-option *ngFor="let type of types" [value]="type">{{ type.name }}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                -->
-                                <div class=" text-center">
-                                    <button class="col-sm-6"  style="margin-right:20px" *ngIf="!isUpdate" class="btn btn-primary " type="submit" (click)="createAdminUnit()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
-                                    <button class="col-sm-6"  style="margin-right:20px" *ngIf="isUpdate" class="btn btn-primary" type="submit" (click)="updateAdminUnit()"> <fa-icon [icon]='["fas", "save"]'></fa-icon></button>
-                                    <button class="btn btn-warning" type="reset" > <fa-icon [icon]='["fas", "undo"]'></fa-icon></button>
+                            <div  class="example-container col-sm-12 col-lg-6 col-md-6">
+                                <h2>Subordinated Units</h2>                            
+                                <div
+                                    cdkDropList
+                                    #doneList="cdkDropList"
+                                    [cdkDropListData]="subUnits"
+                                    [cdkDropListConnectedTo]="[todoList]"
+                                    class="example-list"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="example-box" *ngFor="let unit of subUnits" cdkDrag>{{unit.name}}</div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <th> #</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>URL</th>
-                            <th>Location</th>
-                            <th >Action</th>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let unit of units">
-                                <td>{{unit.id}}</td>
-                                <td>{{unit.name}}</td>
-                                <td>{{unit.description}}</td>
-                                <td>{{unit.url}}</td>
-                                <td>{{unit.location?.name}}</td>
-                                <td class="p-2"> 
-                                    <button mat-mini-fab color="primary" (click)="adminUnit = unit; isUpdate = true;" class="btn btn-primary" type="button"> <fa-icon [icon]='["fas", "edit"]'></fa-icon></button>
-                                    &nbsp;
-                                    <button mat-mini-fab (click)="deleteAdminUnit(unit)" class="btn btn-danger" type="button">  <fa-icon [icon]='["fas", "trash"]'></fa-icon> </button> 
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                        </div>
+                        <div *ngIf="!isSubordinate">
+                            <div class="example-container col-sm-12 col-lg-5 col-md-5">
+                                <h2>Units</h2>                          
+                                <div
+                                cdkDropList
+                                #todoList2="cdkDropList"
+                                [cdkDropListData]="freePlaceUnders"
+                                [cdkDropListConnectedTo]="[doneList2]"
+                                class="example-list"
+                                (cdkDropListDropped)="drop($event)">
+                                <div class="example-box" *ngFor="let unit of freePlaceUnders" cdkDrag>{{unit.name}}</div>
+                                </div>
+                            </div>
+                            <div class="example-container col-sm-12 col-lg-6 col-md-6">
+                                <h2>Placed Under units</h2>                            
+                                <div
+                                    cdkDropList
+                                    #doneList2="cdkDropList"
+                                    [cdkDropListData]="placeUnits"
+                                    [cdkDropListConnectedTo]="[todoList2]"
+                                    class="example-list"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="example-box" *ngFor="let unit of placeUnits" cdkDrag>{{unit.name}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-action-row>
+                            <button mat-button [disabled]="!f2.valid" color="primary"  *ngIf="!isUpdate" type="submit" (click)="isSubordinate ? createSubordinate() : createPlaceUnder()"> <mat-icon>save_alt</mat-icon>save</button>
+                            <button mat-button color="primary"  *ngIf="isUpdate" type="submit" (click)="updateSubordinate()"> <mat-icon>save_alt</mat-icon>update</button>
+                            <button mat-button color="accent" type="reset" > <mat-icon>undo</mat-icon>reset</button>
+                        </mat-action-row>
+                    </form> 
+                </mat-card-content> 
+            </mat-card>
+            <mat-action-row>
+                <button mat-button class="float-right" color="primary" (click)="subordinateForm = true; isSubordinate = true; subordinateTitle = 'New Association'; setFreeUnits();"><mat-icon>add_circle_outline</mat-icon>add subordinates association</button>
+                <button mat-button class="float-right" color="primary" (click)="subordinateForm = true; isSubordinate = false; subordinateTitle = 'New Association'; setFreePlaceUnders();"><mat-icon>add_circle_outline</mat-icon>add placeunders association</button>
+            </mat-action-row>
+            <div class="table-responsive" *ngIf="(placeUnderUnits && placeUnderUnits.length !== 0) || (subordinateUnits && subordinateUnits.length !== 0)">
+                <caption>
+                    List of associations between units
+                </caption>
+                <table class="table table-striped">
+                    <thead>
+                        <th> #</th>
+                        <th>Organization</th>
+                        <th>Superior</th>
+                        <th>Subordinate</th>
+                        <th>PlaceUnder</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let subord of subordinateUnits">
+                            <td>{{subord.id}}</td>
+                            <td>{{subord.organization?.name}}</td>
+                            <td>{{subord.superior?.name}}</td>
+                            <td>{{subord.subordinate?.name}}</td>
+                            <td></td>
+                            <td class="p-2"> 
+                                <button mat-button disabled color="primary" (click)="subordinateUnit = subord; subordinateTitle='Edit Association'; isUpdate = true; subordinateForm=true;"> <mat-icon>edit</mat-icon>edit</button>                                
+                                <button mat-button class="p-2" color="warn" (click)="deleteSubordinate(subord)">  <mat-icon>delete</mat-icon>delete</button> 
+                            </td>
+                        </tr>
+                        <tr *ngFor="let subord of placeUnderUnits">
+                            <td>{{subord.id}}</td>
+                            <td>{{subord.organization?.name}}</td>
+                            <td>{{subord.superior?.name}}</td>
+                            <td></td>
+                            <td>{{subord.subordinate?.name}}</td>
+                            <td class="p-2"> 
+                                <button mat-button disabled color="primary" (click)="subordinateUnit = subord; subordinateTitle='Edit Association'; isUpdate = true; subordinateForm=true;"> <mat-icon>edit</mat-icon>edit</button>                                
+                                <button mat-button class="p-2" color="warn" (click)="deletePlaceUnder(subord)">  <mat-icon>delete</mat-icon>delete</button> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> 
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>users</mat-icon>
+                <span class="p-2">Tree view</span>          
+            </ng-template>
+            <form #f4="ngForm">
+                <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                    <mat-select #org="ngModel" (selectionChange)="loadOrgTree($event);" required [ngModelOptions]="{standalone: true}" [(ngModel)]="subordinateUnit.organization" placeholder="Select Organization">
+                        <mat-option *ngFor="let org of organizations" [value]="org">{{ org.name }}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="org.invalid && (org.dirty || org.touched)">Organization is required</mat-error>                    
+                </mat-form-field>
+                <span><mat-icon color="primary" style="cursor: pointer;" (click)="refresh()">autorenew</mat-icon></span> 
+            </form>
+            <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">                               
+                <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                  <button mat-icon-button disabled></button>
+                  {{node.data.name}}
+                </mat-tree-node>
+                <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+                  <button mat-icon-button matTreeNodeToggle
+                          [attr.aria-label]="'Toggle ' + node.data">
+                    <mat-icon class="mat-icon-rtl-mirror">
+                      {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                    </mat-icon>
+                  </button>
+                  {{node.data.name}}
+                </mat-tree-node>
+            </mat-tree>            
         </mat-tab>
     </mat-tab-group>
 </sb-layout-dashboard>

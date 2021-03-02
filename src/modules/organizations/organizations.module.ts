@@ -16,11 +16,11 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
 import { NgpImagePickerModule } from 'ngp-image-picker';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
-import { UnitiesModule } from '@modules/unities/unities.module';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatCardModule} from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 @NgModule({  
   imports: [
     CommonModule,
@@ -41,11 +41,11 @@ import {MatExpansionModule} from '@angular/material/expansion';
     ReactiveFormsModule,
     NgpImagePickerModule,
     NgJsonEditorModule,
-    UnitiesModule,
     MatSlideToggleModule,
     MatCardModule,
     MatIconModule,
-    MatExpansionModule
+    MatExpansionModule,
+    CKEditorModule
   ],
   declarations: [OrganizationComponent],
   exports: [OrganizationComponent],
