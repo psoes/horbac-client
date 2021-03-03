@@ -10,6 +10,12 @@ import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/a
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { map, startWith } from 'rxjs/operators';
+import { Organization } from '@modules/organizations/models/organization';
+import { AdminUnit } from '@modules/unities/models/AdminUnit';
+import { Appoints } from '@modules/employees/models/Appoints';
+import { Employs } from '@modules/employees/models/Employs';
+import { UnitService } from '@modules/unities/services/unit.service';
+import { OrganizationService } from '@modules/organizations/services/organization.service';
 
 @Component({
   selector: 'sb-employee',
@@ -28,6 +34,19 @@ export class EmployeeComponent implements OnInit {
   drink: boolean = false;
   fruit: boolean = false;
 
+  organizations: Organization[] = [];
+  aunits!: AdminUnit[];
+  formTitle: string = 'New association';
+  appoints: Appoints[] = [];
+  appoint: Appoints = {};
+  appointForm: boolean = false;
+  currentAppoint: Appoints = {};
+  employs: Employs[] = [];
+  
+
+  mapTitle = '';
+  isSubordinate = true;
+
 
   visible = true;
   selectable = true;
@@ -45,7 +64,7 @@ export class EmployeeComponent implements OnInit {
   public employees: EmployeeCrud [] = [];
   employee: EmployeeCrud = {};
   actionInProgress = false;
-  constructor(private employeeService: EmployeeService,  private sanitization: DomSanitizer) {
+  constructor(private unitService: UnitService, private orgService: OrganizationService, private employeeService: EmployeeService,  private sanitization: DomSanitizer) {
     this.employee = new EmployeeCrud(new SpecialIdentity());
     this.employee.addresses = [new Adress()];
     this.employee.phones = [new PhoneNumber()];
@@ -57,7 +76,19 @@ export class EmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.employeeService.loadEmployees().subscribe( (results : EmployeeCrud[]) =>{
       this.employees = results ? results : [];
+    });
+    this.employeeService.loadAppoints().subscribe( (results : Appoints[]) =>{
+      console.log('RESULTSSS.....', results);
+      this.appoints = results ? results : [];
+    });
+
+    this.orgService.loadOrganizations().subscribe( (results) =>{
+      this.organizations = results;
     })
+
+    this.unitService.loadAdminUnits().subscribe( (results) =>{
+      this.aunits = results;
+    });
   }
   createEmployee(){
     this.actionInProgress = true;
@@ -180,4 +211,20 @@ export class EmployeeComponent implements OnInit {
 
     return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
   }
+
+  createAppoints(){
+    this.actionInProgress = true;
+    console.info('DATA SUBMITTED', this.appoint);
+    this.employeeService.createAppoints(this.appoint).subscribe( (result: Appoints) => {
+      console.info('RESULT', result);
+      this.appoints.push(result);
+    } )
+    this.actionInProgress = false;
+  }
+  deleteAppoints(app: Appoints){
+    this.employeeService.deleteAppoints(app).subscribe( (result: any) => {
+      this.employees = this.employees.filter( item => {return app.id !== app.id});
+    })
+  }
+
 }

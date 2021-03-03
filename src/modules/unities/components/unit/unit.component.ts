@@ -65,8 +65,6 @@ export class UnitComponent implements OnInit {
     return flatNode;
   }  
 
-  
-
   imageSrc! : SafeResourceUrl;
   isUpdate: boolean = false;
   organizations: Organization[] = [];

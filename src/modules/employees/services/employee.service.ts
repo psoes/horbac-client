@@ -2,7 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Appoints } from '../models/Appoints';
 import { EmployeeCrud } from '../models/Employee';
+import { Employs } from '../models/Employs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +13,7 @@ import { EmployeeCrud } from '../models/Employee';
 export class EmployeeService {
 
   EMPLOYEES_API = environment.API_HOST+ '/employees';
+  APPOINTS_API = environment.API_HOST+ '/appoints';
 
   constructor(private http: HttpClient) { }
 
@@ -37,4 +41,29 @@ export class EmployeeService {
 
     return this.http.post('/api/v1/image-upload', formData);
   }
+ 
+  loadAppoints(){
+    return this.http.get<AppointsWrapper>(this.APPOINTS_API).pipe(
+      map(w => w._embedded.appoints)
+    );
+  }
+
+  createAppoints(app: Appoints){
+    return this.http.post<Appoints>(this.APPOINTS_API, app);
+  }
+  
+  updateAppoints(app: Appoints){
+    return this.http.put<Appoints>(this.APPOINTS_API, app);
+  }
+
+  deleteAppoints(app: Appoints){
+    return this.http.delete(this.APPOINTS_API+'/'+ app.id);
+  }
+}
+
+export class AppointsWrapper{
+  _embedded!: { appoints: Appoints[]};
+}
+export class EmploysWrapper{
+  _embedded!: { employs: Employs[]};
 }
