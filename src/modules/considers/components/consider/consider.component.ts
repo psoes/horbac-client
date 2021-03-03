@@ -23,6 +23,7 @@ export class ConsiderComponent implements OnInit {
   activities: Activity[] = [];
   actions: Action[] = [];
   organizations: Organization[] = [];
+  title='';
 
   myForm = new FormGroup({
     activity: new FormControl('', [Validators.required, Validators.minLength(3)]),

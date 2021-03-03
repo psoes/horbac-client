@@ -14,6 +14,7 @@ export class ActionsComponent implements OnInit {
   editAct = false;
   actions: Action[] = [];
   action: Action = {};
+  title='';
 
   myForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),

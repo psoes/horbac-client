@@ -14,6 +14,7 @@ export class ActivitiesComponent implements OnInit {
   editAct = false;
   activities: Activity[] = [];
   activity: Activity = {};
+  title='';
 
   myForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
