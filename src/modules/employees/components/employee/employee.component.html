@@ -678,8 +678,8 @@
                  </mat-card-content> 
              </mat-card>
              <mat-action-row>
-                 <button mat-button class="float-right" color="primary" (click)="appointForm = true; isAppointed = true; formTitle = 'New Association'"><mat-icon>add_circle_outline</mat-icon>Appoints employee</button>
-                 <button mat-button class="float-right" color="primary" (click)="employeeForm = true; isEmployed = false; formTitle = 'New Association';"><mat-icon>add_circle_outline</mat-icon>Employs employee</button>
+                 <button mat-button class="float-right" color="primary" (click)="appointForm = true;  formTitle = 'New Association'"><mat-icon>add_circle_outline</mat-icon>Appoints employee</button>
+                 <button mat-button class="float-right" color="primary" (click)="formTitle = 'New Association';"><mat-icon>add_circle_outline</mat-icon>Employs employee</button>
              </mat-action-row>
              <div class="table-responsive" *ngIf="(appoints && appoints.length !== 0) || (employs && employs.length !== 0)">
                  <caption>
