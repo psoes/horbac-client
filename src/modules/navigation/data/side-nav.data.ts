@@ -61,6 +61,11 @@ export const sideNavItems: SideNavItems = {
                         text: 'Actions',
                         link: '/actions'
                     },
+                    {
+                        icon: 'tachometer-alt',
+                        text: 'Considers',
+                        link: '/considers'
+                    },
                 ],
     },
     environment: {

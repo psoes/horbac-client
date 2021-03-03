@@ -23,6 +23,11 @@ const routes: Routes = [
             import('modules/actions/actions-routing.module').then(m => m.ActionsRoutingModule),
     },
     {
+        path: 'considers',
+        loadChildren: () =>
+            import('modules/considers/considers-routing.module').then(m => m.ConsidersRoutingModule),
+    },
+    {
         path: 'organizations',
         loadChildren: () =>
             import('modules/organizations/organizations-routing.module').then(m => m.OrganizationsRoutingModule),
