@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SBRouteData } from '@modules/navigation/models';
-import { ActivitiesComponent } from './components/activities/activities.component';
-import { ActivitiesModule } from './activities.module';
+import { ActionsComponent } from './components/actions/actions.component';
+import { ActionsModule } from './actions.module';
 
 const routes: Routes = [
   {
@@ -11,8 +11,8 @@ const routes: Routes = [
       title: 'HOrBAC - IdP',
       breadcrumbs: [
           {
-              text: 'Activities',
-              link: '/activities',
+              text: 'Actions',
+              link: '/actions',
           },
           {
               text: 'Register',
@@ -20,13 +20,13 @@ const routes: Routes = [
           },
       ],
   } as SBRouteData,
-    component: ActivitiesComponent,
+    component: ActionsComponent,
 },
 ];
 
 
 @NgModule({
-  imports: [ActivitiesModule, RouterModule.forChild(routes)],
+  imports: [ActionsModule, RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ActivitiesRoutingModule { }
+export class ActionsRoutingModule { }

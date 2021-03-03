@@ -3,7 +3,7 @@ import { SideNavItems, SideNavSection } from '@modules/navigation/models';
 export const sideNavSections: SideNavSection[] = [
     {
         text: 'CORE',
-        items: ['organization', 'unities', 'employees', 'resources', 'views', 'actions', 'activities'],
+        items: ['organization', 'unities', 'employees', 'resources', 'views', 'activities_actions'],
     },
     {
         text: 'CONTEXTS',
@@ -47,15 +47,21 @@ export const sideNavItems: SideNavItems = {
         text: 'Vues',
         link: '/dashboard/light'
     },
-    actions: {
-        icon: 'tachometer-alt',
-        text: 'Actions',
-        link: '/dashboard',
-    },
-    activities: {
-        icon: 'columns',
-        text: 'Activities & actions',
-        link: '/auth/forgot-password'
+    activities_actions: {
+        icon: 'table',
+        text: 'Activities & Actions',
+                submenu: [
+                    {
+                        icon: 'columns',
+                        text: 'Activities',
+                        link: '/activities'
+                    },
+                    {
+                        icon: 'tachometer-alt',
+                        text: 'Actions',
+                        link: '/actions'
+                    },
+                ],
     },
     environment: {
         icon: 'columns',
