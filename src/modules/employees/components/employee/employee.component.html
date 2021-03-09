@@ -233,7 +233,14 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div>              
+            <mat-action-row class="mt-2 mx-auto" *ngIf="tabGroup.selectedIndex">
+                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex - 1"> <mat-icon>keyboard_arrow_left</mat-icon>back</button>
+                <button mat-button  color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit" (click)="createEmployee()"> <mat-icon>save_alt</mat-icon>save</button>
+                <button mat-button  color="primary" *ngIf="isUpdate"  type="submit" (click)="updateEmployee()"> <mat-icon>save_alt</mat-icon> save</button>
+                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>                                        
+                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
+            </mat-action-row>
         </mat-tab>
     <!--
         <mat-tab>
@@ -587,7 +594,7 @@
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                   Map Employees to Units
+                Map Employees to Units
             </ng-template>
             <div class="mt-5" style=" width: 80%; margin: 0 auto;">
                 Here you define association between units. An administrative unit can be subordinated to another. Operational Unit can be placed under an administrative unit.
@@ -677,9 +684,43 @@
                      </form> 
                  </mat-card-content> 
              </mat-card>
+
+             <mat-card *ngIf="appointForm === false"> 
+                <mat-card-title>
+                    {{formTitle}}
+                </mat-card-title>
+                <mat-card-content>        
+                    <form #eemp="ngForm">
+                        <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                            <mat-select #org1="ngModel" required id="org1" name="org1" [(ngModel)]="currentEmploys.organization" placeholder="Select Organization">
+                                <mat-option *ngFor="let org of organizations" [value]="org">{{ org.name }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="org1.invalid && (org1.dirty || org1.touched)">Organization is required</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                            <mat-select #unit1="ngModel" required id="unit11" name="unit1" [(ngModel)]="currentEmploys.operationalUnit" placeholder="Select unit">
+                                <mat-option *ngFor="let ounit of ounits" [value]="ounit">{{ ounit.name }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="unit1.invalid && (unit1.dirty || unit1.touched)">Unit is required</mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                           <mat-select #emp1="ngModel" required id="emp1" name="emp1"  [(ngModel)]="currentEmploys.employee" placeholder="Select employee">
+                               <mat-option *ngFor="let employee of employees" [value]="employee">{{ employee.firstName }} -- {{employee.lastName}}</mat-option>
+                           </mat-select>
+                           <mat-error *ngIf="emp1.invalid && (emp1.dirty || emp1.touched)">employee is required</mat-error>
+                       </mat-form-field>
+                        <mat-action-row>
+                            <button mat-button [disabled]="!eemp.valid" color="primary" type="submit" (click)="createEmploys()"> <mat-icon>save_alt</mat-icon>save</button>
+                            <button mat-button color="accent" type="reset" > <mat-icon>undo</mat-icon>reset</button>
+                        </mat-action-row>
+                    </form> 
+                </mat-card-content> 
+            </mat-card>
+             
              <mat-action-row>
                  <button mat-button class="float-right" color="primary" (click)="appointForm = true;  formTitle = 'New Association'"><mat-icon>add_circle_outline</mat-icon>Appoints employee</button>
-                 <button mat-button class="float-right" color="primary" (click)="formTitle = 'New Association';"><mat-icon>add_circle_outline</mat-icon>Employs employee</button>
+                 <button mat-button class="float-right" color="primary" (click)="appointForm = false; formTitle = 'New Association';"><mat-icon>add_circle_outline</mat-icon>Employs employee</button>
              </mat-action-row>
              <div class="table-responsive" *ngIf="(appoints && appoints.length !== 0) || (employs && employs.length !== 0)">
                  <caption>
@@ -705,28 +746,20 @@
                                  <button mat-button class="p-2" color="warn" (click)="deleteAppoints(appoint)">  <mat-icon>delete</mat-icon>delete</button> 
                              </td>
                          </tr>
-                      <!--  <tr *ngFor="let subord of placeUnderUnits">
-                             <td>{{subord.id}}</td>
-                             <td>{{subord.organization?.name}}</td>
-                             <td>{{subord.superior?.name}}</td>
-                             <td></td>
-                             <td>{{subord.subordinate?.name}}</td>
-                             <td class="p-2"> 
-                                 <button mat-button disabled color="primary" (click)="subordinateUnit = subord; subordinateTitle='Edit Association'; isUpdate = true; subordinateForm=true;"> <mat-icon>edit</mat-icon>edit</button>                                
-                                 <button mat-button class="p-2" color="warn" (click)="deletePlaceUnder(subord)">  <mat-icon>delete</mat-icon>delete</button> 
-                             </td>
+                         <tr *ngFor="let employ of employs">
+                            <td>{{employ.id}}</td>
+                            <td>{{employ.organization?.name}}</td>
+                            <td>{{employ.operationalUnit?.name}}</td>
+                            <td>{{employ.employee?.firstName}} -- {{employ.employee?.lastName}}  </td>
+                            <td></td>
+                            <td class="p-2"> 
+                                <button mat-button disabled color="primary" (click)="currentEmploys=employ; formTitle='Edit Association'; isUpdate = true; appointForm=false;"> <mat-icon>edit</mat-icon>edit</button>                                
+                                <button mat-button class="p-2" color="warn" (click)="deleteEmploys(employ)">  <mat-icon>delete</mat-icon>delete</button> 
+                            </td>
                          </tr>
-                         --> 
                      </tbody>
                  </table>
              </div> 
         </mat-tab>
-    </mat-tab-group>  
-    <mat-action-row class="mt-2 mx-auto" *ngIf="tabGroup.selectedIndex">
-        <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex - 1"> <mat-icon>keyboard_arrow_left</mat-icon>back</button>
-        <button mat-button  color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit" (click)="createEmployee()"> <mat-icon>save_alt</mat-icon>save</button>
-        <button mat-button  color="primary" *ngIf="isUpdate"  type="submit" (click)="updateEmployee()"> <mat-icon>save_alt</mat-icon> save</button>
-        <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>                                        
-        <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
-    </mat-action-row>
+    </mat-tab-group>
 </sb-layout-dashboard>

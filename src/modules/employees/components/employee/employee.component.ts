@@ -16,6 +16,7 @@ import { Appoints } from '@modules/employees/models/Appoints';
 import { Employs } from '@modules/employees/models/Employs';
 import { UnitService } from '@modules/unities/services/unit.service';
 import { OrganizationService } from '@modules/organizations/services/organization.service';
+import { OperationalUnit } from '@modules/unities/models/OperationalUnit';
 
 @Component({
   selector: 'sb-employee',
@@ -35,13 +36,16 @@ export class EmployeeComponent implements OnInit {
   fruit: boolean = false;
 
   organizations: Organization[] = [];
-  aunits!: AdminUnit[];
+  aunits: AdminUnit[] = [];
+  ounits: OperationalUnit[] = [];
+
   formTitle: string = 'New association';
   appoints: Appoints[] = [];
   appoint: Appoints = {};
-  appointForm: boolean = false;
+  appointForm: boolean|null = null;
   currentAppoint: Appoints = {};
   employs: Employs[] = [];
+  currentEmploys: Employs = {};
   
 
   mapTitle = '';
@@ -78,7 +82,6 @@ export class EmployeeComponent implements OnInit {
       this.employees = results ? results : [];
     });
     this.employeeService.loadAppoints().subscribe( (results : Appoints[]) =>{
-      console.log('RESULTSSS.....', results);
       this.appoints = results ? results : [];
     });
 
@@ -89,18 +92,23 @@ export class EmployeeComponent implements OnInit {
     this.unitService.loadAdminUnits().subscribe( (results) =>{
       this.aunits = results;
     });
+
+    this.unitService.loadOperationalUnits().subscribe( (results) =>{
+      this.ounits = results;
+    });
+
+    this.employeeService.loadEmploys().subscribe( (results) =>{
+      this.employs = results;
+    })
   }
   createEmployee(){
     this.actionInProgress = true;
-    console.info('DATA SUBMITTED', this.employee);
     this.employeeService.createEmployee(this.employee).subscribe( (result: EmployeeCrud) => {
-      console.info('RESULT', result);
       this.employee = result;
       this.employees.push(result);
     } )
     this.actionInProgress = false;
   }
-
   updateEmployee(){
     this.employeeService.updateEmployee(this.employee).subscribe((result: EmployeeCrud) => {
       let index = this.employees.findIndex(item => item.id === this.employee.id)
@@ -109,7 +117,6 @@ export class EmployeeComponent implements OnInit {
     this.isUpdate = false;
     this.employee = {}
   }
-
   deleteEmployee(emp: EmployeeCrud){
     this.employeeService.deleteEmployee(emp).subscribe( (result: any) => {
       this.employees = this.employees.filter( item => {return item.id !== emp.id});
@@ -214,16 +221,27 @@ export class EmployeeComponent implements OnInit {
 
   createAppoints(){
     this.actionInProgress = true;
-    console.info('DATA SUBMITTED', this.appoint);
     this.employeeService.createAppoints(this.appoint).subscribe( (result: Appoints) => {
-      console.info('RESULT', result);
       this.appoints.push(result);
     } )
     this.actionInProgress = false;
   }
   deleteAppoints(app: Appoints){
     this.employeeService.deleteAppoints(app).subscribe( (result: any) => {
-      this.employees = this.employees.filter( item => {return app.id !== app.id});
+      this.appoints = this.appoints.filter( item => {return app.id !== app.id});
+    })
+  }
+
+  createEmploys(){
+    this.actionInProgress = true;
+    this.employeeService.createEmploys(this.currentEmploys).subscribe( (result: Employs) => {
+      this.employs.push(result);
+    })
+    this.actionInProgress = false;
+  }
+  deleteEmploys(app: Employs){
+    this.employeeService.deleteEmploys(app).subscribe( (result: any) => {
+      this.employs = this.employs.filter( item => {return app.id !== app.id});
     })
   }
 
