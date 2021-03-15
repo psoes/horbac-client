@@ -42,8 +42,7 @@
             <mat-action-row class="mt-2 mx-auto">               
                 <button mat-button (click)="createPeriod()" color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
                 <button mat-button (click)="updatePeriod()"  color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
-                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>                                        
-                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
+                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>
             </mat-action-row>
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -109,12 +108,10 @@
                     </div>
                 </form>
             </div>             
-            <mat-action-row class="mt-2 mx-auto">
-                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex - 1"> <mat-icon>keyboard_arrow_left</mat-icon>previous</button>               
+            <mat-action-row class="mt-2 mx-auto">               
                 <button mat-button (click) = "createLocation()"  color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
                 <button mat-button  (click)="updateLocation()" color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
-                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>                                        
-                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
+                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>
             </mat-action-row>
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -189,12 +186,10 @@
                     </div>
                 </form>
             </div> 
-            <mat-action-row class="mt-2 mx-auto">
-                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex - 1"> <mat-icon>keyboard_arrow_left</mat-icon>previous</button>               
+            <mat-action-row class="mt-2 mx-auto">            
                 <button mat-button (click)="createDevice()" color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
                 <button mat-button  (click)="updateDevice()" color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
-                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>                                        
-                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
+                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>
             </mat-action-row>
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -287,7 +282,7 @@
                             </td>
                             <td class="p-2"> 
                                 <button mat-button color="primary" (click)="isUpdate = true; context=ctx;"> <mat-icon>edit</mat-icon> edit</button>                               
-                                <button (click)="deleteContext(dev)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
+                                <button (click)="deleteContext(ctx)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
                             </td>
                         </tr>
                     </tbody>
@@ -363,7 +358,7 @@
                             </td>
                             <td class="p-2"> 
                                 <button mat-button color="primary" (click)="isUpdate = true; context=ctx;"> <mat-icon>edit</mat-icon> edit</button>                               
-                                <button (click)="deleteContext(dev)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
+                                <button (click)="deleteContext(ctx)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
                             </td>
                         </tr>
                     </tbody>
