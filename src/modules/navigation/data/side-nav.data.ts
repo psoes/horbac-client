@@ -7,7 +7,7 @@ export const sideNavSections: SideNavSection[] = [
     },
     {
         text: 'CONTEXTS',
-        items: ['environment', 'time'],
+        items: ['context'],
     },
     {
         text: 'PERMISSIONS',
@@ -68,10 +68,10 @@ export const sideNavItems: SideNavItems = {
                     },
                 ],
     },
-    environment: {
+    context: {
         icon: 'columns',
-        text: 'Environnement',
-        link: '/dashboard/light'
+        text: 'Context',
+        link: '/context'
     },
     pages: {
         icon: 'book-open',
@@ -119,11 +119,11 @@ export const sideNavItems: SideNavItems = {
         text: 'Projets',
         link: '/charts',
     },
-    time: {
+   /* time: {
         icon: 'chart-area',
         text: 'Temporaire',
         link: '/charts',
-    },
+    },*/
     administrative: {
         icon: 'table',
         text: 'Administratives',

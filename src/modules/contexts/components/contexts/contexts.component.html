@@ -1,0 +1,306 @@
+<sb-layout-dashboard [static]="true">
+    <sb-dashboard-head title="Contexts" [hideBreadcrumbs]="false"></sb-dashboard-head>
+    <mat-tab-group mat-align-tabs="start" dynamicHeight #tabGroup>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <fa-icon [icon]='["fas", "users"]'></fa-icon>
+                <span class="p-2">Time</span>
+            </ng-template>
+            <div class="col-md-12">            
+                <form #f1="ngForm" class="form-group">
+                    <div class="row">
+                        <mat-spinner *ngIf="actionInProgress"></mat-spinner>
+                        <mat-accordion class="col-md-12 mx-auto mt-3" multi="true">
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                    New Time-context
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                    Define new Time-based context
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <ng-template matExpansionPanelContent>
+                                    <mat-form-field class="col-sm-12 col-lg-12 col-md-12">
+                                        <mat-label>Name:</mat-label>
+                                        <input matInput type="text" name="periodname" id="periodname" [(ngModel)]="period.name" />
+                                    </mat-form-field>
+                                    <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
+                                        <mat-label>Date From:</mat-label>
+                                        <input matInput type="date" name="datefrom" id="datefrom" [(ngModel)]="period.dateFrom" />
+                                    </mat-form-field>
+                                    <mat-form-field class="col-sm-6 col-lg-3 col-md-3" >
+                                        <mat-label>Time From:</mat-label>
+                                        <input matInput type="time" name="timefrom" id="timefrom" />
+                                    </mat-form-field>
+                                    <mat-form-field class="col-sm-6 col-lg-3 col-md-3" [matTooltipPosition]="'above'" matTooltip="Date">
+                                        <mat-label>Date To:</mat-label>
+                                        <input matInput type="date" name="dateto" id="dateto" [(ngModel)]="period.dateTo" />
+                                    </mat-form-field>
+                                    <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
+                                        <mat-label>Time To:</mat-label>
+                                        <input matInput type="time" name="timeto" id="timeto" />
+                                    </mat-form-field>
+                                </ng-template>
+                            </mat-expansion-panel>
+                        </mat-accordion>                                
+                    </div>
+                </form>
+            </div>             
+            <mat-action-row class="mt-2 mx-auto">               
+                <button mat-button (click)="createPeriod()" color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
+                <button mat-button (click)="updatePeriod()"  color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
+                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>                                        
+                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
+            </mat-action-row>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <th> #</th>
+                        <th>Name</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let perd of periods">
+                            <td>{{perd.id}}</td>
+                            <td>{{perd.name}}</td>
+                            <td>{{perd.dateFrom}}</td>
+                            <td>{{perd.dateTo}}</td>
+                            <td class="p-2"> 
+                                <button mat-button color="primary" (click)="isUpdate = true; period = perd;"> <mat-icon>edit</mat-icon> edit</button>                               
+                                <button (click)="deletePeriod(perd)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>location</mat-icon>
+                <span class="p-2">Location</span>
+            </ng-template>
+            <div class="col-md-12">            
+                <form #f1="ngForm" class="form-group">
+                    <div class="row">
+                        <mat-spinner *ngIf="actionInProgress"></mat-spinner>
+                        <mat-accordion class="col-md-12 mx-auto mt-3" multi="true">
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                    New location-based context
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                    Define new Location-based context
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <ng-template matExpansionPanelContent>
+                                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                        <mat-label>Location Name:</mat-label>
+                                        <input matInput type="text" name="locationname" id="locationname" [(ngModel)]="hoLocation.name" />
+                                    </mat-form-field>
+
+                                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                        <mat-label>Longitude: </mat-label>
+                                        <input matInput type="number" name="longitude" id="longitude" [(ngModel)]="hoLocation.longitude" />
+                                    </mat-form-field>
+
+                                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                        <mat-label>Latitude: </mat-label>
+                                        <input matInput type="number" name="latitude" id="latitude" [(ngModel)]="hoLocation.latitude"/>
+                                    </mat-form-field>
+                                </ng-template>
+                            </mat-expansion-panel>
+                        </mat-accordion>                                
+                    </div>
+                </form>
+            </div>             
+            <mat-action-row class="mt-2 mx-auto">
+                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex - 1"> <mat-icon>keyboard_arrow_left</mat-icon>previous</button>               
+                <button mat-button (click) = "createLocation()"  color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
+                <button mat-button  (click)="updateLocation()" color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
+                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>                                        
+                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
+            </mat-action-row>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <th> #</th>
+                        <th>Name</th>
+                        <th>Longitude</th>
+                        <th>Latitude</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let location of hoLocations">
+                            <td>{{location.id}}</td>
+                            <td>{{location.name}}</td>
+                            <td>{{location.longitude}}</td>
+                            <td>{{location.latitude}}</td>
+                            <td class="p-2"> 
+                                <button mat-button color="primary" (click)="isUpdate = true; hoLocation = location"> <mat-icon>edit</mat-icon> edit</button>                               
+                                <button (click)="deleteLocation(location)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>device</mat-icon>
+                <span class="p-2">Device</span>
+            </ng-template>
+            <div class="col-md-12">            
+                <form #f1="ngForm" class="form-group">
+                    <div class="row">
+                        <mat-spinner *ngIf="actionInProgress"></mat-spinner>
+                        <mat-accordion class="col-md-12 mx-auto mt-3" multi="true">
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                    New DeviceType-based context
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                    Define new DeviceType-based context
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <ng-template matExpansionPanelContent>
+                                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                        <mat-label>Type:</mat-label>
+                                        <input matInput type="text" name="devicetype" id="devicetype" [(ngModel)]="device.type" />
+                                    </mat-form-field>
+
+                                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                        <mat-label>Browser Name: </mat-label>
+                                        <input matInput type="text" name="browsername" id="browsername" [(ngModel)]="device.browser_name" />
+                                    </mat-form-field>
+
+                                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                        <mat-label>Browser Version: </mat-label>
+                                        <input matInput type="text" name="browserversion" id="browserversion" [(ngModel)]="device.browser_version"/>
+                                    </mat-form-field>
+                                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                        <mat-label>Plateform Name: </mat-label>
+                                        <input matInput type="text" name="platefromname" id="plateformname" [(ngModel)]="device.platform_name"/>
+                                    </mat-form-field>
+
+                                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                                        <mat-label>Plateform Version: </mat-label>
+                                        <input matInput type="text" name="plateformversion" id="plateformversion" [(ngModel)]="device.platform_version"/>
+                                    </mat-form-field>
+                                </ng-template>
+                            </mat-expansion-panel>
+                        </mat-accordion>                                
+                    </div>
+                </form>
+            </div> 
+            <mat-action-row class="mt-2 mx-auto">
+                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex - 1"> <mat-icon>keyboard_arrow_left</mat-icon>previous</button>               
+                <button mat-button (click)="createDevice()" color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
+                <button mat-button  (click)="updateDevice()" color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
+                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>                                        
+                <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1"> <mat-icon>keyboard_arrow_right</mat-icon>next</button>
+            </mat-action-row>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <th> #</th>
+                        <th>Type</th>
+                        <th>Browser Name</th>
+                        <th>Browser Version</th>
+                        <th>Plateform Name</th>
+                        <th>Plateform Version</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let dev of devices">
+                            <td>{{dev.id}}</td>
+                            <td>{{dev.type}}</td>
+                            <td>{{dev.browser_name}}</td>
+                            <td>{{dev.browser_version}}</td>
+                            <td>{{dev.platform_name}}</td>
+                            <td>{{dev.platform_version}}</td>
+                            <td class="p-2"> 
+                                <button mat-button color="primary" (click)="isUpdate = true; device = dev"> <mat-icon>edit</mat-icon> edit</button>                               
+                                <button mat-button color="warn" (click)="deleteDevice(dev)" > <mat-icon>delete</mat-icon> delete </button> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+        </mat-tab>        
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>table</mat-icon>
+                <span class="p-2">Contexts Table</span>
+            </ng-template>
+            <div class="col-md-12">            
+                <form #f1="ngForm" class="form-group">
+                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                        <mat-label>Name: </mat-label>
+                        <input matInput type="text" name="ctxname" id="ctxname" [(ngModel)]="context.name" />
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-3 col-lg-3 col-md-3">
+                        <mat-select [(value)]="context.periods" placeholder="Select periods">
+                            <mat-option *ngFor="let period of periods" [value]="period">{{ period.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>  
+                    <mat-form-field class="col-sm-3 col-lg-3 col-md-3">
+                        <mat-select [(value)]="context.locations" placeholder="Select locations">
+                            <mat-option *ngFor="let location of hoLocations" [value]="location">{{ location.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-3 col-lg-3 col-md-3">
+                        <mat-select [(value)]="context.devices" placeholder="Select accpeted devices">
+                            <mat-option *ngFor="let dev of devices" [value]="dev">{{dev.browser_name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+            <mat-action-row class="mt-2 mx-auto">                              
+                <button mat-button (click)="createContext()" color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
+                <button mat-button  (click)="updateContext()" color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
+                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>
+            </mat-action-row>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <th> #</th>
+                        <th>Name</th>
+                        <th>Periods</th>
+                        <th>Locations</th>
+                        <th>Devices</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ctx of contexts">
+                            <td>{{ctx.id}}</td>
+                            <td>{{ctx.name}}</td>
+                            <td>
+                                <tr *ngFor="let per of ctx.periods">
+                                    <td>{{per.name}}</td>
+                                </tr>
+                            </td>
+                            <td>
+                                <tr *ngFor="let loc of ctx.locations">
+                                    <td>{{loc.name}}</td>
+                                </tr>
+                            </td>
+                            <td>
+                                <tr *ngFor="let dev of ctx.devices">
+                                    <td>{{dev.name}}</td>
+                                </tr>
+                            </td>
+                            <td class="p-2"> 
+                                <button mat-button color="primary" (click)="isUpdate = true; context=ctx;"> <mat-icon>edit</mat-icon> edit</button>                               
+                                <button (click)="deleteContext()" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</sb-layout-dashboard>

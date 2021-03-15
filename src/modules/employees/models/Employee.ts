@@ -78,18 +78,6 @@ export class Person {
         this.avatar = avatar;
     }
 }
-export class HOLocation {
-    id? : number;
-    name? : string;
-    longitude? : number;
-    latitude?: number;
-    constructor(id?: number, name?: string, longi?: number, lat?: number){
-        this.id = id;
-        this.name = name;
-        this.longitude = longi;
-        this.latitude = lat;
-    }    
-}
 
 export class SpecialIdentity {
     nationalID?: string ;

@@ -17,6 +17,7 @@ import { Employs } from '@modules/employees/models/Employs';
 import { UnitService } from '@modules/unities/services/unit.service';
 import { OrganizationService } from '@modules/organizations/services/organization.service';
 import { OperationalUnit } from '@modules/unities/models/OperationalUnit';
+import { browser } from 'protractor';
 
 @Component({
   selector: 'sb-employee',
@@ -24,6 +25,7 @@ import { OperationalUnit } from '@modules/unities/models/OperationalUnit';
   styleUrls: ['./employee.component.scss']
 })
 export class EmployeeComponent implements OnInit {
+  
   imageSrc! : SafeResourceUrl;
   isUpdate: boolean = false;
   nbPhones: number = 0;
