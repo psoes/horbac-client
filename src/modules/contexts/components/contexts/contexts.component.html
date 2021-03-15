@@ -25,21 +25,13 @@
                                         <mat-label>Name:</mat-label>
                                         <input matInput type="text" name="periodname" id="periodname" [(ngModel)]="period.name" />
                                     </mat-form-field>
-                                    <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
+                                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
                                         <mat-label>Date From:</mat-label>
-                                        <input matInput type="date" name="datefrom" id="datefrom" [(ngModel)]="period.dateFrom" />
+                                        <input matInput type="datetime-local" name="datefrom" id="datefrom" [value]="period.dateFrom" [min]="currentdate"  [(ngModel)]="period.dateFrom" />
                                     </mat-form-field>
-                                    <mat-form-field class="col-sm-6 col-lg-3 col-md-3" >
-                                        <mat-label>Time From:</mat-label>
-                                        <input matInput type="time" name="timefrom" id="timefrom" />
-                                    </mat-form-field>
-                                    <mat-form-field class="col-sm-6 col-lg-3 col-md-3" [matTooltipPosition]="'above'" matTooltip="Date">
+                                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6" [matTooltipPosition]="'above'" matTooltip="Date">
                                         <mat-label>Date To:</mat-label>
-                                        <input matInput type="date" name="dateto" id="dateto" [(ngModel)]="period.dateTo" />
-                                    </mat-form-field>
-                                    <mat-form-field class="col-sm-6 col-lg-3 col-md-3">
-                                        <mat-label>Time To:</mat-label>
-                                        <input matInput type="time" name="timeto" id="timeto" />
+                                        <input matInput type="datetime-local" name="dateto" id="dateto" [(ngModel)]="period.dateTo" />
                                     </mat-form-field>
                                 </ng-template>
                             </mat-expansion-panel>
@@ -66,8 +58,8 @@
                         <tr *ngFor="let perd of periods">
                             <td>{{perd.id}}</td>
                             <td>{{perd.name}}</td>
-                            <td>{{perd.dateFrom}}</td>
-                            <td>{{perd.dateTo}}</td>
+                            <td>{{perd.dateFrom | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                            <td>{{perd.dateTo | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
                             <td class="p-2"> 
                                 <button mat-button color="primary" (click)="isUpdate = true; period = perd;"> <mat-icon>edit</mat-icon> edit</button>                               
                                 <button (click)="deletePeriod(perd)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
@@ -239,22 +231,22 @@
             </ng-template>
             <div class="col-md-12">            
                 <form #f1="ngForm" class="form-group">
-                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
                         <mat-label>Name: </mat-label>
                         <input matInput type="text" name="ctxname" id="ctxname" [(ngModel)]="context.name" />
                     </mat-form-field>
-                    <mat-form-field class="col-sm-3 col-lg-3 col-md-3">
-                        <mat-select [(value)]="context.periods" placeholder="Select periods">
+                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                        <mat-select [(value)]="context.periods" placeholder="Select periods" multiple>
                             <mat-option *ngFor="let period of periods" [value]="period">{{ period.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>  
-                    <mat-form-field class="col-sm-3 col-lg-3 col-md-3">
-                        <mat-select [(value)]="context.locations" placeholder="Select locations">
+                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                        <mat-select [(value)]="context.locations" placeholder="Select locations" multiple>
                             <mat-option *ngFor="let location of hoLocations" [value]="location">{{ location.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field class="col-sm-3 col-lg-3 col-md-3">
-                        <mat-select [(value)]="context.devices" placeholder="Select accpeted devices">
+                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                        <mat-select [(value)]="context.devices" placeholder="Select accpeted devices" multiple>
                             <mat-option *ngFor="let dev of devices" [value]="dev">{{dev.browser_name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -290,12 +282,88 @@
                             </td>
                             <td>
                                 <tr *ngFor="let dev of ctx.devices">
-                                    <td>{{dev.name}}</td>
+                                    <td>{{dev.type}} {{dev.browser_name}} {{dev.platform_name}} </td>
                                 </tr>
                             </td>
                             <td class="p-2"> 
                                 <button mat-button color="primary" (click)="isUpdate = true; context=ctx;"> <mat-icon>edit</mat-icon> edit</button>                               
-                                <button (click)="deleteContext()" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
+                                <button (click)="deleteContext(dev)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>table</mat-icon>
+                <span class="p-2">Map Contexts</span>
+            </ng-template>
+            <div class="col-md-12">            
+                <form #f1="ngForm" class="form-group">
+                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                        <mat-select [(value)]="context.devices" placeholder="Select organization" >
+                            <mat-option *ngFor="let dev of devices" [value]="dev">{{dev.browser_name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                        <mat-select [(value)]="context.periods" placeholder="Select employee" >
+                            <mat-option *ngFor="let period of periods" [value]="period">{{ period.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>  
+                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                        <mat-select [(value)]="context.locations" placeholder="Select context" >
+                            <mat-option *ngFor="let location of hoLocations" [value]="location">{{ location.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                        <mat-select [(value)]="context.devices" placeholder="Select action" >
+                            <mat-option *ngFor="let dev of devices" [value]="dev">{{dev.browser_name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                        <mat-select [(value)]="context.devices" placeholder="Select resource">
+                            <mat-option *ngFor="let dev of devices" [value]="dev">{{dev.browser_name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+            <mat-action-row class="mt-2 mx-auto">                              
+                <button mat-button (click)="createContext()" color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
+                <button mat-button  (click)="updateContext()" color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
+                <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>
+            </mat-action-row>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <th> #</th>
+                        <th>Name</th>
+                        <th>Periods</th>
+                        <th>Locations</th>
+                        <th>Devices</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ctx of contexts">
+                            <td>{{ctx.id}}</td>
+                            <td>{{ctx.name}}</td>
+                            <td>
+                                <tr *ngFor="let per of ctx.periods">
+                                    <td>{{per.name}}</td>
+                                </tr>
+                            </td>
+                            <td>
+                                <tr *ngFor="let loc of ctx.locations">
+                                    <td>{{loc.name}}</td>
+                                </tr>
+                            </td>
+                            <td>
+                                <tr *ngFor="let dev of ctx.devices">
+                                    <td>{{dev.type}} {{dev.browser_name}} {{dev.platform_name}} </td>
+                                </tr>
+                            </td>
+                            <td class="p-2"> 
+                                <button mat-button color="primary" (click)="isUpdate = true; context=ctx;"> <mat-icon>edit</mat-icon> edit</button>                               
+                                <button (click)="deleteContext(dev)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
                             </td>
                         </tr>
                     </tbody>

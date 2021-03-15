@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AcceptedDevice, Context, HOPeriod } from '@modules/contexts/models/Contexts';
 import { ContextService } from '@modules/contexts/services/context.service';
 import { HOLocation } from '@modules/unities/models/OrgUnit';
-import { Console } from 'console';
 
 @Component({
   selector: 'sb-contexts',
@@ -18,22 +17,29 @@ export class ContextsComponent implements OnInit {
   devices: AcceptedDevice[] = [];
   periods: HOPeriod[] = [];
   period: HOPeriod = {};
+  
+  actionInProgress: boolean = false;
 
   context: Context = {};
   contexts: Context [] = [];
   title = '';
 
+  currentdate = new Date().toLocaleString();; 
+
   constructor(private contextService: ContextService) { }
 
   ngOnInit(): void {
-    this.contextService.loadLocations().subscribe( results =>{
+    this.contextService.loadLocations().subscribe( results =>{      
       this.hoLocations = results? results : [];
+      console.log("LOCATIONS ... ", this.hoLocations)
     })
+
     this.contextService.loadDevices().subscribe(results =>{
       this.devices = results? results : [];
     })
     this.contextService.loadPeriods().subscribe(results =>{
       this.periods = results? results : [];
+      console.log("PERIODS ... ", this.periods)
     });
     this.contextService.loadContexts().subscribe(results =>{
       this.contexts = results? results : [];
@@ -126,7 +132,5 @@ export class ContextsComponent implements OnInit {
       this.contexts = this.contexts.filter( item => {return item.id !== per.id});
     })
   }
-
-
 
 }

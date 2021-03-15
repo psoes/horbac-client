@@ -17,7 +17,7 @@ export class ContextService {
 
   loadLocations(){
     return this.http.get<HOLocationsWrapper>(this.LOCATIONS_API).pipe(
-      map(w => w._embedded.hoLocations)
+      map(w => w._embedded.hOLocations)
     )
   }
   createLocation(location: HOLocation){
@@ -48,7 +48,7 @@ export class ContextService {
   /////
   loadPeriods(){
     return this.http.get<PeriodsWrapper>(this.PERIODS_API).pipe(
-      map(w => w._embedded.hoPeriods)
+      map(w => w._embedded.hOPeriods)
     )
   }
   createPeriod(app: HOPeriod){
@@ -76,7 +76,7 @@ export class ContextService {
   }
 }
 export class HOLocationsWrapper{
-  _embedded!: { hoLocations: HOLocation[]};
+  _embedded!: { hOLocations: HOLocation[]};
 }
 
 export class DevicesWrapper{
@@ -84,5 +84,5 @@ export class DevicesWrapper{
 }
 
 export class PeriodsWrapper{
-  _embedded!: { hoPeriods: HOPeriod[]};
+  _embedded!: { hOPeriods: HOPeriod[]};
 }
