@@ -27,7 +27,8 @@
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
                                         <mat-label>Date From:</mat-label>
-                                        <input matInput type="datetime-local" name="datefrom" id="datefrom" [value]="period.dateFrom" [min]="currentdate"  [(ngModel)]="period.dateFrom" />
+                                        <!-- [min]="date"-->
+                                        <input matInput type="datetime-local" name="datefrom" id="datefrom" [value]="period.dateFrom"  [(ngModel)]="period.dateFrom" />
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6" [matTooltipPosition]="'above'" matTooltip="Date">
                                         <mat-label>Date To:</mat-label>
