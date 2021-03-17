@@ -1,3 +1,8 @@
+import { Action } from "@modules/actions/models/Action";
+import { EmployeeCrud } from "@modules/employees/models/Employee";
+import { Organization } from "@modules/organizations/models/organization";
+import { Resource } from "@modules/resources/models/Resource";
+
 export class HOLocation {
     id? : number;
     name? : string;
@@ -43,5 +48,28 @@ export class Context {
 	locations?: HOLocation [] = []; 
 	devices?: AcceptedDevice [] = []; 
 }
+
+export class Define {
+    id?: number;	
+    employee?: EmployeeCrud;
+    context?: Context;	
+    action?: Action;    
+	resource?: Resource;	
+	organization?: Organization;
+
+    constructor(id?: number, employee?: EmployeeCrud, context?: Context, action?: Action, resource?: Resource, org?: Organization){
+        this.id = id;
+        this.employee = employee;
+        this.context = context;	
+        this.action = action;    
+	    this.resource = resource;	
+	    this.organization = org;
+    }
+}
+
+
+
+
+
 
 

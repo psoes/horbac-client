@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { AcceptedDevice, Context, HOPeriod } from '@modules/contexts/models/Contexts';
+import { Action } from '@modules/actions/models/Action';
+import { ActionsService } from '@modules/actions/services/actions.service';
+import { AcceptedDevice, Context, Define, HOPeriod } from '@modules/contexts/models/Contexts';
 import { ContextService } from '@modules/contexts/services/context.service';
+import { EmployeeCrud } from '@modules/employees/models/Employee';
+import { EmployeeService } from '@modules/employees/services/employee.service';
+import { Organization } from '@modules/organizations/models/organization';
+import { OrganizationService } from '@modules/organizations/services/organization.service';
+import { Resource } from '@modules/resources/models/Resource';
+import { ResourceService } from '@modules/resources/services/resource.service';
 import { HOLocation } from '@modules/unities/models/OrgUnit';
 
 @Component({
@@ -24,14 +32,34 @@ export class ContextsComponent implements OnInit {
   contexts: Context [] = [];
   title = '';
 
-  currentdate = new Date().toLocaleString();; 
+  define: Define = new Define();
+  defines: Define[] = [];
 
-  constructor(private contextService: ContextService) { }
+  organizations: Organization[] = [];
+  employees: EmployeeCrud[] = [];
+  actions: Action[] = [];
+  resources: Resource[] = []; 
+
+  constructor(private resourceService: ResourceService, private actionService: ActionsService, private employeeService: EmployeeService, private contextService: ContextService, private orgService: OrganizationService) { }
 
   ngOnInit(): void {
+    this.contextService.loadDefines().subscribe( (results : Define[]) =>{
+      this.defines = results ? results : [];
+    });
+    this.resourceService.loadResources().subscribe( (results : Resource[]) =>{
+      this.resources = results ? results : [];
+    });
+    this.actionService.loadActions().subscribe( (results : Action[]) =>{
+      this.actions = results ? results : [];
+    });
+    this.employeeService.loadEmployees().subscribe( (results : EmployeeCrud[]) =>{
+      this.employees = results ? results : [];
+    });
+    this.orgService.loadOrganizations().subscribe( (results : Organization[]) =>{
+      this.organizations = results;
+    })
     this.contextService.loadLocations().subscribe( results =>{      
       this.hoLocations = results? results : [];
-      console.log("LOCATIONS ... ", this.hoLocations)
     })
 
     this.contextService.loadDevices().subscribe(results =>{
@@ -69,6 +97,7 @@ export class ContextsComponent implements OnInit {
   createLocation(){
     this.contextService.createLocation(this.hoLocation).subscribe( (result) => {
       this.hoLocations.push(<HOLocation>result);
+      this.hoLocation = {};
     })
   }
 
@@ -91,6 +120,7 @@ export class ContextsComponent implements OnInit {
   createPeriod(){
     this.contextService.createPeriod(this.period).subscribe( (result) => {
       this.periods.push(<HOPeriod>result);
+      this.period = {};
     })
   }
 
@@ -112,9 +142,9 @@ export class ContextsComponent implements OnInit {
   ////
 
   createContext(){
-    console.log("datatata ", this.context);
     this.contextService.createContext(this.context).subscribe( (result) => {
       this.contexts.push(<Context>result);
+      this.context = {};
     })
   }
 
@@ -132,5 +162,29 @@ export class ContextsComponent implements OnInit {
       this.contexts = this.contexts.filter( item => {return item.id !== per.id});
     })
   }
+
+  /////
+  createDefine(){
+    this.contextService.createDefine(this.define).subscribe( (result) => {
+      this.defines.push(<Define>result);
+      this.define = new Define();
+    })
+  }
+
+  updateDefine(){
+    this.contextService.updateDefine(this.define).subscribe((result) => {
+      let index = this.defines.findIndex(item => item.id === this.define.id);
+      this.defines[index] = <Define>result;
+    });
+    this.isUpdate = false;
+    this.define = new Define();
+  }
+
+  deleteDefine(per: Define){
+    this.contextService.deleteDefine(per).subscribe( result => {
+      this.defines = this.defines.filter( item => {return item.id !== per.id});
+    })
+  }
+
 
 }

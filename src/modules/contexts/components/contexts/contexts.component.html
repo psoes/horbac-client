@@ -9,7 +9,7 @@
             <div class="col-md-12">            
                 <form #f1="ngForm" class="form-group">
                     <div class="row">
-                        <mat-spinner *ngIf="actionInProgress"></mat-spinner>
+                        <!--<mat-spinner *ngIf="actionInProgress"></mat-spinner> -->
                         <mat-accordion class="col-md-12 mx-auto mt-3" multi="true">
                             <mat-expansion-panel>
                                 <mat-expansion-panel-header>
@@ -76,7 +76,7 @@
             <div class="col-md-12">            
                 <form #f1="ngForm" class="form-group">
                     <div class="row">
-                        <mat-spinner *ngIf="actionInProgress"></mat-spinner>
+                         <!--<mat-spinner *ngIf="actionInProgress"></mat-spinner> -->
                         <mat-accordion class="col-md-12 mx-auto mt-3" multi="true">
                             <mat-expansion-panel>
                                 <mat-expansion-panel-header>
@@ -145,7 +145,7 @@
             <div class="col-md-12">            
                 <form #f1="ngForm" class="form-group">
                     <div class="row">
-                        <mat-spinner *ngIf="actionInProgress"></mat-spinner>
+                         <!--<mat-spinner *ngIf="actionInProgress"></mat-spinner> -->
                         <mat-accordion class="col-md-12 mx-auto mt-3" multi="true">
                             <mat-expansion-panel>
                                 <mat-expansion-panel-header>
@@ -297,68 +297,59 @@
             <div class="col-md-12">            
                 <form #f1="ngForm" class="form-group">
                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                        <mat-select [(value)]="context.devices" placeholder="Select organization" >
-                            <mat-option *ngFor="let dev of devices" [value]="dev">{{dev.browser_name}}</mat-option>
+                        <mat-select [(value)]="define.organization" placeholder="Select organization" >
+                            <mat-option *ngFor="let org of organizations" [value]="org">{{org.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                        <mat-select [(value)]="context.periods" placeholder="Select employee" >
-                            <mat-option *ngFor="let period of periods" [value]="period">{{ period.name }}</mat-option>
+                        <mat-select [(value)]="define.employee" placeholder="Select employee" >
+                            <mat-option *ngFor="let em of employees" [value]="em">{{ em.firstName }}</mat-option>
                         </mat-select>
                     </mat-form-field>  
                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                        <mat-select [(value)]="context.locations" placeholder="Select context" >
-                            <mat-option *ngFor="let location of hoLocations" [value]="location">{{ location.name }}</mat-option>
+                        <mat-select [(value)]="define.context" placeholder="Select context" >
+                            <mat-option *ngFor="let ctx of contexts" [value]="ctx">{{ ctx.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                        <mat-select [(value)]="context.devices" placeholder="Select action" >
-                            <mat-option *ngFor="let dev of devices" [value]="dev">{{dev.browser_name}}</mat-option>
+                        <mat-select [(value)]="define.action" placeholder="Select action" >
+                            <mat-option *ngFor="let op of actions" [value]="op">{{op.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                        <mat-select [(value)]="context.devices" placeholder="Select resource">
-                            <mat-option *ngFor="let dev of devices" [value]="dev">{{dev.browser_name}}</mat-option>
+                        <mat-select [(value)]="define.resource" placeholder="Select resource">
+                            <mat-option *ngFor="let res of resources" [value]="res">{{res.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </form>
             </div>
             <mat-action-row class="mt-2 mx-auto">                              
-                <button mat-button (click)="createContext()" color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
-                <button mat-button  (click)="updateContext()" color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
+                <button mat-button (click)="createDefine()" color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
+                <button mat-button  (click)="updateDefine()" color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
                 <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>
             </mat-action-row>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <th> #</th>
-                        <th>Name</th>
-                        <th>Periods</th>
-                        <th>Locations</th>
-                        <th>Devices</th>
+                        <th>Org</th>
+                        <th>Employee</th>
+                        <th>Context</th>
+                        <th>Action</th>
+                        <th>Resource</th>
+                        <th>Actions</th>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let ctx of contexts">
-                            <td>{{ctx.id}}</td>
-                            <td>{{ctx.name}}</td>
-                            <td>
-                                <tr *ngFor="let per of ctx.periods">
-                                    <td>{{per.name}}</td>
-                                </tr>
-                            </td>
-                            <td>
-                                <tr *ngFor="let loc of ctx.locations">
-                                    <td>{{loc.name}}</td>
-                                </tr>
-                            </td>
-                            <td>
-                                <tr *ngFor="let dev of ctx.devices">
-                                    <td>{{dev.type}} {{dev.browser_name}} {{dev.platform_name}} </td>
-                                </tr>
-                            </td>
+                        <tr *ngFor="let def of defines">
+                            <td>{{def.id}}</td>
+                            <td>{{def.organization?.name}}</td>
+                            <td>{{def.employee?.firstName}}</td>
+                            <td>{{def.context?.name}}</td>
+                            <td>{{def.action?.name}}</td>
+                            <td>{{def.resource?.name}}</td>
                             <td class="p-2"> 
-                                <button mat-button color="primary" (click)="isUpdate = true; context=ctx;"> <mat-icon>edit</mat-icon> edit</button>                               
-                                <button (click)="deleteContext(ctx)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
+                                <button mat-button color="primary" (click)="isUpdate = true; define=def;"> <mat-icon>edit</mat-icon> edit</button>                               
+                                <button (click)="deleteDefine(def)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
                             </td>
                         </tr>
                     </tbody>

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { map } from 'rxjs/operators';
-import { AcceptedDevice, Context, HOLocation, HOPeriod } from '../models/Contexts';
+import { AcceptedDevice, Context, Define, HOLocation, HOPeriod } from '../models/Contexts';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ export class ContextService {
   DEVICES_API = environment.API_HOST+ '/accepted-devices';
   PERIODS_API = environment.API_HOST+ '/periods';
   CONTEXTS_API = environment.API_HOST+ '/contexts';
+  DEFINES_API = environment.API_HOST+ '/defines';
 
   constructor(private http: HttpClient) { }
 
@@ -74,6 +75,22 @@ export class ContextService {
   deleteContext(app: Context){
     return this.http.delete(this.CONTEXTS_API+'/'+ app.id);
   }
+
+  /////§
+
+  loadDefines(){
+    return this.http.get<Define[]>(this.DEFINES_API);
+  }
+  createDefine(app: Define){
+    return this.http.post<Define>(this.DEFINES_API, app);
+  }  
+  updateDefine(app: Define){
+    return this.http.put<Define>(this.DEFINES_API+'/'+ app.id, app);
+  }
+  deleteDefine(app: Define){
+    return this.http.delete(this.DEFINES_API+'/'+ app.id);
+  }
+
 }
 export class HOLocationsWrapper{
   _embedded!: { hOLocations: HOLocation[]};
