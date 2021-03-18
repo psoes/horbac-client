@@ -48,6 +48,11 @@ const routes: Routes = [
             import('modules/employees/employees-routing.module').then(m => m.EmployeesRoutingModule),
     },
     {
+        path: 'permissions',
+        loadChildren: () =>
+            import('modules/permissions/permissions-routing.module').then(m => m.PermissionsRoutingModule),
+    },
+    {
         path: 'dashboard',
         loadChildren: () =>
             import('modules/dashboard/dashboard-routing.module').then(

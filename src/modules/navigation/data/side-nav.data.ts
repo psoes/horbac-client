@@ -11,7 +11,7 @@ export const sideNavSections: SideNavSection[] = [
     },
     {
         text: 'PERMISSIONS',
-        items: ['administrative', 'operational'],
+        items: ['abtracts', 'helper'],
     },
     {
         text: 'CLIENTS',
@@ -124,16 +124,29 @@ export const sideNavItems: SideNavItems = {
         text: 'Temporaire',
         link: '/charts',
     },*/
-    administrative: {
+   /* administrative: {
         icon: 'table',
         text: 'Administratives',
         link: '/tables',
     },
+    
     operational: {
         icon: 'table',
         text: 'Operationnelles',
         link: '/tables',
+    },*/
+    abtracts: {
+        icon: 'table',
+        text: 'Units Grants',
+        link: '/permissions',
     },
+    
+    helper: {
+        icon: 'table',
+        text: 'Permission Helper',
+        link: '/tables',
+    },
+
     clients: {
         icon: 'chart-area',
         text: 'Clients',
