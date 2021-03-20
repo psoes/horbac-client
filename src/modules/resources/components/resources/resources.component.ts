@@ -94,7 +94,7 @@ export class ResourcesComponent implements OnInit {
   createVue(){
     this.resourceService.createView(this.vue).subscribe((result: Vue) => {
       this.editVue = false;
-      this.resources.push(result);
+      this.vues.push(result);
     })
   }
 
