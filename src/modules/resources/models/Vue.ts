@@ -1,6 +1,6 @@
 export class Vue {
     id?: number;	
 	name?: string;	
-	desription?: string;       
+	description?: string;       
     domain?: string;
 }
