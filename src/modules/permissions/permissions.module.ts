@@ -27,6 +27,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { PermissionHelperComponent } from './components/permission-helper/permission-helper.component';
 
 
 @NgModule({
@@ -59,7 +60,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatChipsModule,
     MatAutocompleteModule
   ],
-  declarations: [AbstractPermissionsComponent],
+  declarations: [AbstractPermissionsComponent, PermissionHelperComponent],
   exports: [AbstractPermissionsComponent],
 })
 export class PermissionsModule { }

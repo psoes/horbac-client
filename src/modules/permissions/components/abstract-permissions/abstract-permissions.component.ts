@@ -21,7 +21,6 @@ import { UnitService } from '@modules/unities/services/unit.service';
   styleUrls: ['./abstract-permissions.component.scss']
 })
 export class AbstractPermissionsComponent implements OnInit {
-
     isUpdate: boolean = false;
     contexts: Context[] = [];
     activities: Activity[] = [];	
@@ -29,7 +28,7 @@ export class AbstractPermissionsComponent implements OnInit {
     operationalUnits: OperationalUnit[] = [];	
     administrativeUnits: AdminUnit[] = [];	
     organizations: Organization[] = [];
-	  modes: string[] = ['DIFFERED', 'REALTIME'] ;
+	  modes: string[] = ['DIFFERED', 'REALTIME'];
 
     adminPermission: AdministrativePermission = {};
     opPermission: OperationalPermission = {};
@@ -38,7 +37,6 @@ export class AbstractPermissionsComponent implements OnInit {
 
   constructor(private abstractPermissionService: AbstractPermissionService, private activityService: ActivitiesService, private resourceService: ResourceService, private actionService: ActionsService, private unitService: UnitService, private contextService: ContextService, private orgService: OrganizationService) { }
   ngOnInit(): void {
-
     this.contextService.loadContexts().subscribe( (results : Context[]) =>{
       this.contexts = results ? results : [];
     });
@@ -60,8 +58,7 @@ export class AbstractPermissionsComponent implements OnInit {
     this.unitService.loadOperationalUnits().subscribe( (results : OperationalUnit[]) =>{
       this.operationalUnits = results ? results : [];
     });
-
-    //
+    /////
     this.abstractPermissionService.loadAdminPermissions().subscribe( (results : AdministrativePermission[]) =>{
       this.adminPermissions = results ? results : [];
     });
@@ -92,7 +89,6 @@ export class AbstractPermissionsComponent implements OnInit {
     })
   }
   ////
-
   createOpPermission(){
     this.abstractPermissionService.createOperationalPermissions(this.opPermission).subscribe( (result) => {
       this.opPermissions.push(<OperationalPermission>result);
@@ -107,7 +103,6 @@ export class AbstractPermissionsComponent implements OnInit {
     this.isUpdate = false;
     this.opPermission = {}
   }
-
   deleteOpPermission(ap: OperationalPermission){
     this.abstractPermissionService.deleteOperationalPermissions(ap).subscribe( result => {
       this.opPermissions = this.opPermissions.filter( item => {return item.id !== ap.id});

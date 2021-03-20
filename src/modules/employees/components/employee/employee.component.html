@@ -234,7 +234,7 @@
                     </div>
                 </div>
             </div>              
-            <mat-action-row class="mt-2 mx-auto" *ngIf="tabGroup.selectedIndex">
+            <mat-action-row class="mt-2 mx-auto">
                 <button mat-button color="primary" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex - 1"> <mat-icon>keyboard_arrow_left</mat-icon>back</button>
                 <button mat-button  color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit" (click)="createEmployee()"> <mat-icon>save_alt</mat-icon>save</button>
                 <button mat-button  color="primary" *ngIf="isUpdate"  type="submit" (click)="updateEmployee()"> <mat-icon>save_alt</mat-icon> save</button>

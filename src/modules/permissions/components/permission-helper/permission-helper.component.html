@@ -4,7 +4,7 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <fa-icon [icon]='["fas", "users"]'></fa-icon>
-                <span class="p-2">Administrative Permissions</span>
+                <span class="p-2">Admin Permissions Helpers</span>
             </ng-template>
             <div class="col-md-12">            
                 <form #f1="ngForm" class="form-group">
@@ -14,50 +14,37 @@
                             <mat-expansion-panel>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        New Admin Unit Grant
+                                        New Admin permission helper
                                     </mat-panel-title>
                                     <mat-panel-description>
-                                        Define Administrative Unit Grant
+                                        Ask qustion about admin permission
                                     </mat-panel-description>
                                 </mat-expansion-panel-header>
+
                                 <ng-template matExpansionPanelContent>
-                                    <mat-form-field class="col-sm-12 col-lg-12 col-md-12">
-                                        <mat-label>Name:</mat-label>
-                                        <input matInput type="text" name="admname" id="admname" [(ngModel)]="adminPermission.name" />
-                                    </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="adminPermission.organisation" placeholder="Select organization" >
+                                        <mat-select [(value)]="organization" placeholder="Select organization" >
                                             <mat-option *ngFor="let org of organizations" [value]="org">{{ org.name }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="adminPermission.administrativeUnit" placeholder="Select Admin Unit" >
-                                            <mat-option *ngFor="let aunit of administrativeUnits" [value]="aunit">{{ aunit.name }}</mat-option>
+                                        <mat-select [(value)]="canTreat.emitter" placeholder="Select Emitter" >
+                                            <mat-option *ngFor="let em of employees" [value]="em">{{ em.firstName }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="adminPermission.operationalUnit" placeholder="Select operational Unit" >
-                                            <mat-option *ngFor="let ounit of operationalUnits" [value]="ounit">{{ ounit.name }}</mat-option>
+                                        <mat-select [(value)]="canTreat.approver" placeholder="Select Approver" >
+                                            <mat-option *ngFor="let em of employees" [value]="em">{{ em.firstName }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="adminPermission.activity" placeholder="Select activity" >
-                                            <mat-option *ngFor="let act of activities" [value]="act">{{act.name }}</mat-option>
+                                        <mat-select [(value)]="canTreat.resource" placeholder="Select resource" >
+                                            <mat-option *ngFor="let res of resources" [value]="res">{{res.name }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="adminPermission.vue" placeholder="Select View" >
-                                            <mat-option *ngFor="let vue of vues" [value]="vue">{{vue.name }}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="adminPermission.context" placeholder="Select Context" >
-                                            <mat-option *ngFor="let context of contexts" [value]="context">{{context.name }}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="adminPermission.mode" placeholder="Select Mode" >
-                                            <mat-option *ngFor="let mode of modes" [value]="mode">{{mode}}</mat-option>
+                                        <mat-select [(value)]="canTreat.action" placeholder="Select action" >
+                                            <mat-option *ngFor="let act of actions" [value]="act">{{act.name }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </ng-template>
@@ -67,12 +54,11 @@
                 </form>
             </div>             
             <mat-action-row class="mt-2 mx-auto">               
-                <button mat-button (click)="createAdminPermission()" color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
-                <button mat-button (click)="updateAdminPermission()"  color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
+                <button mat-button (click)="canTreats()" color="primary" style="margin-right:20px" type="submit"> <mat-icon>check</mat-icon>check</button>
                 <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>
             </mat-action-row>
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                         <th> #</th>
                         <th>Name</th>
@@ -83,7 +69,6 @@
                         <th>View</th>
                         <th>Context</th>
                         <th>Mode</th>
-                        <th>Actions</th>
                     </thead>
                     <tbody>
                         <tr *ngFor="let grant of adminPermissions">
@@ -96,10 +81,6 @@
                             <td>{{grant.vue?.name}}</td>
                             <td>{{grant.context?.name}}</td>
                             <td>{{grant.mode}}</td>
-                            <td class="p-2"> 
-                                <button mat-button color="primary" (click)="isUpdate = true; adminPermission = grant;"> <mat-icon>edit</mat-icon> edit</button>                               
-                                <button (click)="deleteAdminPermission(grant)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
-                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -108,7 +89,7 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon>logs</mat-icon>
-                <span class="p-2">Operational Permissions</span>
+                <span class="p-2">Operational Permissions Helpers</span>
             </ng-template>
             <div class="col-md-12">            
                 <form #f3="ngForm" class="form-group">
@@ -118,45 +99,31 @@
                             <mat-expansion-panel>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        New Operational Unit Grant
+                                        New operational permission helper
                                     </mat-panel-title>
                                     <mat-panel-description>
-                                        Define Operational Unit Grant
+                                        Troubleshoot permissions
                                     </mat-panel-description>
                                 </mat-expansion-panel-header>
                                 <ng-template matExpansionPanelContent>
-                                    <mat-form-field class="col-sm-12 col-lg-12 col-md-12">
-                                        <mat-label>Name:</mat-label>
-                                        <input matInput type="text" name="opname" id="opname" [(ngModel)]="opPermission.name" />
-                                    </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="opPermission.organization" placeholder="Select organization" >
+                                        <mat-select [(value)]="organization" placeholder="Select organization" >
                                             <mat-option *ngFor="let org of organizations" [value]="org">{{ org.name }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="opPermission.unit" placeholder="Select operational Unit" >
-                                            <mat-option *ngFor="let ounit of operationalUnits" [value]="ounit">{{ ounit.name }}</mat-option>
+                                        <mat-select [(value)]="canSuggest.emitter" placeholder="Select Emitter" >
+                                            <mat-option *ngFor="let em of employees" [value]="em">{{ em.firstName }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="opPermission.activity" placeholder="Select activity" >
-                                            <mat-option *ngFor="let act of activities" [value]="act">{{act.name }}</mat-option>
+                                        <mat-select [(value)]="canSuggest.resource" placeholder="Select resource" >
+                                            <mat-option *ngFor="let res of resources" [value]="res">{{res.name }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="opPermission.vue" placeholder="Select View" >
-                                            <mat-option *ngFor="let vue of vues" [value]="vue">{{vue.name }}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="opPermission.context" placeholder="Select Context" >
-                                            <mat-option *ngFor="let context of contexts" [value]="context">{{context.name }}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="opPermission.mode" placeholder="Select Mode" >
-                                            <mat-option *ngFor="let mode of modes" [value]="mode">{{mode}}</mat-option>
+                                        <mat-select [(value)]="canSuggest.action" placeholder="Select action" >
+                                            <mat-option *ngFor="let act of actions" [value]="act">{{act.name }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </ng-template>
@@ -166,12 +133,11 @@
                 </form>
             </div>             
             <mat-action-row class="mt-2 mx-auto">               
-                <button mat-button (click)="createOpPermission()" color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
-                <button mat-button (click)="updateOpPermission()"  color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
+                <button mat-button (click)="canSuggests()" color="primary" style="margin-right:20px" type="submit"> <mat-icon>check</mat-icon>check</button>
                 <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>
             </mat-action-row>
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                         <th> #</th>
                         <th>Name</th>
@@ -181,7 +147,6 @@
                         <th>View</th>
                         <th>Context</th>
                         <th>Mode</th>
-                        <th>Actions</th>
                     </thead>
                     <tbody>
                         <tr *ngFor="let grant of opPermissions">
@@ -193,10 +158,6 @@
                             <td>{{grant.vue?.name}}</td>
                             <td>{{grant.context?.name}}</td>
                             <td>{{grant.mode}}</td>
-                            <td class="p-2"> 
-                                <button mat-button color="primary" (click)="isUpdate = true; opPermission = grant;"> <mat-icon>edit</mat-icon> edit</button>                               
-                                <button (click)="deleteOpPermission(grant)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 
-                            </td>
                         </tr>
                     </tbody>
                 </table>

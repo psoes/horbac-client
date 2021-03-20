@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { map } from 'rxjs/operators';
 import { Resource } from '../models/Resource';
+import { Uses } from '../models/Uses';
 import { Vue } from '../models/Vue';
 
 @Injectable({
@@ -11,6 +12,7 @@ import { Vue } from '../models/Vue';
 export class ResourceService {
   RESOURCES_API = environment.API_HOST+ '/resources';
   VUES_API = environment.API_HOST+ '/views';
+  USES_API = environment.API_HOST + '/uses';
 
   constructor(private http: HttpClient) { }
 
@@ -49,6 +51,23 @@ export class ResourceService {
 
   deleteView(type: Vue){
     return this.http.delete(this.VUES_API+'/'+ type.id);
+  }
+
+  //
+  loadUses(){
+    return this.http.get<Uses[]>(this.USES_API)
+  }
+
+  createUses(type: Uses){
+    return this.http.post<Uses>(this.USES_API, type);
+  }
+  
+  updateUses(type: Uses){
+    return this.http.put<Uses>(this.USES_API+'/'+ type.id, type);
+  }
+
+  deleteUses(type: Uses){
+    return this.http.delete(this.USES_API+'/'+ type.id);
   }
 }
 

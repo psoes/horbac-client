@@ -53,6 +53,11 @@ const routes: Routes = [
             import('modules/permissions/permissions-routing.module').then(m => m.PermissionsRoutingModule),
     },
     {
+        path: 'resources',
+        loadChildren: () =>
+            import('modules/resources/resources-routing.module').then(m => m.ResourcesRoutingModule),
+    },
+    {
         path: 'dashboard',
         loadChildren: () =>
             import('modules/dashboard/dashboard-routing.module').then(
