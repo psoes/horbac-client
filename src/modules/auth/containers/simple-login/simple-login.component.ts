@@ -39,7 +39,7 @@ export class SimpleLoginComponent implements OnInit {
             
             this.invalidLogin = false;
             this.infoMessage ='Login successfull!!!';
-            this.router.navigateByUrl(this.returnUrl);
+            this.router.navigateByUrl('/organizations');
             //this.router.navigate(['/organizations'], {queryParams: {email: data.user?.username}});
           }
           else {
