@@ -27,7 +27,7 @@ export class SimpleLoginComponent implements OnInit {
       this.userService.logout();
 
       // get return url from route parameters or default to '/'
-      this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+      this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/organizations';
   }
 
   handleBasicAuthLogin() {
