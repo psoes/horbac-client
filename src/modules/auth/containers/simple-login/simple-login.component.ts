@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { JWTStatus } from '@modules/auth/models/JWTStatus';
 import { AuthService, UserService } from '@modules/auth/services';
 
@@ -13,6 +13,7 @@ export class SimpleLoginComponent implements OnInit {
   password = '';
   infoMessage = '';
   invalidLogin = false;
+  returnUrl: string = '';
   constructor(private userService: UserService, private router: Router,  private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -22,6 +23,11 @@ export class SimpleLoginComponent implements OnInit {
             this.infoMessage = 'Registration Successful! Please Login!';
         }
       });
+      // reset login status
+      this.userService.logout();
+
+      // get return url from route parameters or default to '/'
+      this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
   }
 
   handleBasicAuthLogin() {
@@ -33,7 +39,7 @@ export class SimpleLoginComponent implements OnInit {
             
             this.invalidLogin = false;
             this.infoMessage ='Login successfull!!!';
-            this.router.navigate(['/organizations'], { queryParams: { email: data.user?.username }});
+            this.router.navigateByUrl(this.returnUrl);
             //this.router.navigate(['/organizations'], {queryParams: {email: data.user?.username}});
           }
           else {
