@@ -2,11 +2,11 @@ import { EmployeeCrud, Person } from "@modules/employees/models/Employee";
 
 export interface User {
     id?: number;
-    username?: string;	
+    username: string;	
     password?: string;
     picture?: string;
 	active?: boolean;
-    employee?: EmployeeCrud;
+    employee: EmployeeCrud;
 	accountNonExpired?: boolean;
     accountNonLocked?: boolean;
     credentialsNonExpired?: boolean;

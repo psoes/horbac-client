@@ -15,7 +15,7 @@
                                         <input
                                             class="form-control" 
                                             required
-                                            #firstname="ngModel" class="form-control py-4" id="inputFirstName" name="inputFirstName" type="text" [(ngModel)]="user.employee.firstName" placeholder="Enter first name" />
+                                            #firstname="ngModel" class="form-control py-4" id="inputFirstName" name="inputFirstName" type="text" [(ngModel)]="firstName" placeholder="Enter first name" />
                                     </div>
                                     <span class="help-block text-danger" *ngIf="!firstname.valid && firstname.touched">The FirstName field is required!</span>
                                 </div>
@@ -23,7 +23,7 @@
                                     <div class="form-group">
                                         <label class="small mb-1" for="inputLastName">Last Name</label>
                                         <input class="form-control py-4" required
-                                            #lastname="ngModel" id="inputLastName" required name="inputLastName" type="text" placeholder="Enter last name" [(ngModel)]="user.employee.lastName"/></div>
+                                            #lastname="ngModel" id="inputLastName" required name="inputLastName" type="text" placeholder="Enter last name" [(ngModel)]="lastName"/></div>
                                         <span class="help-block text-danger" *ngIf="!lastname.valid && lastname.touched">The Last Name field is required!</span>
                                 </div>
                             </div>

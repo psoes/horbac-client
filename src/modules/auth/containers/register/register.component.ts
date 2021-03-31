@@ -12,24 +12,28 @@ import { Router } from '@angular/router';
     styleUrls: ['register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-    user: User = {employee: {}};
+    user: User = {username:'', employee: {}};
     confirm: string = "";
     invalidRegister = false;
     errorMessage = '';
     pass1 = '';
     pass2 = '';
+    firstName = '';
+    lastName = '';
     userName: string = '';
     emailAddress: string = '';
     @ViewChild('f') signupForm?: NgForm;
 
-    constructor(public userService: UserService, private router: Router) {}
+    constructor(public userService: UserService, private router: Router) {
+        this.user = {username: '', employee: {}};
+    }
     ngOnInit() {
         this.userService.loadUsers().subscribe( users => {
             console.log('USERS ', users);
         })
     }
 
-    onSignup(form: NgForm) {
+    onSignup() {
         if (this.signupForm?.valid === false) {
           this.invalidRegister = true;
           this.errorMessage = 'You must fill in all the fields!';
@@ -39,7 +43,9 @@ export class RegisterComponent implements OnInit {
         } else {
           
           console.log(this.user);
-          //this.user.active = true;
+          this.user.employee.firstName = this.firstName;
+          this.user.employee.lastName = this.lastName;
+
           this.userService.createUser(this.user).subscribe(
             data => {
               console.log(data);
