@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from '@modules/auth/guards';
 import { SBRouteData } from '@modules/navigation/models';
 import { ContextsComponent } from './components/contexts/contexts.component';
 import { ContextsModule } from './contexts.module';
@@ -11,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'context',
-    canActivate: [],
+    canActivate: [AuthGuard],
     component: ContextsComponent,
     data: {
         title: 'Contexts',

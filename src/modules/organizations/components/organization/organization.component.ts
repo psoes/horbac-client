@@ -9,6 +9,7 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { ParserService } from '@modules/organizations/services/parser.service';
 import {ThemePalette} from '@angular/material/core';
+import { ActivatedRoute } from '@angular/router';
 class ImageSnippet {
   pending: boolean = false;
   status: string = 'init';
@@ -58,8 +59,9 @@ export class OrganizationComponent implements OnInit {
     fileSource: new FormControl('', [Validators.required])
   });
 
+  email: string = '';
 
-  constructor(private parserService: ParserService, private orgService: OrganizationService, public fb: FormBuilder, private sanitization: DomSanitizer) { 
+  constructor(private activatedRoute: ActivatedRoute, private parserService: ParserService, private orgService: OrganizationService, public fb: FormBuilder, private sanitization: DomSanitizer) { 
     this.editorOptions = new JsonEditorOptions()
     this.editorOptions.modes = ['code', 'text', 'tree', 'view']; // set all allowed modes
     //this.options.mode = 'code'; //set only one mode      
@@ -68,6 +70,12 @@ export class OrganizationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams
+      .subscribe(params => {
+        if(params.email !== undefined) {
+            this.email = params.email
+        }
+      });
     this.orgService.loadOrganizations().subscribe( (results : Organization[]) =>{
       this.organizations = results;
       if(this.organizations[0]?.logo)this.downloadLogo(this.organizations[0]?.logo!);

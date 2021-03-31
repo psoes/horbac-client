@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from '@modules/auth/guards';
 import { SBRouteData } from '@modules/navigation/models';
 import { EmployeeComponent } from './components/employee/employee.component';
 import { EmployeesModule } from './employees.module';
@@ -11,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'personal',
-    canActivate: [],
+    canActivate: [AuthGuard],
     component: EmployeeComponent,
     data: {
         title: 'Employees',

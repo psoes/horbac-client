@@ -5,7 +5,7 @@
             <div class="card shadow-lg border-0 rounded-lg mt-5">
                 <div class="card-header">
                     <h3 class="text-center font-weight-light my-4">Login</h3>
-                    <span *ngIf="infoMessage.length > 0">{{ infoMessage }}</span>
+                    <span [ngClass]="{'text-success': !invalidLogin, 'text-danger':invalidLogin }" *ngIf="infoMessage.length > 0">{{ infoMessage }}</span>
                 </div>
                 <div class="card-body">
                     

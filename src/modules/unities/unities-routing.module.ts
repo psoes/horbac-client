@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from '@modules/auth/guards';
 import { SBRouteData } from '@modules/navigation/models';
 import { UnitComponent } from './components/unit/unit.component';
 import { UnitiesModule } from './unities.module';
@@ -12,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: 'admin-unit',
-    canActivate: [],
+    canActivate: [AuthGuard],
     component: UnitComponent,
     data: {
         title: 'Units',

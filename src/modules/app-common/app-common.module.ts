@@ -24,6 +24,7 @@ import * as appCommonServices from './services';
 import * as authServices from '@modules/auth/services';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
     imports: [CommonModule, RouterModule, ...thirdParty],
@@ -33,6 +34,11 @@ import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
         {
             provide: HTTP_INTERCEPTORS,
             useClass: HttpErrorInterceptor,
+            multi: true,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
             multi: true,
         },
     ],

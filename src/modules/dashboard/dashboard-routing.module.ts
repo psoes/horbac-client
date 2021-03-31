@@ -26,6 +26,7 @@ export const ROUTES: Routes = [
             ],
         } as SBRouteData,
         component: dashboardContainers.DashboardComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'static',    
@@ -60,6 +61,7 @@ export const ROUTES: Routes = [
             ],
         } as SBRouteData,
         component: dashboardContainers.LightComponent,
+        canActivate: [AuthGuard]
     },
 ];
 

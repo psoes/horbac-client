@@ -1,10 +1,11 @@
 import { User } from "@modules/auth/models";
 import { CanSuggest } from "@modules/permissions/models/CanSuggest";
+import { JWTStatus } from "./JWTStatus";
 
 
 export class Jwt{
     id?: string;
-    jwtStatus?: JWTStatus;
+    jwtStatus!: JWTStatus;
 	ip?: string;
 	agent?: string;
 	jwttoken?: string;
@@ -13,7 +14,4 @@ export class Jwt{
 	user?: User;
 	privileges?: CanSuggest [];
 
-}
-enum JWTStatus {	
-	USER_DISABLED, BAD_CREDENTIALS, AUTHENTICATED
 }

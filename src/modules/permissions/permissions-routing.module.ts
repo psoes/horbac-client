@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from '@modules/auth/guards';
 import { SBRouteData } from '@modules/navigation/models';
 import { AbstractPermissionsComponent } from './components/abstract-permissions/abstract-permissions.component';
 import { PermissionHelperComponent } from './components/permission-helper/permission-helper.component';
@@ -34,7 +35,7 @@ const routes: Routes = [
     },
     {
         path: 'helpers',
-        canActivate: [],
+        canActivate: [AuthGuard],
         component: PermissionHelperComponent,
         data: {
             title: 'Helpers',

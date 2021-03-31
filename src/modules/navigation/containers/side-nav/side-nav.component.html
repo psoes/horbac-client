@@ -9,6 +9,6 @@
     </div>
     <div class="sb-sidenav-footer">
         <div class="small">Logged in as:</div>
-        <span *ngIf="userService.userValue">{{userService.userValue.user?.employee?.firstName}} {{userService.userValue.user?.employee?.lastName}}</span>
+        <span *ngIf="userService.userValue">{{userService.userValue.user?.username}}</span>
     </div>
 </nav>

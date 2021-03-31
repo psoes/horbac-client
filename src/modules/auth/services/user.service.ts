@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { error } from 'console';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -8,6 +10,7 @@ import { map } from 'rxjs/operators';
 import { User } from '../models';
 import { Jwt } from '../models/Jwt';
 import { JwtRequest } from '../models/JwtRequest';
+import { JWTStatus } from '../models/JWTStatus';
 
 const userSubject: ReplaySubject<User> = new ReplaySubject(1);
 
@@ -19,7 +22,7 @@ export class UserService {
     private userSubject: BehaviorSubject<Jwt>;
     public user: Observable<Jwt> = new Observable<Jwt>();
 
-    constructor(private http: HttpClient, private router: Router) {
+    constructor(private _snackbar: MatSnackBar, private http: HttpClient, private router: Router) {
         this.userSubject = new BehaviorSubject<Jwt>(JSON.parse(localStorage.getItem('user')|| '{}'));
         this.user = this.userSubject.asObservable();
     }
@@ -45,21 +48,23 @@ export class UserService {
         let jwtRequest: JwtRequest = new JwtRequest(username, password);
         
         return this.http.post<Jwt>(`${environment.API_HOST}/authenticate`, jwtRequest)
-            .pipe(map(user => {
+            .pipe(map(jwt => {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                console.log("JWT ", user);
-                localStorage.setItem('user', JSON.stringify(user));
-                this.userSubject.next(user);
-                return user;
+                //console.log("JWT ", jwt);
+                if(jwt.jwtStatus.toString() === 'AUTHENTICATED'){
+                    localStorage.setItem('user', JSON.stringify(jwt));
+                    this.userSubject.next(jwt);
+                }                
+                return jwt;
             }));
     }
 
     logout() {
-        // remove user from local storage and set current user to null
+        // remove user from local storage and set current user to null        
         localStorage.removeItem('user');
-        this.userSubject.next({});
+        this.http.post<Jwt>(`${environment.API_HOST}/logout/${this.userValue.user?.id}`, Jwt);
+        this.userSubject.next({jwtStatus: JWTStatus.LOGOUT});
         this.router.navigate(['/auth/login']);
-        return this.http.post<Jwt>(`${environment.API_HOST}/authenticate/${this.userValue.id}`, Jwt)
     }
 
 

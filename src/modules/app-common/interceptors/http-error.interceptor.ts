@@ -3,7 +3,6 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse } fr
 import { Observable } from "rxjs";
 import { concatMap, tap } from 'rxjs/operators';
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { MatDialog } from "@angular/material/dialog";
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
