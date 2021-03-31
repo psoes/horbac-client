@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '@modules/auth/guards';
 
 const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: '/organizations'
+        redirectTo: '/organizations',
+        canActivate: [AuthGuard] 
     },
     {
         path: 'charts',

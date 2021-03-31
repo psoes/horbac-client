@@ -1,6 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from '@modules/auth/guards';
 import { SBRouteData } from '@modules/navigation/models';
 import { OrganizationComponent } from './components/organization/organization.component';
 import { OrganizationsModule } from './organizations.module';
@@ -25,7 +26,8 @@ const routes: Routes = [
         },
       ],
   } as SBRouteData,
-    component: OrganizationComponent,
+  component: OrganizationComponent,
+  canActivate: [AuthGuard],
 },
 ];
 

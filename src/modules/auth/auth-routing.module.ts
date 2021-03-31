@@ -8,6 +8,7 @@ import { AuthModule } from './auth.module';
 
 /* Containers */
 import * as authContainers from './containers';
+import { SimpleLoginComponent } from './containers/simple-login/simple-login.component';
 
 /* Guards */
 import * as authGuards from './guards';
@@ -22,7 +23,8 @@ export const ROUTES: Routes = [
     {
         path: 'login',
         canActivate: [],
-        component: authContainers.LoginComponent,
+        //component: authContainers.LoginComponent,
+        component: SimpleLoginComponent,
         data: {
             title: 'Login',
         } as SBRouteData,
