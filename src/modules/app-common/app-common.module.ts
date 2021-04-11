@@ -41,6 +41,11 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
             useClass: AuthInterceptor,
             multi: true,
         },
+      /*  {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ErrorInterceptor,
+            multi: true,
+        } */
     ],
     declarations: [...appCommonContainers.containers, ...appCommonComponents.components],
     exports: [...appCommonContainers.containers, ...appCommonComponents.components, ...thirdParty],

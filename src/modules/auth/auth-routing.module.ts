@@ -10,9 +10,6 @@ import { AuthModule } from './auth.module';
 import * as authContainers from './containers';
 import { SimpleLoginComponent } from './containers/simple-login/simple-login.component';
 
-/* Guards */
-import * as authGuards from './guards';
-
 /* Routes */
 export const ROUTES: Routes = [
     {
