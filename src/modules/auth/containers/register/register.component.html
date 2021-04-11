@@ -55,7 +55,7 @@
                                         *ngIf="(pass.dirty || pass.touched) && !pass.valid">
                                         Please confirm your password!
                                     </span>
-                                    <span class="help-block text-danger"  *ngIf="pass.hasError('notEqual') && password.valid">
+                                    <span class="help-block text-danger"  *ngIf="pass.hasError('notEqual') && passwd.valid">
                                         Passwords Don't Match!
                                     </span>
                                 </div>
