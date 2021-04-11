@@ -13,11 +13,8 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
     user: User = {username:'', employee: {}};
-    confirm: string = "";
     invalidRegister = false;
     errorMessage = '';
-    pass1 = '';
-    pass2 = '';
     firstName = '';
     lastName = '';
     userName: string = '';
@@ -37,10 +34,8 @@ export class RegisterComponent implements OnInit {
         if (this.signupForm?.valid === false) {
           this.invalidRegister = true;
           this.errorMessage = 'You must fill in all the fields!';
-        } else if (this.pass1 !== this.pass2) {
-          this.invalidRegister = true;
-          this.errorMessage = 'The passwords do not match!';
-        } else {
+        } 
+        else {
           
           console.log(this.user);
           this.user.employee.firstName = this.firstName;

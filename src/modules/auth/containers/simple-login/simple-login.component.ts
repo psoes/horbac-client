@@ -25,7 +25,6 @@ export class SimpleLoginComponent implements OnInit {
       });
       // reset login status
       this.userService.logout();
-
       // get return url from route parameters or default to '/'
       this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/organizations';
   }
@@ -41,11 +40,12 @@ export class SimpleLoginComponent implements OnInit {
             this.infoMessage ='Login successfull!!!';
             //this.router.navigateByUrl('/');
             //this.router.navigate(['/organizations']);
-			this.router.navigate(['/organizations'])
+		/*	this.router.navigate(['/organizations'])
 			  .then(() => {
 				window.location.reload();
 			});
-            //this.router.navigate(['/organizations'], {queryParams: {email: data.user?.username}});
+      */
+            this.router.navigate([this.returnUrl]);
           }
           else {
             this.invalidLogin = true;

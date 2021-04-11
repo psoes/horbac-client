@@ -20,6 +20,7 @@ import * as authGuards from './guards';
 /* Services */
 import * as authServices from './services';
 import { SimpleLoginComponent } from './containers/simple-login/simple-login.component';
+import { ValidateEqualModule } from 'ng-validate-equal';
 
 @NgModule({
     imports: [
@@ -29,6 +30,7 @@ import { SimpleLoginComponent } from './containers/simple-login/simple-login.com
         FormsModule,
         AppCommonModule,
         NavigationModule,
+        ValidateEqualModule
     ],
     providers: [...authServices.services, ...authGuards.guards],
     declarations: [...authContainers.containers, ...authComponents.components, SimpleLoginComponent],

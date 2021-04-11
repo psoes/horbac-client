@@ -4,6 +4,7 @@ export interface User {
     id?: number;
     username: string;	
     password?: string;
+    confirmPassWord?: string;
     picture?: string;
 	active?: boolean;
     employee: EmployeeCrud;

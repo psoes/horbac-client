@@ -3,26 +3,33 @@
         
         <div class="col-lg-5">
             <div class="card shadow-lg border-0 rounded-lg mt-5">
-                <div class="card-header">
-                    <h3 class="text-center font-weight-light my-4">Login</h3>
+                <div class="card-header">                    
+                    <h1 class="text-center font-weight-light my-4">
+                        <img style="max-width: 60px; max-height: 60px;" class="col-md-4 col-sm-1 col-lg-4  filter-white" src="assets/img/hierarchy.svg"/>
+                        <span>Login</span>
+                    </h1>
                     <span [ngClass]="{'text-success': !invalidLogin, 'text-danger':invalidLogin }" *ngIf="infoMessage.length > 0">{{ infoMessage }}</span>
                 </div>
                 <div class="card-body">
                     
-                    <form>
-                       <div class="form-group"><label class="small mb-1" for="inputEmailAddress">Email</label>
-                        <input class="form-control py-4" id="inputEmailAddress" name="inputEmailAddress" type="email" placeholder="Enter email address" [(ngModel)]="username"/></div>
-                        <div class="form-group"><label class="small mb-1" for="inputPassword">Password</label>
-                            <input class="form-control py-4" name="inputPassword" id="inputPassword" type="password" placeholder="Enter password" [(ngModel)]="password"/>
+                    <form #f="ngForm">
+                       <div class="form-group">
+                            <label class="small mb-1" for="email">Email</label>
+                            <input #email="ngModel" class="form-control py-4" required email id="email" name="email" type="email" placeholder="Enter email address" [(ngModel)]="username"/>
+                            <span class="help-block text-danger" *ngIf="(email.dirty || email.touched) && email.invalid">Enter a valid email address!</span>
                         </div>
                         
+                        <div class="form-group"><label class="small mb-1" for="password">Password</label>
+                            <input #pass="ngModel" required class="form-control py-4" name="password" id="password" type="password" placeholder="Enter password" [(ngModel)]="password"/>
+                            <span class="help-block text-danger" *ngIf="(pass.dirty || pass.touched) && pass.invalid">The password is required!</span>            
+                        </div>                        
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" /><label class="custom-control-label" for="rememberPasswordCheck">Remember password</label>
                             </div>
                         </div>
                         <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0"><a class="small" routerLink="/auth/forgot-password">Forgot Password?</a>
-                           <a class="btn btn-primary" (click)="handleBasicAuthLogin()" >Login</a>
+                           <button class="btn btn-primary" [disabled]="!f.valid" (click)="handleBasicAuthLogin()" >Login</button>
                         </div>
                     </form>
                 </div>
