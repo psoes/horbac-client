@@ -42,7 +42,8 @@ export class SimpleLoginComponent implements OnInit {
             /*this.router.navigate(['/organizations']).then(() => {
               location.reload();
             });*/
-            this.router.navigate([this.returnUrl]);
+            this.router.navigate(['/organizations']);
+            //this.router.navigate(['/organizations'], {state:{id: 0}}); // empty org
           }
           else {
             this.invalidLogin = true;

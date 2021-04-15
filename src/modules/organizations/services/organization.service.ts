@@ -17,8 +17,8 @@ export class OrganizationService {
 
   constructor(private http: HttpClient) { }
 
-  loadOrganizations(){
-    return this.http.get<Organization[]>(this.ORGANIZATIONS_API);
+  loadOrganizations(id: any){
+    return this.http.get<Organization[]>(this.ORGANIZATIONS_API+(id!= null ?'/'+id : ''));
   }
 
   createOrganization(org: Organization){

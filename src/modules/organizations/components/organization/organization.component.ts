@@ -9,7 +9,7 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { ParserService } from '@modules/organizations/services/parser.service';
 import {ThemePalette} from '@angular/material/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 class ImageSnippet {
   pending: boolean = false;
   status: string = 'init';
@@ -60,13 +60,14 @@ export class OrganizationComponent implements OnInit {
   });
 
   email: string = '';
-
-  constructor(private activatedRoute: ActivatedRoute, private parserService: ParserService, private orgService: OrganizationService, public fb: FormBuilder, private sanitization: DomSanitizer) { 
+  id : any;
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private parserService: ParserService, private orgService: OrganizationService, public fb: FormBuilder, private sanitization: DomSanitizer) { 
     this.editorOptions = new JsonEditorOptions()
     this.editorOptions.modes = ['code', 'text', 'tree', 'view']; // set all allowed modes
     //this.options.mode = 'code'; //set only one mode      
     this.data = "{ org: {id: 12, name: BHD, description: PAPA}, au: {id: 11, name: BHD, description: PAPA, parent: 0}, ou: {id: 14, name: BHD, description: PAPA, parent: 11} }";
     //this.data = "{ org: {id: 12, name: BHD, description: PAPA} }";
+    this.id = this.router.getCurrentNavigation()?.extras?.state?.id;
   }
 
   ngOnInit(): void {
@@ -76,7 +77,7 @@ export class OrganizationComponent implements OnInit {
             this.email = params.email
         }
       });
-    this.orgService.loadOrganizations().subscribe( (results : Organization[]) =>{
+    this.orgService.loadOrganizations(this.id).subscribe( (results : Organization[]) =>{
       this.organizations = results;
       if(this.organizations[0]?.logo)this.downloadLogo(this.organizations[0]?.logo!);
     })
