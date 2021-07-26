@@ -1,5 +1,5 @@
 import { isNgTemplate } from '@angular/compiler';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Organization, SocialReason } from '@modules/organizations/models/organization';
 import { OrganizationType } from '@modules/organizations/models/organization-type';
@@ -10,6 +10,8 @@ import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { ParserService } from '@modules/organizations/services/parser.service';
 import {ThemePalette} from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { take } from 'rxjs/operators';
 class ImageSnippet {
   pending: boolean = false;
   status: string = 'init';
@@ -51,6 +53,14 @@ export class OrganizationComponent implements OnInit {
   maxEmployee: number = Infinity;
   disabled = false;
 
+  @ViewChild('autosize') autosize!: CdkTextareaAutosize;
+
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable.pipe(take(1))
+        .subscribe(() => this.autosize.resizeToFitContent(true));
+  }
+
   @ViewChild(JsonEditorComponent, { static: false }) editor!: JsonEditorComponent;
   imageSrc!: SafeResourceUrl;
   myForm = new FormGroup({
@@ -61,7 +71,7 @@ export class OrganizationComponent implements OnInit {
 
   email: string = '';
   id : any;
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private parserService: ParserService, private orgService: OrganizationService, public fb: FormBuilder, private sanitization: DomSanitizer) { 
+  constructor(private _ngZone: NgZone, private router: Router, private activatedRoute: ActivatedRoute, private parserService: ParserService, private orgService: OrganizationService, public fb: FormBuilder, private sanitization: DomSanitizer) { 
     this.editorOptions = new JsonEditorOptions()
     this.editorOptions.modes = ['code', 'text', 'tree', 'view']; // set all allowed modes
     //this.options.mode = 'code'; //set only one mode      
@@ -79,6 +89,7 @@ export class OrganizationComponent implements OnInit {
       });
     this.orgService.loadOrganizations(this.id).subscribe( (results : Organization[]) =>{
       this.organizations = results;
+      console.log("ORGS LIST", results);
       if(this.organizations[0]?.logo)this.downloadLogo(this.organizations[0]?.logo!);
     })
     this.orgService.loadTypes().subscribe( (results) =>{

@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Organization, SocialReason } from '../models/organization';
 import { OrganizationType } from '../models/organization-type';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,11 @@ export class OrganizationService {
   constructor(private http: HttpClient) { }
 
   loadOrganizations(id?: any){
-    return this.http.get<Organization[]>(this.ORGANIZATIONS_API+(id && id!= null ?'/'+id : ''));
+
+    return this.http.get<Organization[]>(this.ORGANIZATIONS_API).pipe(
+      tap(res => console.log(`fetched orgs id=${res}`)),
+    catchError(err => {console.log(`ERROR: ${err}`); return of([])})
+    );
   }
 
   createOrganization(org: Organization){
