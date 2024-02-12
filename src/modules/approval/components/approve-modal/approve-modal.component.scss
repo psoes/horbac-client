@@ -3,3 +3,26 @@
   margin-top: 20px !important;
   top: 50 px !important
 }
+
+.request-container {
+  padding: 1em;
+  border: 1px solid #ddd;
+  margin: 1em;
+}
+
+.request-container h2 {
+  margin: 0.5em 0;
+}
+
+.request-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.request-container li {
+  margin-bottom: 0.25em;
+}

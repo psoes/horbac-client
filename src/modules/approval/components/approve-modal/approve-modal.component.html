@@ -1,4 +1,4 @@
-<div class="modal-dialog" role="dialog"  class="class-name">
+<div  class="class-name">
   <div class="modal-content">
     <div class="modal-header">
       <h2 class="modal-title" id="approveModalLabel">Approve Task {{ selectedTask?.task.id }}</h2>
@@ -8,31 +8,41 @@
     </div>
 
     <div class="modal-body">
-      <div class="request-information">
-        <h3>Request Information</h3>
-        <ul *ngFor="let property of selectedTask.request | keyvalue">
-          <li *ngIf="property.key !== 'approvers' ">{{ property.key }}: {{ property.value }}</li>
-        </ul>
-      </div>
+      <div class="request-container">
+          <h2>Requester Information</h2>
+          <ul>
+            <li>Emitter's Unit: {{ selectedTask?.request?.unit }}</li>
+            <li>Emitter's Organization: {{ selectedTask?.request?.org }}</li>
+            <li>Action Id: {{ selectedTask?.request?.operationId }}</li>
+            <li>Resource Id: {{ selectedTask?.request?.resourceId }}</li>
+            <li>Emitter's language: {{selectedTask?.request?.locale}}</li>
+          </ul>
 
-      <div class="approval-action">
-        <h3>Approval Action</h3>
-        <form>
-          <div class="form-group">
-            <label for="approveCheckbox">Approve:</label>
-            <input type="checkbox" class="form-control" id="approveCheckbox" [(ngModel)]="isApproveChecked" name="approve">
-          </div>
-          <div class="form-group">
-            <label for="commentField">Comment (optional):</label>
-            <textarea class="form-control" id="commentField" rows="3" [(ngModel)]="comment" name="comment"></textarea>
-          </div>
-        </form>
-      </div>
-    </div>
+          <h2>Context Information</h2>
+          <p>Ip address: {{selectedTask?.request?.ipAddress}}</p>
+          <p>Requesting from: {{ selectedTask?.request?.clientType }} on {{ selectedTask?.request?.osName }} {{ selectedTask?.request?.osVersion }}</p>
 
-    <div class="modal-footer">
+          <h2>Approver Information</h2>
+          <p>Priority: {{ selectedTask?.request?.priority ? (selectedTask?.request?.priority === 2 ? "Medium" : (selectedTask?.request?.priority === 3 ? "Low" : "High")) : "Unknown" }}</p>
+
+          <p>Approval due in: {{selectedTask?.request?.timeout}} minutes</p>
+      
+          
+          <form>
+              <mat-checkbox  class="example-full-width" name="approve" [(ngModel)]="isApproveChecked">
+                <mat-label>Approve</mat-label>
+              </mat-checkbox>
+              <mat-form-field class="example-full-width">
+                <mat-label>Leave a comment</mat-label>
+                <textarea matInput [(ngModel)]="comment" name="comment"></textarea>
+            </mat-form-field>
+          </form>
+        </div>
+      <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       <button type="button" class="btn btn-primary" (click)="confirmApproval()">Submit Approval</button>
+      
     </div>
+    
   </div>
 </div>

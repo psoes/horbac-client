@@ -31,6 +31,8 @@ export class AbstractPermissionsComponent implements OnInit {
     organizations: Organization[] = [];
 	  modes: string[] = ['DIFFERED', 'REALTIME'];
 
+    approvalTypes: string[] = ['PARALLEL', 'SEQUENTIAL']
+
     units: OrgUnit[] = [];
 
     adminPermission: AdministrativePermission = {};

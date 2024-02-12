@@ -21,5 +21,11 @@ export class OperationalPermission {
     timeout?: number;
     decision?: string;
     duration?: number;
+    approvalType?: TypeOfApproval = TypeOfApproval.SEQUENTIAL
 
+}
+
+export enum TypeOfApproval {
+    PARALLEL = "PARALLEL", 
+    SEQUENTIAL = "SEQUENTIAL"
 }
