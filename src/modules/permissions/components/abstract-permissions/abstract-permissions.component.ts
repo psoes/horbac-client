@@ -13,6 +13,7 @@ import { Vue } from '@modules/resources/models/Vue';
 import { ResourceService } from '@modules/resources/services/resource.service';
 import { AdminUnit } from '@modules/unities/models/AdminUnit';
 import { OperationalUnit } from '@modules/unities/models/OperationalUnit';
+import { OrgUnit } from '@modules/unities/models/OrgUnit';
 import { UnitService } from '@modules/unities/services/unit.service';
 
 @Component({
@@ -29,6 +30,8 @@ export class AbstractPermissionsComponent implements OnInit {
     administrativeUnits: AdminUnit[] = [];	
     organizations: Organization[] = [];
 	  modes: string[] = ['DIFFERED', 'REALTIME'];
+
+    units: OrgUnit[] = [];
 
     adminPermission: AdministrativePermission = {};
     opPermission: OperationalPermission = {};
@@ -53,6 +56,10 @@ export class AbstractPermissionsComponent implements OnInit {
 
     this.unitService.loadAdminUnits().subscribe( (results : AdminUnit[]) =>{
       this.administrativeUnits = results ? results : [];
+    });
+
+    this.unitService.loadUnits().subscribe((results: OrgUnit[]) => {
+      this.units = results ? results : [];
     });
 
     this.unitService.loadOperationalUnits().subscribe( (results : OperationalUnit[]) =>{

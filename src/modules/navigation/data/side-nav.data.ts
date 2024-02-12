@@ -11,7 +11,7 @@ export const sideNavSections: SideNavSection[] = [
     },
     {
         text: 'PERMISSIONS',
-        items: ['abtracts', 'helper'],
+        items: ['abtracts', 'helper', 'approval'],
     },
     {
         text: 'CLIENTS',
@@ -35,6 +35,12 @@ export const sideNavItems: SideNavItems = {
         text: 'Employees',
         icon: 'user',
         link: '/employees',
+
+    },
+    approval: {
+        text: 'Approval',
+        icon: 'tasks',
+        link: '/approval',
 
     },
   /*  resources: {

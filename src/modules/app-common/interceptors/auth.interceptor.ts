@@ -15,11 +15,13 @@ export class AuthInterceptor implements HttpInterceptor {
         // add auth header with jwt if user is logged in and request is to the api url
         const user = this.userService.userValue;
         const isLoggedIn = user && user.jwttoken;
+        const userNamePassword = JSON.parse(localStorage.getItem('basic') || '{}');
         /*let exp = this.userService.userValue?.expirationTime;
         let no = new Date();
         let bol = exp && +exp <= +no;
         */
         const isApiUrl = request.url.startsWith(environment.API_HOST);
+        const isApprovalUrl = request.url.startsWith(environment.APPROVAL_API)
         if (isLoggedIn && isApiUrl) {
             request = request.clone({
                 setHeaders: {
@@ -28,6 +30,16 @@ export class AuthInterceptor implements HttpInterceptor {
             });
             
         }
+
+        else if (isApprovalUrl || request.headers.get("skip")) {
+            request = request.clone({
+                setHeaders: {
+                    Authorization: 'Basic ' + btoa(`${userNamePassword.username}:${userNamePassword.password}`)
+                }
+            });
+
+        }
+
         return next.handle(request);
     }
 

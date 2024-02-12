@@ -4,6 +4,7 @@ import { Organization } from "@modules/organizations/models/organization";
 import { Vue } from "@modules/resources/models/Vue";
 import { OperationalUnit } from "@modules/unities/models/OperationalUnit";
 import { TreatmentMode } from "./TreatmentMode";
+import { OrgUnit } from "@modules/unities/models/OrgUnit";
 
 export class OperationalPermission {
     id?: number;
@@ -11,7 +12,14 @@ export class OperationalPermission {
     activity?: Activity = {};	
     vue?: Vue = {};
 	context?: Context = {};	
-    unit?: OperationalUnit = {};	
+    unit?: OrgUnit = {};	
     organization?: Organization ;	
 	mode?: TreatmentMode = TreatmentMode.REALTIME ;
+    requiredApproval?: boolean = false;
+    approvalLevel?: number = 0;
+    priority?: number = 3;
+    timeout?: number;
+    decision?: string;
+    duration?: number;
+
 }

@@ -25,7 +25,8 @@ import {
     faUsers,
     faUpload,
     faBook,
-    faFile
+    faFile,
+    faTasks
 } from '@fortawesome/free-solid-svg-icons';
 
 export const fontAwesomeSolidIcons = {
@@ -53,5 +54,6 @@ export const fontAwesomeSolidIcons = {
     faUsers,
     faUpload,
     faBook,
-    faFile
+    faFile,
+    faTasks
 };

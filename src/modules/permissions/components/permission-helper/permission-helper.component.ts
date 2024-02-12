@@ -23,12 +23,16 @@ export class PermissionHelperComponent implements OnInit {
   resources: Resource[] = [];
   actions: Action[] = []
   employees: EmployeeCrud[] = [];
-  opPermissions: OperationalPermission[] = [];
+  opPermissions ?: OperationalPermission[] = [];
   adminPermissions: AdministrativePermission [] = [];
+
+  apiLoading = false;
 
   canSuggest: CanSuggest = {};
   canTreat: CanTreat = {};
   organization: Organization = new Organization();
+
+  response: any;
 
   constructor(private actionService: ActionsService, private resourceService: ResourceService, private employeeService: EmployeeService, private orgService: OrganizationService, private permissionService: HelperService) { }
 
@@ -47,9 +51,18 @@ export class PermissionHelperComponent implements OnInit {
     })
   }
 
+  public decision = ""
+  public duration = 0
+
   canSuggests(){
+    this.apiLoading = true;
     this.permissionService.canSuggest(this.organization, this.canSuggest).subscribe(results => {
-      this.opPermissions = results? results : [];
+      this.response = JSON.stringify(results);  
+      //console.log("ET VOILA LE RESULALT........................", results)
+      this.opPermissions = results ? results : [];
+      this.apiLoading = false;
+    }, err => {
+      this.apiLoading = false;
     })
   }
 

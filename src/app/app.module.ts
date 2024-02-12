@@ -10,6 +10,8 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ApprovalModule } from '@modules/approval/approval.module';
+import { ApproveModalComponent } from '@modules/approval/components/approve-modal/approve-modal.component';
 
 @NgModule({
     declarations: [AppComponent],
@@ -19,7 +21,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         HttpClientModule,
         KeycloakAngularModule,
         AuthModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        ApprovalModule
     ],
     providers: [
        /* KeycloakService,
@@ -33,5 +36,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         AuthService
     ],
     bootstrap: [AppComponent],
+    entryComponents: [ApproveModalComponent],
 })
 export class AppModule {}

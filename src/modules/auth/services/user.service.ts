@@ -46,6 +46,7 @@ export class UserService {
 
     login(username: string, password: string) {
         let jwtRequest: JwtRequest = new JwtRequest(username, password);
+        localStorage.setItem('basic', JSON.stringify({username: username, password: password}));
         
         return this.http.post<Jwt>(`${environment.API_HOST}/authenticate`, jwtRequest)
             .pipe(map(jwt => {
@@ -62,6 +63,7 @@ export class UserService {
     logout() {
         // remove user from local storage and set current user to null        
         localStorage.removeItem('user');
+        localStorage.removeItem('basic');
         this.http.post<Jwt>(`${environment.API_HOST}/logout/${this.userValue.user?.id}`, Jwt);
         this.userSubject.next({jwtStatus: JWTStatus.LOGOUT});
         this.router.navigate(['/auth/login']);

@@ -55,6 +55,7 @@
                                             <mat-option *ngFor="let context of contexts" [value]="context">{{context.name }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
+
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
                                         <mat-select [(value)]="adminPermission.mode" placeholder="Select Mode" >
                                             <mat-option *ngFor="let mode of modes" [value]="mode">{{mode}}</mat-option>
@@ -135,8 +136,8 @@
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="opPermission.unit" placeholder="Select operational Unit" >
-                                            <mat-option *ngFor="let ounit of operationalUnits" [value]="ounit">{{ ounit.name }}</mat-option>
+                                        <mat-select [(value)]="opPermission.unit" placeholder="Select Unit" >
+                                            <mat-option *ngFor="let ounit of units" [value]="ounit">{{ ounit.name }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
@@ -154,10 +155,25 @@
                                             <mat-option *ngFor="let context of contexts" [value]="context">{{context.name }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
+                                    <mat-checkbox class="col-sm-12 col-lg-6 col-md-6" name="requiredApproval" [(ngModel)]="opPermission.requiredApproval">
+                                        <mat-label>Requires Hierarchical Approval</mat-label>
+                                    </mat-checkbox>
                                     <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                                        <mat-select [(value)]="opPermission.mode" placeholder="Select Mode" >
-                                            <mat-option *ngFor="let mode of modes" [value]="mode">{{mode}}</mat-option>
+                                        <mat-select  [(value)]="opPermission.approvalLevel" placeholder="Select Approval Level" >
+                                            <mat-option  value="0">No Approval</mat-option>
+                                            <mat-option  value="1">1<sup>st</sup> Hierarchy</mat-option>
+                                            <mat-option  value="2">Up to 2<sup>nd</sup> Hierarchy</mat-option>
+                                            <mat-option  value="3">Up to 3<sup>th</sup> Hierarchy</mat-option>
+                                            <mat-option  value="4">Up to 4<sup>th</sup> Hierarchy</mat-option>
                                         </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                                        <mat-label>Priority</mat-label>
+                                        <input matInput type="number" max="3" min="1" [(ngModel)]="opPermission.priority" />
+                                    </mat-form-field>
+                                    <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                                        <mat-label>Approval timeout per approver (in minute)</mat-label>
+                                        <input matInput type="number"  min="1" [(ngModel)]="opPermission.timeout" />
                                     </mat-form-field>
                                 </ng-template>
                             </mat-expansion-panel>
@@ -180,7 +196,7 @@
                         <th>Activity</th>
                         <th>View</th>
                         <th>Context</th>
-                        <th>Mode</th>
+                        <th>Approval Level</th>
                         <th>Actions</th>
                     </thead>
                     <tbody>
@@ -192,7 +208,7 @@
                             <td>{{grant.activity?.name}}</td>
                             <td>{{grant.vue?.name}}</td>
                             <td>{{grant.context?.name}}</td>
-                            <td>{{grant.mode}}</td>
+                            <td>{{grant.approvalLevel}}</td>
                             <td class="p-2"> 
                                 <button mat-button color="primary" (click)="isUpdate = true; opPermission = grant;"> <mat-icon>edit</mat-icon> edit</button>                               
                                 <button (click)="deleteOpPermission(grant)" mat-button color="warn"  > <mat-icon>delete</mat-icon> delete </button> 

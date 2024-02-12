@@ -1,0 +1,125 @@
+form
+    .form-group.form-inline
+        | Search Access requests: 
+        input.form-control.ml-2(
+            type='text',
+            name='searchTerm',
+            [(ngModel)]='countryService.searchTerm'
+        )
+        span.ml-3(*ngIf='countryService.loading$ | async') Loading..................
+    table.table.table-striped
+        thead
+            tr
+                th(scope='col') #
+                th(
+                    scope='col',
+                    sbSortable='name',
+                    (sort)='onSort($event)'
+                ) 
+                    span Name
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "name"',
+                        [direction]='sortedDirection'
+                    )
+                th(
+                    scope='col',
+                    sbSortable='status',
+                    (sort)='onSort($event)'
+                ) 
+                    span Status
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "status"',
+                        [direction]='sortedDirection'
+                    )
+                th(
+                    scope='col',
+                    sbSortable='assignee',
+                    (sort)='onSort($event)'
+                ) 
+                    span Approver
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "approver"',
+                        [direction]='sortedDirection'
+                    )
+                 th(
+                    scope='col',
+                    sbSortable='priority',
+                    (sort)='onSort($event)'
+                ) 
+                    span Priority
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "priority"',
+                        [direction]='sortedDirection'
+                    )
+                th(
+                    scope='col',
+                    sbSortable='createdDate',
+                    (sort)='onSort($event)'
+                ) 
+                    span Created Date
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "createdDate"',
+                        [direction]='sortedDirection'
+                    )
+                th(
+                    scope='col',
+                    sbSortable='processInstanceId',
+                    (sort)='onSort($event)'
+                ) 
+                    span Request Reference (processInstanceId)
+                    sb-sort-icon(
+                        *ngIf='sortedColumn === "processInstanceId"',
+                        [direction]='sortedDirection'
+                    )
+        tbody
+            tr(*ngFor='let task of tasks$ | async')
+                th(scope='row') {{ task.id }}
+                td
+                    ngb-highlight(
+                        [result]='task.name',
+                        [term]='countryService.searchTerm'
+                    )
+                td
+                    ngb-highlight(
+                        [result]='task.status',
+                        [term]='countryService.searchTerm'
+                    )
+
+                td
+                    ngb-highlight(
+                        [result]='task.assignee',
+                        [term]='countryService.searchTerm'
+                    )
+                 td
+                    ngb-highlight(
+                        [result]='task.priority | number',
+                        [term]='countryService.searchTerm'
+                    )
+                td
+                    ngb-highlight(
+                        [result]='task.createdDate',
+                        [term]='countryService.searchTerm'
+                    )
+                td
+                    ngb-highlight(
+                        [result]='task.processInstanceId',
+                        [term]='countryService.searchTerm'
+                    )
+
+               
+    .d-flex.justify-content-between.p-2
+        ngb-pagination(
+            [collectionSize]='total$ | async',
+            [(page)]='countryService.page',
+            [pageSize]='countryService.pageSize'
+        )
+
+        select.custom-select(
+            style='width: auto',
+            name='pageSize',
+            [(ngModel)]='countryService.pageSize'
+        )
+            option([ngValue]='2') 2 items per page
+            option([ngValue]='4') 4 items per page
+            option([ngValue]='6') 6 items per page
+            option([ngValue]='9') 9 items per page

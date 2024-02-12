@@ -82,6 +82,11 @@ const routes: Routes = [
             import('modules/tables/tables-routing.module').then(m => m.TablesRoutingModule),
     },
     {
+        path: 'approval',
+        loadChildren: () =>
+            import('modules/approval/approval-routing.module').then(m => m.ApprovalRoutingModule),
+    },
+    {
         path: 'version',
         loadChildren: () =>
             import('modules/utility/utility-routing.module').then(m => m.UtilityRoutingModule),

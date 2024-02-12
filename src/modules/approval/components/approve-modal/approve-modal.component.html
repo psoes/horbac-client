@@ -1,0 +1,38 @@
+<div class="modal-dialog" role="dialog"  class="class-name">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" id="approveModalLabel">Approve Task {{ selectedTask?.task.id }}</h2>
+      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="request-information">
+        <h3>Request Information</h3>
+        <ul *ngFor="let property of selectedTask.request | keyvalue">
+          <li *ngIf="property.key !== 'approvers' ">{{ property.key }}: {{ property.value }}</li>
+        </ul>
+      </div>
+
+      <div class="approval-action">
+        <h3>Approval Action</h3>
+        <form>
+          <div class="form-group">
+            <label for="approveCheckbox">Approve:</label>
+            <input type="checkbox" class="form-control" id="approveCheckbox" [(ngModel)]="isApproveChecked" name="approve">
+          </div>
+          <div class="form-group">
+            <label for="commentField">Comment (optional):</label>
+            <textarea class="form-control" id="commentField" rows="3" [(ngModel)]="comment" name="comment"></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" (click)="confirmApproval()">Submit Approval</button>
+    </div>
+  </div>
+</div>

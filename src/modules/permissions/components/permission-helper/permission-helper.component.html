@@ -131,10 +131,12 @@
                         </mat-accordion>                                
                     </div>
                 </form>
-            </div>             
+                
+            </div>            
             <mat-action-row class="mt-2 mx-auto">               
                 <button mat-button (click)="canSuggests()" color="primary" style="margin-right:20px" type="submit"> <mat-icon>check</mat-icon>check</button>
                 <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>
+                <mat-spinner *ngIf="apiLoading"></mat-spinner>
             </mat-action-row>
             <div class="table-responsive">
                 <table class="table">
@@ -142,11 +144,12 @@
                         <th> #</th>
                         <th>Name</th>
                         <th>Org</th>
-                        <th>operational Unit</th>
+                        <th>Unit</th>
                         <th>Activity</th>
                         <th>View</th>
                         <th>Context</th>
-                        <th>Mode</th>
+                        <th>Approval status</th>
+                        <th>Approval duration</th>
                     </thead>
                     <tbody>
                         <tr *ngFor="let grant of opPermissions">
@@ -157,7 +160,8 @@
                             <td>{{grant.activity?.name}}</td>
                             <td>{{grant.vue?.name}}</td>
                             <td>{{grant.context?.name}}</td>
-                            <td>{{grant.mode}}</td>
+                            <td>{{grant.decision}}</td>
+                            <td>{{grant.duration}}</td>
                         </tr>
                     </tbody>
                 </table>

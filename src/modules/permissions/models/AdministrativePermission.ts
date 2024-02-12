@@ -17,4 +17,6 @@ export class AdministrativePermission {
     administrativeUnit?: AdminUnit = {};	
     organisation?: Organization;	
 	mode?: TreatmentMode = TreatmentMode.REALTIME ;
+    requiredApproval?: boolean = false;
+    approvalLevel?: number = 0;
 }

@@ -8,6 +8,7 @@ import { OperationalUnit } from '../models/OperationalUnit';
 import { Subordinate } from '../models/Subordinate';
 import { PlaceUnder } from '../models/PlaceUnder';
 import { OrgTree } from '../models/OrgTree';
+import { OrgUnit } from '../models/OrgUnit';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ import { OrgTree } from '../models/OrgTree';
 export class UnitService {
 
   ADMIN_UNITS_API = environment.API_HOST+ '/admin-units';
+  UNITS_API = environment.API_HOST + '/org-units?size=100';
   OPERATIONAL_UNITS_API = environment.API_HOST+ '/operational-units';
   SUBORDINATE_UNITS_API = environment.API_HOST+ '/subordinates';
   SUBORDINATE_MANY_UNITS_API = environment.API_HOST+ '/subordinates/many';
@@ -27,6 +29,12 @@ export class UnitService {
   loadAdminUnits(){
     return this.http.get<AdministrativeUnitsWrapper>(this.ADMIN_UNITS_API).pipe(
       map(w => w._embedded.administrativeUnits)
+    );
+  }
+
+  loadUnits() {
+    return this.http.get<UnitsWrapper>(this.UNITS_API).pipe(
+      map(w => mergeArrays(w._embedded.operationalUnits, w._embedded.administrativeUnits))
     );
   }
   
@@ -106,3 +114,16 @@ export class AdministrativeUnitsWrapper{
   _embedded!: { administrativeUnits: AdminUnit[]};
 }
 
+export class UnitsWrapper{
+  _embedded!: { 
+      administrativeUnits: AdminUnit[];
+      operationalUnits: OperationalUnit [];
+  };
+}
+
+function mergeArrays<T>(arr1: T[], arr2: T[]): T[] {
+  const mergedArray: T[] = [];
+  mergedArray.push(...arr1);
+  mergedArray.push(...arr2);
+  return mergedArray;
+}
