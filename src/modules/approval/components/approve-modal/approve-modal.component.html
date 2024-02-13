@@ -11,6 +11,7 @@
       <div class="request-container">
           <h2>Requester Information</h2>
           <ul>
+            <li>Request emitted at {{ selectedTask?.request?.requestDate }}</li>
             <li>Emitter's Unit: {{ selectedTask?.request?.unit }}</li>
             <li>Emitter's Organization: {{ selectedTask?.request?.org }}</li>
             <li>Action Id: {{ selectedTask?.request?.operationId }}</li>
@@ -25,8 +26,7 @@
           <h2>Approver Information</h2>
           <p>Priority: {{ selectedTask?.request?.priority ? (selectedTask?.request?.priority === 2 ? "Medium" : (selectedTask?.request?.priority === 3 ? "Low" : "High")) : "Unknown" }}</p>
 
-          <p>Approval due in: {{selectedTask?.request?.timeout}} minutes</p>
-      
+          <p>Approval due in: {{selectedTask?.request?.timeout}} minutes</p>     
           
           <form>
               <mat-checkbox  class="example-full-width" name="approve" [(ngModel)]="isApproveChecked">
