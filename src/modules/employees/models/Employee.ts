@@ -30,22 +30,22 @@ export class PhoneNumber {
 
 export class Adress {
     id?: number | string;
-	city?: string;
-    postalCode?: string;
-    street?: string;
-    state?: string;
-    region?: string;
-    continent?: string;
+	city: string;
+    postalCode: string;
+    street: string;
+    state: string;
+    region: string;
+    continent: string;
     type?: 'HOME' | 'WORK';
     constructor(id?: number| string, city?: string, 
         postalCode?: string, street?: string, state?: string, region?: string, continent?: string, type?: 'WORK' | 'HOME'){
         this.id = id;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.street = street;
-        this.state = state;
-        this.region = region;
-        this.continent = continent;
+        this.city = city ?? "";
+        this.postalCode = postalCode ?? "";
+        this.street = street ?? ""
+        this.state = state ?? "";
+        this.region = region ?? "";
+        this.continent = continent ?? "";
         this.type = type;
     }
 }
@@ -58,11 +58,13 @@ export class Person {
     birthDate? : Date;
     sex?: 'MALE'|'FEMELE';
     phones?: PhoneNumber[] = [];
-    emails? : Email[];    
+    emails? : Email[]; 
+    email?: String = "";   
     title?: Title;
     addresses?: Adress[] = [];
     avatar?: string;
     constructor(id?: number, firstName?: string, lastName?: string, middleName?: string, 
+        email?: String, 
         pseudo?: string, birthDate?: Date, sex?: Gender, phones?: PhoneNumber[], emails?: Email[] , title?: Title, addresses?: Adress [], avatar?: string){
         this.id = id;
         this.firstName = firstName;
@@ -76,6 +78,7 @@ export class Person {
         this.title = title;
         this.addresses = addresses;
         this.avatar = avatar;
+        this.email = email;
     }
 }
 
@@ -94,9 +97,9 @@ export class SpecialIdentity {
 
 export class EmployeeCrud extends Person{
     specialID?: SpecialIdentity;
-    constructor(specialID?: SpecialIdentity, idPerson?: number, firstName?: string, lastName?: string, middleName?: string, 
+    constructor(specialID?: SpecialIdentity, idPerson?: number, firstName?: string, lastName?: string, middleName?: string, email?: string, 
         pseudo?: string, birthDate?: Date, sex?: Gender, phones: PhoneNumber[] = [], emails: Email[] = [] , title?: Title, addresses: Adress[] = [], avatar?: string){
-        super(idPerson, firstName, lastName, middleName, pseudo, birthDate, sex, phones, emails, title, addresses, avatar);
+        super(idPerson, firstName, lastName, middleName, email, pseudo, birthDate, sex, phones, emails, title, addresses, avatar);
         this.specialID = specialID;
     }
 }
