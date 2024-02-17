@@ -21,6 +21,11 @@ import {MatCardModule} from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { CreateOrgComponent } from './components/create-org/create-org.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 @NgModule({  
   imports: [
     CommonModule,
@@ -28,6 +33,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     FormsModule,
     AppCommonModule,
     NavigationModule,
+    MatStepperModule,
     ChartsModule,
     TablesModule,
     AuthModule,
@@ -37,6 +43,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     MatButtonModule,
     MatTabsModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
     MatButtonModule,
     ReactiveFormsModule,
     NgpImagePickerModule,
@@ -47,7 +55,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     MatExpansionModule,
     CKEditorModule
   ],
-  declarations: [OrganizationComponent],
+  declarations: [OrganizationComponent, CreateOrgComponent],
   exports: [OrganizationComponent],
 })
 export class OrganizationsModule { }

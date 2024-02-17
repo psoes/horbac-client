@@ -1,10 +1,9 @@
-import { isNgTemplate } from '@angular/compiler';
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Organization, SocialReason } from '@modules/organizations/models/organization';
 import { OrganizationType } from '@modules/organizations/models/organization-type';
 import { OrganizationService } from '@modules/organizations/services/organization.service';
-import { DomSanitizer, SafeHtml,  SafeUrl,  SafeStyle, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { ParserService } from '@modules/organizations/services/parser.service';

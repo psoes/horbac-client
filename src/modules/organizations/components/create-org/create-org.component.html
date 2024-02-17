@@ -1,0 +1,126 @@
+<sb-layout-dashboard [static]="true">
+<sb-dashboard-head title="New Organization" [hideBreadcrumbs]="false"></sb-dashboard-head>
+<mat-vertical-stepper stepper orientation="horizontal"  #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form class="form">        
+            <ng-template matStepLabel>Organization details</ng-template>                       
+                    <mat-form-field class="col-sm-12 col-lg-4 col-md-4">
+                        <mat-label>Name: </mat-label>
+                        <input matInput type="text" name="name" id="name" [(ngModel)]="organization.name" />
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-12 col-lg-4 col-md-4">
+                    <mat-label>Date de création: </mat-label>
+                        <input matInput   type="date" name="inc" id="inc" [(ngModel)]="organization.inceptionDate" />
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-12 col-lg-4 col-md-4">
+                        <mat-select [(value)]="organization.type" placeholder="Select A Type">
+                            <mat-option *ngFor="let type of types" [value]="type">{{ type.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-12 col-lg-12 col-md-12">
+                        <mat-label for="editor">Organization description</mat-label>
+                        <textarea matInput name="description" id="description" [(ngModel)]="organization.description"> </textarea>
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                        <mat-label>Postal Code: </mat-label>
+                        <input matInput type="text" name="postalCode" id="postalCode" [(ngModel)]="organization.address.postalCode" />
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                        <mat-label>Street: </mat-label>
+                        <input matInput type="text" name="street" id="street" [(ngModel)]="organization.address.street" />
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                        <mat-label>City: </mat-label>
+                        <input matInput type="text" name="city" id="city" [(ngModel)]="organization.address.city" />
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                        <mat-label>Region: </mat-label>
+                        <input matInput type="text" name="region" id="region" [(ngModel)]="organization.address.region" />
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                        <mat-label>State: </mat-label>
+                        <input matInput type="text" name="state" id="state" [(ngModel)]="organization.address.state" />
+                    </mat-form-field>
+                    <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                        <mat-label>Continent: </mat-label>
+                        <input matInput type="text" name="continent" id="continent" [(ngModel)]="organization.address.continent" />
+                    </mat-form-field>
+            <div>
+                <button class="btn-primary" mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form #f1="ngForm">
+      <ng-template matStepLabel>Root unit</ng-template>
+        <mat-form-field [ngClass]="{'mat-form-field-invalid':f1.submitted && !root.name}" class="col-sm-6 col-lg-6 col-md-6">
+            <mat-label>Name: </mat-label>
+            <input matInput type="text" name="name" id="name" [(ngModel)]="root.name" required #name="ngModel"/>
+            <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">Name is required</mat-error>                            
+        </mat-form-field>
+        <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+            <mat-label>Description: </mat-label>
+            <input matInput  type="text" name="description" id="description" [(ngModel)]="root.description" />
+        </mat-form-field>
+      <div>
+        <button class="btn-primary m-2" mat-button matStepperPrevious>Back</button> 
+        <button class="btn-primary" mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Owner</ng-template>
+    <form>
+        <mat-form-field class="col-sm-6 col-lg-6 col-md-6" [matTooltipPosition]="'above'" matTooltip="(MR | MDME | DR | PR)">
+            <mat-label>Title: <mat-icon>info_outline</mat-icon></mat-label>
+            <input matInput type="text" name="title" id="title" [(ngModel)]="owner.title" />
+        </mat-form-field>
+        <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+            <mat-label>FirstName: </mat-label>
+            <input matInput type="text" name="firstName" id="firstName" [(ngModel)]="owner.firstName" />
+        </mat-form-field>
+            <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                <mat-label>MiddleName: </mat-label>
+                <input matInput type="text" name="middleName" id="middleName" [(ngModel)]="owner.middleName" />
+            </mat-form-field>
+            <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                <mat-label>LastName: </mat-label>
+                <input matInput type="text" name="lastName" id="lastName" [(ngModel)]="owner.lastName" />
+            </mat-form-field>
+            <mat-form-field class="col-sm-6 col-lg-6 col-md-6" [matTooltipPosition]="'above'" matTooltip="MALE | FEMELE">
+                <mat-label>Gender: </mat-label>
+                <input matInput type="input" name="sex" id="sex" [(ngModel)]="owner.sex"/>
+            </mat-form-field>
+            <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                <mat-label>Pseudo: </mat-label>
+                <input matInput type="text" name="pseudo" [(ngModel)]="owner.pseudo"/>
+            </mat-form-field>
+            <mat-form-field class="col-sm-6 col-lg-6 col-md-6">
+                <mat-label>Work email address: </mat-label>
+                <input matInput  type="email" name="email" id="email" [(ngModel)]="owner.email" />
+            </mat-form-field>
+        </form>
+        <div>
+            <button class="btn-primary m-2" mat-button matStepperPrevious>Back</button> 
+            <button class="btn-primary" mat-button matStepperNext>Next</button>
+        </div>
+  </mat-step>
+ 
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button class="btn-primary m-2" mat-button matStepperPrevious>Back</button>
+      <button class="btn-secondary m-2" mat-button   (click)="stepper.reset()">Reset</button>
+      <button class="btn-primary m-2" mat-button  (click)="submit()"> Submit </button>
+    </div>
+    <div *ngIf="success" class="alert alert-success" role="alert">
+        {{message}}
+    </div>
+    <div *ngIf="hasError" class="alert alert-danger" role="alert">
+        {{message}}
+    </div>
+    <mat-spinner *ngIf="pending"></mat-spinner>
+  </mat-step>
+</mat-vertical-stepper>
+</sb-layout-dashboard>

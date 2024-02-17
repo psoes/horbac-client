@@ -5,6 +5,7 @@ import { AuthGuard } from '@modules/auth/guards';
 import { SBRouteData } from '@modules/navigation/models';
 import { OrganizationComponent } from './components/organization/organization.component';
 import { OrganizationsModule } from './organizations.module';
+import { CreateOrgComponent } from './components/create-org/create-org.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,25 @@ const routes: Routes = [
   component: OrganizationComponent,
   canActivate: [AuthGuard],
 },
+{
+  path: 'new',
+  data: {
+    title: 'New organization',
+    breadcrumbs: [
+      {
+        text: 'Organizations',
+        link: '/organizations',
+      },
+      
+      {
+        text: 'New',
+        active: true,
+      },
+    ],
+  } as SBRouteData,
+  component: CreateOrgComponent,
+  canActivate: [AuthGuard],
+}
 ];
 
 @NgModule({

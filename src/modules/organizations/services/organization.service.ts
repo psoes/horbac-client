@@ -5,6 +5,8 @@ import { Observable, of } from 'rxjs';
 import { Organization, SocialReason } from '../models/organization';
 import { OrganizationType } from '../models/organization-type';
 import { map, catchError, tap } from 'rxjs/operators';
+import { AdminUnit } from '@modules/unities/models/AdminUnit';
+import { EmployeeCrud } from '@modules/employees/models/Employee';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +31,9 @@ export class OrganizationService {
     return this.http.post<Organization>(this.ORGANIZATIONS_API, org);
   }
   
+  createOrganizationWithApproval(payload: {organization: Organization, root: AdminUnit, owner: EmployeeCrud}) {
+    return this.http.post<Organization>(this.ORGANIZATIONS_API+'/new', payload);
+  }
   updateOrganization(org: Organization){
     return this.http.put<Organization>(this.ORGANIZATIONS_API, org);
   }

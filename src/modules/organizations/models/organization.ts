@@ -1,6 +1,7 @@
 import { Adress } from "@modules/employees/models/Employee";
 import { HOLocation } from "@modules/unities/models/OrgUnit";
 import { OrganizationType } from "./organization-type";
+import { Address } from "@modules/employees/models/Adress";
 
 export class SocialReason {
     id?: number;
@@ -15,7 +16,7 @@ export class Organization {
 	cessationDate? : Date;    
     type?: OrganizationType;
     logo?: string;
-    address?: Adress;
+    address: Adress = new Adress();
     url?: string;
     location?: HOLocation;
     socialReason?: SocialReason;
@@ -28,7 +29,7 @@ export class Organization {
         this.inceptionDate = inceptionDate;
         this.cessationDate = cessationDate;
         this.type = type;
-        this.address = address;
+        this.address = address ?? new Adress();
         this.location = location;
         this.logo  = logo;
         this.socialReason = socialReason;
