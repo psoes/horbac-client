@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { EmployeesRoutingModule } from './employees-routing.module';
 import { EmployeeComponent } from './components/employee/employee.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -52,6 +50,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatButtonModule,
     MatTabsModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
     MatExpansionModule,
     MatIconModule,
     DragDropModule,

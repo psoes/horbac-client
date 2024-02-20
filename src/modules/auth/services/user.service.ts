@@ -11,6 +11,8 @@ import { User } from '../models';
 import { Jwt } from '../models/Jwt';
 import { JwtRequest } from '../models/JwtRequest';
 import { JWTStatus } from '../models/JWTStatus';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 const userSubject: ReplaySubject<User> = new ReplaySubject(1);
 
@@ -19,7 +21,7 @@ export class UserService {
 
     USERS_API = environment.API_HOST+ '/users';
     
-    private userSubject: BehaviorSubject<Jwt>;
+    public userSubject: BehaviorSubject<Jwt>;
     public user: Observable<Jwt> = new Observable<Jwt>();
 
     constructor(private _snackbar: MatSnackBar, private http: HttpClient, private router: Router) {
@@ -46,18 +48,23 @@ export class UserService {
 
     login(username: string, password: string) {
         let jwtRequest: JwtRequest = new JwtRequest(username, password);
-        localStorage.setItem('basic', JSON.stringify({username: username, password: password}));
-        
+
         return this.http.post<Jwt>(`${environment.API_HOST}/authenticate`, jwtRequest)
-            .pipe(map(jwt => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                //console.log("JWT ", jwt);
-                if(jwt.jwtStatus.toString() === 'AUTHENTICATED'){
-                    localStorage.setItem('user', JSON.stringify(jwt));
-                    this.userSubject.next(jwt);
-                }                
-                return jwt;
-            }));
+            .pipe(
+                map(jwt => {
+                    if (jwt.jwtStatus.toString() === 'AUTHENTICATED') {
+                        localStorage.setItem('user', JSON.stringify(jwt)); // Use a more secure storage mechanism if possible
+                        localStorage.setItem('basic', btoa(`${username}:${password}`))
+                        this.userSubject.next(jwt);
+                        //console.log("C'est bonnnnnn", jwt)
+                    }
+                    return jwt; // Redundant, but harmless
+                }),
+                catchError(error => {
+                    // Handle errors appropriately, e.g., logging, notifying the user, etc.
+                    return throwError(error); // Rethrow the error to propagate it through the Observable chain
+                })
+            );
     }
 
     logout() {
@@ -95,6 +102,12 @@ export class UserService {
                 }
                 return x;
             }));
+    }
+
+   public  isUserLoggedIn() {
+        let user = localStorage.getItem('user')
+        if (user === null) return false
+        return true
     }
 
 }

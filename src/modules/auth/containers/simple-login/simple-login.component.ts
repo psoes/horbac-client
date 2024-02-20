@@ -27,23 +27,18 @@ export class SimpleLoginComponent implements OnInit {
       // reset login status
       this.userService.logout();
       this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/organizations';
+
   }
 
   handleBasicAuthLogin() {
     this.userService.login(this.username, this.password)
       .subscribe(
         data => {
-          //console.log(data);
           if(data.jwtStatus === JWTStatus.AUTHENTICATED){       
             
             this.invalidLogin = false;
-            this.infoMessage ='Login successfull!!!';
-            //this.router.navigateByUrl('/');
-            /*this.router.navigate(['/organizations']).then(() => {
-              location.reload();
-            });*/
+            this.infoMessage ='Login successfull!';
             this.router.navigate(['/organizations']);
-            //this.router.navigate(['/organizations'], {state:{id: 0}}); // empty org
           }
           else {
             this.invalidLogin = true;

@@ -27,6 +27,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatTreeModule} from '@angular/material/tree';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatChipsModule} from '@angular/material/chips';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({  
   imports: [
@@ -44,6 +45,7 @@ import {MatChipsModule} from '@angular/material/chips';
     NgpImagePickerModule,
     CKEditorModule,
     NgJsonEditorModule,
+    MatProgressSpinnerModule,
     NavigationModule,
     DashboardModule,
     MatTabsModule,

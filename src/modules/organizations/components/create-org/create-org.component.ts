@@ -50,7 +50,6 @@ export class CreateOrgComponent implements OnInit {
       root: this.root,
       owner: this.owner
     };
-    console.log("Organization data", payload)
     this.pending = true
     this.orgService.createOrganizationWithApproval(payload).subscribe((res) => {
       this.pending = false;

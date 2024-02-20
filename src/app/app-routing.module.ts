@@ -7,7 +7,7 @@ const routes: Routes = [
         path: '',
         pathMatch: 'full',
         redirectTo: '/organizations',
-        canActivate: [AuthGuard] 
+        canActivate: [AuthGuard]
     },
     {
         path: 'charts',

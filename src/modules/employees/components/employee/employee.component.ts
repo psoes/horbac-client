@@ -70,6 +70,10 @@ export class EmployeeComponent implements OnInit {
   public employees: EmployeeCrud [] = [];
   employee: EmployeeCrud = {};
   actionInProgress = false;
+  message = ""
+  hasError = false;
+  success = false;
+  pending: boolean = false;
   constructor(private unitService: UnitService, private orgService: OrganizationService, private employeeService: EmployeeService,  private sanitization: DomSanitizer) {
     this.employee = new EmployeeCrud(new SpecialIdentity());
     this.employee.addresses = [new Adress()];
@@ -223,28 +227,80 @@ export class EmployeeComponent implements OnInit {
 
   createAppoints(){
     this.actionInProgress = true;
+    this.pending = true;
     this.employeeService.createAppoints(this.appoint).subscribe( (result: Appoints) => {
-      this.appoints.push(result);
-    } )
+        this.appoints.push(result);
+        this.pending = false;
+        this.hasError = false;
+        this.success = true;
+        this.pending = false;
+        this.message = "Operation approved by the hierarchy!"
+      },
+      (err) => {
+        console.error(err)
+        this.hasError = true;
+        this.pending = false;
+        this.message = "Operation rejected by the hierarchy!"
+      }
+    )
     this.actionInProgress = false;
   }
   deleteAppoints(app: Appoints){
+    this.pending = true;
     this.employeeService.deleteAppoints(app).subscribe( (result: any) => {
-      this.appoints = this.appoints.filter( item => {return app.id !== app.id});
-    })
+      this.appoints = this.appoints.filter( item => {return item.id !== app.id});
+        this.pending = false;
+        this.hasError = false;
+        this.success = true;
+        this.pending = false;
+        this.message = "Operation approved by the hierarchy!"
+      },
+      (err) => {
+        console.error(err)
+        this.hasError = true;
+        this.pending = false;
+        this.message = "Operation rejected by the hierarchy!"
+      }
+    )
   }
 
   createEmploys(){
     this.actionInProgress = true;
+    this.pending = true;
     this.employeeService.createEmploys(this.currentEmploys).subscribe( (result: Employs) => {
       this.employs.push(result);
-    })
+      this.pending = false;
+      this.hasError = false;
+      this.success = true;
+      this.pending = false;
+      this.message = "Operation approved by the hierarchy!"
+    },
+    (err) => {
+      console.error(err)
+      this.hasError = true;
+      this.pending = false;
+      this.message = "Operation rejected by the hierarchy!"
+    }
+    )
     this.actionInProgress = false;
   }
   deleteEmploys(app: Employs){
+    this.pending = true;
     this.employeeService.deleteEmploys(app).subscribe( (result: any) => {
-      this.employs = this.employs.filter( item => {return app.id !== app.id});
-    })
+      this.employs = this.employs.filter( item => {return item.id !== app.id});
+        this.pending = false;
+        this.hasError = false;
+        this.success = true;
+        this.pending = false;
+        this.message = "Operation approved by the hierarchy!"
+      },
+      (err) => {
+        console.error(err)
+        this.hasError = true;
+        this.pending = false;
+        this.message = "Operation rejected by the hierarchy!"
+      }
+    )
   }
 
 }

@@ -40,6 +40,10 @@ export class AbstractPermissionsComponent implements OnInit {
     adminPermissions: AdministrativePermission[] = [];
     opPermissions: OperationalPermission[] = [];
 
+  message = ""
+  hasError = false;
+  success = false;
+  pending: boolean = false;
   constructor(private abstractPermissionService: AbstractPermissionService, private activityService: ActivitiesService, private resourceService: ResourceService, private actionService: ActionsService, private unitService: UnitService, private contextService: ContextService, private orgService: OrganizationService) { }
   ngOnInit(): void {
     this.contextService.loadContexts().subscribe( (results : Context[]) =>{
@@ -78,44 +82,121 @@ export class AbstractPermissionsComponent implements OnInit {
   }
 
   createAdminPermission(){
-    this.abstractPermissionService.createAdminPermissions(this.adminPermission).subscribe( (result) => {
+    this.abstractPermissionService.createAdminPermissions(this.adminPermission).subscribe( (result) =>  {
       this.adminPermissions.push(<AdministrativePermission>result);
-    })
+      this.pending = false;
+      this.hasError = false;
+      this.success = true;
+      this.pending = false;
+      this.message = "Operation approved by the hierarchy!"
+      this.adminPermissions.push(<AdministrativePermission>result);
+    },
+    (err) => {
+      console.error(err)
+      this.hasError = true;
+      this.pending = false;
+      this.message = "Operation rejected by the hierarchy!"
+    }
+    )
   }
 
   updateAdminPermission(){
-    this.abstractPermissionService.updateAdminPermissions(this.adminPermission).subscribe((result) => {
+    this.abstractPermissionService.updateAdminPermissions(this.adminPermission).subscribe((result) =>{
       let index = this.adminPermissions.findIndex(item => item.id === this.adminPermission.id);
       this.adminPermissions[index] = <AdministrativePermission>result;
-    });
+      this.pending = false;
+      this.hasError = false;
+      this.success = true;
+      this.pending = false;
+      this.message = "Operation approved by the hierarchy!"
+    },
+    (err) => {
+      console.error(err)
+      this.hasError = true;
+      this.pending = false;
+      this.message = "Operation rejected by the hierarchy!"
+    }
+    )
     this.isUpdate = false;
     this.adminPermission = {}
   }
 
   deleteAdminPermission(ap: AdministrativePermission){
-    this.abstractPermissionService.deleteAdminPermissions(ap).subscribe( result => {
-      this.adminPermissions = this.adminPermissions.filter( item => {return item.id !== ap.id});
-    })
+    this.abstractPermissionService.deleteAdminPermissions(ap).subscribe( result => {     
+      this.adminPermissions = this.adminPermissions.filter(item => { return item.id !== ap.id });
+      this.pending = false;
+      this.hasError = false;
+      this.success = true;
+      this.pending = false;
+      this.message = "Operation approved by the hierarchy!"
+    },
+    (err) => {
+      console.error(err)
+      this.hasError = true;
+      this.pending = false;
+      this.message = "Operation rejected by the hierarchy!"
+    }
+    )
   }
   ////
   createOpPermission(){
+    this.pending = true;
     this.abstractPermissionService.createOperationalPermissions(this.opPermission).subscribe( (result) => {
       this.opPermissions.push(<OperationalPermission>result);
-    })
+      this.pending = false;
+      this.hasError = false;
+      this.success = true;
+      this.pending = false;
+      this.message = "Operation approved by the hierarchy!"
+    },
+    (err) => {
+      console.error(err)
+      this.hasError = true;
+      this.pending = false;
+      this.message = "Operation rejected by the hierarchy!"
+    }
+    )
   }
 
   updateOpPermission(){
+    this.pending = true;
     this.abstractPermissionService.updateOperationalPermissions(this.opPermission).subscribe((result) => {
       let index = this.opPermissions.findIndex(item => item.id === this.opPermission.id);
       this.opPermissions[index] = <OperationalPermission>result;
-    });
+      this.pending = false;
+      this.hasError = false;
+      this.success = true;
+      this.pending = false;
+      this.message = "Operation approved by the hierarchy!"
+    },
+    (err) => {
+      console.error(err)
+      this.hasError = true;
+      this.pending = false;
+      this.message = "Operation rejected by the hierarchy!"
+    }
+    )
     this.isUpdate = false;
     this.opPermission = {}
   }
   deleteOpPermission(ap: OperationalPermission){
+    this.pending = true;
     this.abstractPermissionService.deleteOperationalPermissions(ap).subscribe( result => {
-      this.opPermissions = this.opPermissions.filter( item => {return item.id !== ap.id});
-    })
+      this.opPermissions = this.opPermissions.filter(item => { return item.id !== ap.id });
+      this.pending = false;
+      this.hasError = false;
+      this.success = true;
+      this.pending = false;
+      this.message = "Operation approved by the hierarchy!"
+    },
+    (err) => {
+      console.error(err)
+      this.hasError = true;
+      this.pending = false;
+      this.message = "Operation rejected by the hierarchy!"
+    }
+    )
+  
   }
 
 }

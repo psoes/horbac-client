@@ -1,7 +1,8 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Organization } from '@modules/organizations/models/organization';
@@ -12,6 +13,8 @@ import { OrgFlatNode, OrgTree } from '@modules/unities/models/OrgTree';
 import { PlaceUnder } from '@modules/unities/models/PlaceUnder';
 import { Subordinate } from '@modules/unities/models/Subordinate';
 import { UnitService } from '@modules/unities/services/unit.service';
+import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
+import { data } from './consts';
 
 @Component({
   selector: 'sb-unit',
@@ -20,6 +23,9 @@ import { UnitService } from '@modules/unities/services/unit.service';
   providers: [UnitService]
 })
 export class UnitComponent implements OnInit {
+  public editorOptions!: JsonEditorOptions;
+  public data: any;
+  @ViewChild(JsonEditorComponent, { static: false }) editor!: JsonEditorComponent;
   
   
   flatNodeMap = new Map<OrgFlatNode, OrgTree>();
@@ -31,14 +37,22 @@ export class UnitComponent implements OnInit {
   treeFlattener!: MatTreeFlattener<OrgTree, OrgFlatNode>;
     
   dataSource!: MatTreeFlatDataSource<OrgTree, OrgFlatNode>;  
-
-  constructor(public orgService: OrganizationService, public unitService: UnitService,  private sanitization: DomSanitizer) {
+  public unitForm!: FormGroup;
+ 
+  constructor(public orgService: OrganizationService, public unitService: UnitService,  private sanitization: DomSanitizer, private fb: FormBuilder) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel,
       this.isExpandable, this.getChildren);
     this.treeControl = new FlatTreeControl<OrgFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-  }
 
+    this.editorOptions = new JsonEditorOptions()
+    this.editorOptions.modes = ['code', 'text', 'tree', 'view']; // set all allowed modes
+    //this.options.mode = 'code'; //set only one mode
+       
+  }
+    
+
+  
   getLevel = (node: OrgFlatNode) => node.level!;
 
   isExpandable = (node: OrgFlatNode) => node.expandable!;
@@ -100,6 +114,10 @@ export class UnitComponent implements OnInit {
   urlPattern = "[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
 
   ngOnInit(): void {
+    this.unitForm = this.fb.group({
+      units: [data],
+      org: []
+    });
     this.orgService.loadOrganizations().subscribe( (results) =>{
       this.organizations = results;
     })
@@ -145,10 +163,6 @@ export class UnitComponent implements OnInit {
       reader.readAsDataURL(file);    
       reader.onload = () => {       
         this.imageSrc  = this.sanitization.bypassSecurityTrustResourceUrl(reader.result as string);
-        //this.imageSrc = reader.result as SafeResourceUrl;
-        console.info('File source... ', file.size)
-        console.info('File source... ', file.name)
-        console.info('File source... ', file.type)
       };
    
     }
@@ -251,17 +265,52 @@ export class UnitComponent implements OnInit {
 
   currentOrg!: Organization;
   loadOrgTree(event: any){
-    console.log('request... : ', event.value.id);
     this.currentOrg = event.value;
     this.unitService.getOrgTree(event.value.id).subscribe( (result) =>{
-      console.log('DATAAAAA... : ', result);
       this.dataSource.data = [result];
     });
   }
 
   refresh = () => this.currentOrg? this.unitService.getOrgTree(this.currentOrg.id!).subscribe( (result) =>{
-    console.log('DATAAAAA... : ', result);
+    
     this.dataSource.data = [result];
   }) : null;
 
+  getData(draft: any) {
+   // console.log("DATA CHANGED.HERE...........", draft)
+     
+  }
+
+  message = ""
+  hasError = false;
+  success = false;
+
+  pending: boolean = false;
+  postData() {
+    this.pending = true
+    this.unitService.createUnitWithApproval(this.unitForm.value.units, this.unitForm.value.org.id).subscribe((res) => {
+      this.pending = false;
+      this.hasError = false;
+      this.success = true;
+      this.pending = false;
+      this.message = "Operation approved by the hierarchy!"
+    },
+      (err) => {
+        console.error(err)
+        this.hasError = true;
+        this.pending = false;
+        this.message = "Operation rejected by the hierarchy!"
+      }
+    )
+  }
+
+  loadUnitNodes(event: any ) {
+    this.unitService.loadUnitNodes(event.value.id).subscribe((results) => {
+      this.unitForm.patchValue({
+         org: event.value,
+        units: results
+      }) 
+    })
+  }
+  
 }

@@ -27,6 +27,7 @@
 
 @import "~jsoneditor/dist/jsoneditor.min.css";
 
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
@@ -46,4 +47,13 @@ caption {
 
 .ck-editor__editable_inline {
   min-height: 200px;
+}
+
+div.jsoneditor-mode-code{
+  height:100vh //if you want full screen
+}
+
+div.jsoneditor-outer.has-main-menu-bar{
+  background-color: #343a40;
+  color: white;
 }

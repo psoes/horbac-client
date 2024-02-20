@@ -190,6 +190,13 @@
                 <button mat-button (click)="createOpPermission()" color="primary" style="margin-right:20px" *ngIf="!isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon>save</button>
                 <button mat-button (click)="updateOpPermission()"  color="primary" *ngIf="isUpdate"  type="submit"> <mat-icon>save_alt</mat-icon> save</button>
                 <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>
+                <div *ngIf="success" class="alert alert-success" role="alert">
+                    {{message}}
+                </div>
+                <div *ngIf="hasError" class="alert alert-danger" role="alert">
+                    {{message}}
+                </div>
+                <mat-spinner *ngIf="pending"></mat-spinner>
             </mat-action-row>
             <div class="table-responsive">
                 <table class="table table-striped">

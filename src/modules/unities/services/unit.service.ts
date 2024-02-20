@@ -8,7 +8,7 @@ import { OperationalUnit } from '../models/OperationalUnit';
 import { Subordinate } from '../models/Subordinate';
 import { PlaceUnder } from '../models/PlaceUnder';
 import { OrgTree } from '../models/OrgTree';
-import { OrgUnit } from '../models/OrgUnit';
+import { UnitNode } from '../models/UnitNode';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,7 @@ export class UnitService {
 
   ADMIN_UNITS_API = environment.API_HOST+ '/admin-units';
   UNITS_API = environment.API_HOST + '/org-units?size=100';
+  UNITS_API_WITH_APPROVAL = environment.API_HOST + '/units-nodes/with-approval'; 
   OPERATIONAL_UNITS_API = environment.API_HOST+ '/operational-units';
   SUBORDINATE_UNITS_API = environment.API_HOST+ '/subordinates';
   SUBORDINATE_MANY_UNITS_API = environment.API_HOST+ '/subordinates/many';
@@ -40,6 +41,10 @@ export class UnitService {
   
   createAdminUnit(unit: AdminUnit){
     return this.http.post<AdminUnit>(this.ADMIN_UNITS_API, unit);
+  }
+
+  createUnitWithApproval(units: UnitNode[], orgId: number) {
+    return this.http.post<boolean>(this.UNITS_API_WITH_APPROVAL+ '/' + orgId, units);
   }
   
   updateAdminUnit(unit: AdminUnit){
@@ -98,6 +103,10 @@ export class UnitService {
   
   deleteSubordinate(sub: Subordinate){
     return this.http.delete(this.SUBORDINATE_UNITS_API+'/'+ sub.id);
+  }
+
+  loadUnitNodes(orgId: number) {
+    return this.http.get<UnitNode[]>(this.UNITS_API_WITH_APPROVAL + '/' + orgId);
   }
   
   deletePlaceUnder(sub: PlaceUnder){
