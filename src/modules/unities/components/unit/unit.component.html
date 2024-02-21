@@ -4,6 +4,31 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon>users</mat-icon>
+                <span class="p-2">Units editor</span>          
+            </ng-template>
+            <form  [formGroup]="unitForm">
+                <div *ngIf="success" class="alert alert-success" role="alert">
+                    {{message}}
+                </div>
+                <div *ngIf="hasError" class="alert alert-danger" role="alert">
+                    {{message}}
+                </div>
+                <mat-spinner *ngIf="pending"></mat-spinner>
+                <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
+                    <mat-label>Select the organization</mat-label>
+                    <mat-select  required  formControlName="org" placeholder="Select Organization" (selectionChange)="loadUnitNodes($event)">                      
+                        <mat-option *ngFor="let org of organizations" [value]="org">{{ org.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div id="jsoneditor" class="flex">                
+                    <json-editor [options]="editorOptions" (change)="getData($event)" formControlName="units"></json-editor>
+                    <button matButton class="btn btn-primary m-2" (click)="postData()">Submit</button>
+                </div>  
+            </form>          
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>users</mat-icon>
                 <span class="p-2">Administrative Unit</span>
             </ng-template>
             <div class="mt-5" style=" width: 80%; margin: 0 auto;">
@@ -69,32 +94,6 @@
                     </tbody>
                 </table>
             </div> 
-        </mat-tab>
-        
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <mat-icon>users</mat-icon>
-                <span class="p-2">Units editor</span>          
-            </ng-template>
-            <form  [formGroup]="unitForm">
-                <div *ngIf="success" class="alert alert-success" role="alert">
-                    {{message}}
-                </div>
-                <div *ngIf="hasError" class="alert alert-danger" role="alert">
-                    {{message}}
-                </div>
-                <mat-spinner *ngIf="pending"></mat-spinner>
-                <mat-form-field class="col-sm-12 col-lg-6 col-md-6">
-                    <mat-label>Select the organization</mat-label>
-                    <mat-select  required  formControlName="org" placeholder="Select Organization" (selectionChange)="loadUnitNodes($event)">                      
-                        <mat-option *ngFor="let org of organizations" [value]="org">{{ org.name }}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <div id="jsoneditor" class="flex">                
-                    <json-editor [options]="editorOptions" (change)="getData($event)" formControlName="units"></json-editor>
-                    <button matButton class="btn btn-primary m-2" (click)="postData()">Submit</button>
-                </div>  
-            </form>          
         </mat-tab>
 
         <mat-tab>

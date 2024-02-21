@@ -54,15 +54,23 @@ export class PermissionHelperComponent implements OnInit {
   public decision = ""
   public duration = 0
 
+  message = ""
+  hasError = false;
+  success = false;
+
   canSuggests(){
     this.apiLoading = true;
     this.permissionService.canSuggest(this.organization, this.canSuggest).subscribe(results => {
       this.response = JSON.stringify(results);  
-      //console.log("ET VOILA LE RESULALT........................", results)
       this.opPermissions = results ? results : [];
       this.apiLoading = false;
+      this.hasError = false;
+      this.success = true;
+      this.message = "Operation allowed!"
     }, err => {
       this.apiLoading = false;
+      this.hasError = true;
+      this.message = "Operation Denied!"
     })
   }
 

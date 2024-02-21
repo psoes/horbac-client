@@ -138,6 +138,12 @@
                 <button mat-button  type="reset" color="accent" > <mat-icon>restore</mat-icon>reset </button>
                 <mat-spinner *ngIf="apiLoading"></mat-spinner>
             </mat-action-row>
+            <div *ngIf="success" class="alert alert-success" role="alert">
+                {{message}}
+            </div>
+            <div *ngIf="hasError" class="alert alert-danger" role="alert">
+                {{message}}
+            </div>
             <div class="table-responsive">
                 <table class="table">
                     <thead>

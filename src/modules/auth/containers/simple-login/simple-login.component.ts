@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { JWTStatus } from '@modules/auth/models/JWTStatus';
-import { AuthService, UserService } from '@modules/auth/services';
+import { UserService } from '@modules/auth/services';
 
 @Component({
   selector: 'sb-simple-login',

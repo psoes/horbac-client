@@ -88,7 +88,6 @@ export class OrganizationComponent implements OnInit {
       });
     this.orgService.loadOrganizations(this.id).subscribe( (results : Organization[]) =>{
       this.organizations = results;
-      console.log("ORGS LIST", results);
       if(this.organizations[0]?.logo)this.downloadLogo(this.organizations[0]?.logo!);
     })
     this.orgService.loadTypes().subscribe( (results) =>{
