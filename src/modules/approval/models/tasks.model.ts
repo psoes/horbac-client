@@ -32,6 +32,8 @@ export interface AccessRequest {
     agentVersion: string;
     unit: string;
     org: string;
+    priority: number;
+    timeout: number;
 }
 export interface ExtendedTask {
     task: Task;
